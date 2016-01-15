@@ -24,6 +24,10 @@
 % @ingroup ColladaToPBRT
 function AddTransform(idMap, id, name, type, value)
 
+if isempty(name)
+    name = type;
+end
+
 % create new XML DOM objects as needed
 isCreate = true;
 
