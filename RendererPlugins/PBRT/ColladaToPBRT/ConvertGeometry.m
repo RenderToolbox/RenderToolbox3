@@ -84,10 +84,19 @@ position = reshape(StringToVector(positionString), 3, []);
 
 %% Find the polylist's NORMAL data.
 normalInput = GetElementChildren(polyList, 'input', 'semantic', 'NORMAL');
-[attrib, name, normalID] = GetElementAttributes(normalInput, 'source');
-normalID = normalID(normalID ~= '#');
-[attrib, name, normalOffset] = GetElementAttributes(normalInput, 'offset');
-normalOffset = StringToVector(normalOffset);
+if isempty(normalInput)
+    % one normals for all vertices
+    colladaPath = {vertexID, ':input|semantic=NORMAL', '.source'};
+    normalID = GetSceneValue(colladaIDMap, colladaPath);
+    normalID = normalID(normalID ~= '#');
+    normalOffset = 0;
+else
+    % separate normals for each polylist
+    [attrib, name, normalID] = GetElementAttributes(normalInput, 'source');
+    normalID = normalID(normalID ~= '#');
+    [attrib, name, normalOffset] = GetElementAttributes(normalInput, 'offset');
+    normalOffset = StringToVector(normalOffset);
+end
 
 % follow the "NORMAL" reference to actual vertex normal data
 %   make sure the data are 3-element XYZ
@@ -105,15 +114,25 @@ normalsString = GetSceneValue(colladaIDMap, colladaPath);
 normal = reshape(StringToVector(normalsString), 3, []);
 
 %% Find the polylist's TEXCOORD (UV) data, if any.
+hasTexCoords = false;
 texCoordInput = GetElementChildren(polyList, 'input', 'semantic', 'TEXCOORD');
-hasTexCoords = ~isempty(texCoordInput);
-if hasTexCoords
+if isempty(texCoordInput)
+    % one texcoords for all vertices
+    colladaPath = {vertexID, ':input|semantic=TEXCOORD', '.source'};
+    texCoordID = GetSceneValue(colladaIDMap, colladaPath);
+    texCoordID = texCoordID(texCoordID ~= '#');
+    texCoordOffset = 0;
+    hasTexCoords = true;
+else
     % take the first set of coordinates, ignoring the "set" attribute
     [attrib, name, texCoordID] = GetElementAttributes(texCoordInput, 'source');
     texCoordID = texCoordID(texCoordID ~= '#');
     [attrib, name, texCoordOffset] = GetElementAttributes(texCoordInput, 'offset');
     texCoordOffset = StringToVector(texCoordOffset);
-    
+    hasTexCoords = true;
+end
+
+if hasTexCoords    
     % follow the "TEXCOORD" reference to actual texture coordinate data
     %   make sure the data are 2-element UV
     colladaPath = {texCoordID, ':technique_common', ':accessor' '.stride'};
@@ -296,8 +315,11 @@ if ischar(materialID) && ~isempty(materialID)
     if stubIDMap.isKey(materialIDHack)
         materialID = materialIDHack;
     end
-    refName = [polyName '-material'];
-    AddReference(stubIDMap, id, refName, 'Material', materialID);
+    
+    if stubIDMap.isKey(materialID)
+        refName = [polyName '-material'];
+        AddReference(stubIDMap, id, refName, 'Material', materialID);
+    end
 end
 
 

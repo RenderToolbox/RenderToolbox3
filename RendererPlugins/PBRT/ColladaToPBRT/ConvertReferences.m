@@ -10,7 +10,7 @@
 %
 % @details
 % Cherry pick from Collada node s that refer to "instances" of other nodes,
-% by "url", "instance", or "target" attributes, and populates a
+% by "url", "instance", or "target" attributes, and populate a
 % cooresponding node of the stub PBRT-XML document represented by the given
 % @a stubIDMap.  @a id is the unique identifier of the referencinf node.
 % @a hints is a struct of conversion hints.
