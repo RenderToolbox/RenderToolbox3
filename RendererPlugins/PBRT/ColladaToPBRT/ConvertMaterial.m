@@ -57,7 +57,7 @@ else
         
         AddParameter(stubIDMap, id, 'Kd', diffuseType, diffuse);
         if strcmp('texture', diffuseType)
-            declareTexture(effectID, value, stubIDMap, colladaIDMap);
+            declareTexture(effectID, diffuse, stubIDMap, colladaIDMap);
         end
         
         AddParameter(stubIDMap, id, 'sigma', 'float', '0');
@@ -72,12 +72,12 @@ else
         
         AddParameter(stubIDMap, id, 'Kd', diffuseType, diffuse);
         if strcmp('texture', diffuseType)
-            declareTexture(effectID, value, stubIDMap, colladaIDMap);
+            declareTexture(effectID, diffuse, stubIDMap, colladaIDMap);
         end
         
         AddParameter(stubIDMap, id, 'Ks', specularType, specular);
         if strcmp('texture', specularType)
-            declareTexture(effectID, value, stubIDMap, colladaIDMap);
+            declareTexture(effectID, specular, stubIDMap, colladaIDMap);
         end
         AddParameter(stubIDMap, id, 'alphaU', 'float', '0.15');
         AddParameter(stubIDMap, id, 'alphaV', 'float', '0.15');

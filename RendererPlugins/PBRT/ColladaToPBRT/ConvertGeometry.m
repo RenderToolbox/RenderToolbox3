@@ -122,14 +122,14 @@ if isempty(texCoordInput)
     texCoordID = GetSceneValue(colladaIDMap, colladaPath);
     texCoordID = texCoordID(texCoordID ~= '#');
     texCoordOffset = 0;
-    hasTexCoords = true;
+    hasTexCoords = ~isempty(texCoordID);
 else
     % take the first set of coordinates, ignoring the "set" attribute
     [attrib, name, texCoordID] = GetElementAttributes(texCoordInput, 'source');
     texCoordID = texCoordID(texCoordID ~= '#');
     [attrib, name, texCoordOffset] = GetElementAttributes(texCoordInput, 'offset');
     texCoordOffset = StringToVector(texCoordOffset);
-    hasTexCoords = true;
+    hasTexCoords = ~isempty(texCoordID);
 end
 
 if hasTexCoords    
