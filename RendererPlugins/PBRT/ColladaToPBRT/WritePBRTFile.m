@@ -51,11 +51,17 @@ else
     writeFilm(pbrtFID, idMap, filmNodeID{1}, hints);
 end
 
-integreatorNodeID = getNodesByIdentifier(idMap, 'SurfaceIntegrator');
-if isempty(integreatorNodeID)
-    warning('Scene does not specify a surface integrator!');
-else
-    writeIntegrator(pbrtFID, idMap, integreatorNodeID{1}, hints);
+% expect either surface or volume integrator
+surfaceIntegratorNodeID = getNodesByIdentifier(idMap, 'SurfaceIntegrator');
+if ~isempty(surfaceIntegratorNodeID)
+    writeIntegrator(pbrtFID, idMap, surfaceIntegratorNodeID{1}, hints);
+end
+volumeIntegratorNodeID = getNodesByIdentifier(idMap, 'VolumeIntegrator');
+if ~isempty(volumeIntegratorNodeID)
+    writeIntegrator(pbrtFID, idMap, volumeIntegratorNodeID{1}, hints);
+end
+if isempty(surfaceIntegratorNodeID) && isempty(volumeIntegratorNodeID)
+    warning('Scene does not specify a surface or volume integrator!');
 end
 
 samplerNodeID = getNodesByIdentifier(idMap, 'Sampler');
@@ -256,9 +262,9 @@ PrintPBRTStatement(fid, identifier, type, params);
 fprintf(fid, '\n');
 
 
-function writeIntegrator(fid, idMap, integreatorNodeID, hints)
+function writeIntegrator(fid, idMap, integratorNodeID, hints)
 % scan the integrator document node
-node = idMap(integreatorNodeID);
+node = idMap(integratorNodeID);
 [identifier, type] = getIdentifierAndType(node);
 params = getParameters(node);
 
