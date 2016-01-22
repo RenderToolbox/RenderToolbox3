@@ -382,18 +382,21 @@ objectNode = idMap(objectNodeID);
 refs = getReferences(objectNode);
 nRefs = numel(refs);
 
-% write out references, preserving node order
-isIncluded = false;
+% invoke named materials in order
 for ii = 1:nRefs
     if strcmp('Material', refs(ii).type)
         % set current material
         fprintf(fid, 'NamedMaterial "%s"\n', refs(ii).value);
-        
-    elseif strcmp('Include', refs(ii).type)
+    end
+end
+
+% include geometries in order
+isIncluded = false;
+for ii = 1:nRefs
+    if strcmp('Include', refs(ii).type)
         % include some geometry
         isIncluded = true;
         fprintf(fid, 'Include "%s"\n', refs(ii).value);
-        
     end
 end
 
