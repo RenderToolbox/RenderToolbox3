@@ -119,6 +119,14 @@ for ii = 1:numel(attribNodeIDs)
     writeAttribute(pbrtFID, idMap, attribNodeIDs{ii}, hints);
 end
 
+% declare Volumes
+% TODO: do volumes belong inside attributes/transform blocks like shapes?
+volumeNodeIDs = getNodesByIdentifier(idMap, 'Volume');
+for ii = 1:numel(volumeNodeIDs)
+    writeVolume(pbrtFID, idMap, volumeNodeIDs{ii}, hints);
+end
+
+
 % finish the "world" declaration
 fprintf(pbrtFID, 'WorldEnd\n');
 
@@ -406,6 +414,14 @@ fprintf(fid, '# light source %s\n', lightNodeID);
 lightNode = idMap(lightNodeID);
 [identifier, type] = getIdentifierAndType(lightNode);
 params = getParameters(lightNode);
+PrintPBRTStatement(fid, identifier, type, params);
+
+function writeVolume(fid, idMap, volumeID, hints)
+fprintf(fid, '# volume %s\n', volumeID);
+
+volumeNode = idMap(volumeID);
+[identifier, type] = getIdentifierAndType(volumeNode);
+params = getParameters(volumeNode);
 PrintPBRTStatement(fid, identifier, type, params);
 
 
