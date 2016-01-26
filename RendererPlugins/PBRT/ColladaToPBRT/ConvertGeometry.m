@@ -233,7 +233,12 @@ for ii = 1:nPolys
         polyPos2D = coefs';
         
         % compute 2D Delaunay triangulation
-        triIndices = delaunay(polyPos2D);
+        try
+            triIndices = delaunay(polyPos2D);
+        catch ex
+            warning('%s: ignoring polygon', ex.message);
+            continue;
+        end
         
         % copy indices for each Delaunay triangle (as zero-based)
         %   preserve the winding order of the original polygon
