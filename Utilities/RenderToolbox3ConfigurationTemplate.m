@@ -73,8 +73,12 @@ else
     myMistubaImporter = '/usr/local/bin/mtsimport';
     
     % or choose where you installed Mitsuba
-    %myMistubaExecutable = '/my/path/for/mitsuba';
-    %myMistubaImporter = '/my/path/for/mtsimport';
+    %myMistubaExecutable = '/my/mitsuba/path/dist/mitsuba';
+    %myMistubaImporter = '/my/mitsuba/path/dist/mtsimport';
+    
+    % if you used a custom build of Mitsuba, 
+    %   set the library path to point at your custom build folder 
+    setpref('RenderToolbox3', 'libPath', '/my/mitsuba/path/dist');
     
     % don't change this--
     %   the "app" path is only meaningful for OS X
