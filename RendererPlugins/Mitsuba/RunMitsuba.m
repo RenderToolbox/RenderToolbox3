@@ -49,7 +49,7 @@ output = fullfile(renderings, [sceneBase '.exr']);
 
 % find the Mitsuba executable
 executable = fullfile(mitsuba.app, mitsuba.executable);
-renderCommand = sprintf('%s -o %s %s', executable, output, sceneFile);
+renderCommand = sprintf('"%s" -o "%s" "%s"', executable, output, sceneFile);
 fprintf('%s\n', renderCommand);
 [status, result] = RunCommand(renderCommand, hints);
 
