@@ -47,7 +47,7 @@
 %
 % @details
 % Usage:
-%   [imageData, wls, S] = ReadMultispectralEXR(exrFilenamePattern)
+%   [imageData, wls, S] = ReadMultispectralEXR(exrFile, namePattern)
 %
 % @ingroup Readers
 function [imageData, wls, S] = ReadMultispectralEXR(exrFile, namePattern)
