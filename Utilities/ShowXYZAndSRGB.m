@@ -40,19 +40,21 @@ if ~hints.isPlot
 end
 
 if nargin > 0 && ~isempty(XYZImage)
-    figure();
+    f = figure();
+    ax = axes('Parent', f);
     % assume XYZ image is full range floating point
-    imshow(XYZImage);
-    ylabel('XYZ')
-    title(name)
+    imshow(XYZImage, 'Parent', ax);
+    ylabel(ax, 'XYZ')
+    title(ax, name)
     drawnow();
 end
 
 if nargin > 1 && ~isempty(SRGBImage)
-    figure();
+    f = figure();
+    ax = axes('Parent', f);
     % assume SRGB is gamma corrected unsigned bytes
-    imshow(uint8(SRGBImage));
-    ylabel('SRGB')
-    title(name)
+    imshow(uint8(SRGBImage), 'Parent', ax);
+    ylabel(ax, 'SRGB')
+    title(ax, name)
     drawnow();
 end
