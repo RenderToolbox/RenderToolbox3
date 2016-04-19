@@ -1,55 +1,43 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function [imageData, imageSize, lens] = ReadDAT(filename, varargin)
+%% Get multispectral image data out of a .dat file from Stanford.
 %
-% Get multispectral image data out of a .dat file from Stanford.
-%   @param filename string file name (path optional) of the .dat file
-%   @param maxPlanes read only this many spectral planes (optional)
-%
-% @details
-% Reads the given multi-spectral .dat file from @a filename.  The .dat
+% imageData = ReadDAT(filename)
+% Reads multi-spectral .dat image data from the fiven filename.  The .dat
 % format is described by Andy Lin on the Stanford Vision and Imaging
-% Science and Technology <a
-% href="http://white.stanford.edu/pdcwiki/index.php/PBRTFileFormat">wiki</a>.
-% (If not, a description may be there soon.)
+% Science and Technology wiki:
+%   http://white.stanford.edu/pdcwiki/index.php/PBRTFileFormat
 %
-% @details
-% See the RenderToolbox3 wiki for more about image <a
-% href="https://github.com/DavidBrainard/RenderToolbox3/wiki/Spectrum-Bands">Spectrum Bands</a>, and how RenderToolbox3 determines the spectral sampling of
-% PBRT .dat files.
+% imageData = ReadDAT(filename, 'maxPlanes', maxPlanes)
+% Reads image data from the given file, and limits the number of returned
+% spectral planse to maxPlanes.  Any additional planes are ignored.
 %
-% @details
 % Returns a matrix of multispectral image data, with size [height width n],
 % where height and width are image size in pixels, and n is the number of
-% spectral planes.
+% spectral planes. Also returns the multispectral image dimensions [height
+% width n].
 %
-% @details
-% Also returns the multispectral image dimensions [height width n].
-%
-% @details
-% If @a maxPlanes is provided, n is limited to this number of planes.
-%
-% @details
 % If the given .dat file contains an optional lens description, also
-% returns a struct of lens data with fields @b focalLength, @b fStop,
-% and @b fieldOfView.
+% returns a struct of lens data with fields focalLength, fStop, and
+% fieldOfView.
 %
-% @details
-% Usage:
-%   [imageData, imageSize, lens] = ReadDAT(filename, maxPlanes)
+% [imageData, imageSize, lens] = ReadDAT(filename, varargin)
 %
-% @ingroup Readers
-function [imageData, imageSize, lens] = ReadDAT(filename, maxPlanes)
+%%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-if nargin < 2 || isempty(maxPlanes)
-    maxPlanes = [];
-end
+parser = inputParser();
+parser.addRequired('filename', @ischar);
+parser.addParameter('maxPlanes', [], @isnumeric);
+parser.parse(filename, varargin{:});
+filename = parser.Results.filename;
+maxPlanes = parser.Results.maxPlanes;
 
 imageData = [];
 imageSize = [];
 lens = [];
 
-%% Try to open the file
+%% Try to open the file.
 fprintf('Opening file "%s".\n', filename);
 [fid, message] = fopen(filename, 'r');
 if fid < 0
