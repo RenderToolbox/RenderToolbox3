@@ -1,3 +1,8 @@
 *.mexmaci64
+*.mexa64
+*.mexw32
+*.mexw64
 /.DS_Store
 .DS_Store
+*.m~
+

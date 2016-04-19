@@ -79,12 +79,14 @@ if exist(rootRelative, 'file')
 end
 
 % given a plain file within workingFolder?
-matches = FindFiles(rootFolder, fileName, false, true);
-if ~isempty(matches)
-    fileInfo(1).absolutePath = matches{1};
-    [fileInfo(1).isRootFolderMatch, fileInfo(1).resolvedPath] = ...
-        checkRootPath(matches{1}, rootFolder);
-    return;
+if 7 == exist(rootFolder, 'dir')
+    matches = FindFiles(rootFolder, fileName, false, true);
+    if ~isempty(matches)
+        fileInfo(1).absolutePath = matches{1};
+        [fileInfo(1).isRootFolderMatch, fileInfo(1).resolvedPath] = ...
+            checkRootPath(matches{1}, rootFolder);
+        return;
+    end
 end
 
 % given a path relative to pwd()?

@@ -59,4 +59,4 @@ disp(hints)
 status = 0;
 result = 'SampleRenderer Render result';
 S = WlsToS((400:10:700)');
-multispectralImage = scene.value*ones(scene.height, scene.width, S(3));
+multispectralImage = scene.value * ones(scene.height, scene.width, S(3));
