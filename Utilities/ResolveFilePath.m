@@ -80,7 +80,9 @@ end
 
 % given a plain file within workingFolder?
 if 7 == exist(rootFolder, 'dir')
-    matches = FindFiles(rootFolder, fileName, false, true);
+    matches = FindFiles('root', rootFolder, ...
+        'filter', fileName, ...
+        'exactMatch', true);
     if ~isempty(matches)
         fileInfo(1).absolutePath = matches{1};
         [fileInfo(1).isRootFolderMatch, fileInfo(1).resolvedPath] = ...

@@ -1,21 +1,14 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function [isPrefix, remainder] = IsPathPrefix(pathA, pathB)
+%% Is the first path a prefix (i.e. parent) of the second?
 %
-% Is the first path a prefix (i.e. parent) of the second?
-%   @param pathA string path for a file or folder that exists
-%   @param pathB string path for another file or folder that exists
+% isPrefix = IsPathPrefix(pathA, pathB)
+% Checks whether the given pathA is a parent of pathB, or if pathA
+% and pathB are equivalent.  If so, pathA can be treated as a prefix
+% of pathB.
 %
-% @details
-% Checks whether the given @a pathA is a parent of @a pathB, or if @a pathA
-% and @a pathB are equivalent.  If so, @a pathA can be treated as a prefix
-% of @a pathB.
-%
-% @details
 % Only compares leading folder paths, and not file names.  For example, in
-% both of the following eamples, @a pathA is considered a prefix of @a
-% pathB.
-% @code
+% both of the following eamples, pathA is considered a prefix of pathB.
+%
 %   % folder paths
 %   pathA = '/foo/bar/';
 %   pathB = '/foo/bar/baz';
@@ -25,44 +18,48 @@
 %   pathA = '/foo/bar/fileA.txt';
 %   pathB = '/foo/bar/baz/fileB.png';
 %   alsoShouldBeTrue = IsPathPrefix(pathA, pathB);
-% @endcode
 %
-% @details
-% If @a pathA can be considered a prefix of @a pathB, returns true.
-% Otherwise returns false.  Also returns the remainder of @a pathB that
-% follows @a pathA, if any.  For example,
-% @code
+% If pathA can be considered a prefix of pathB, returns true.  Otherwise
+% returns false.  Also returns the remainder of pathB that follows pathA,
+% if any.  For example,
+%
 %   pathA = '/foo/bar/';
 %   pathB = '/foo/bar/baz/thing.txt';
 %   [isPrefix, remainder] = IsPathPrefix(pathA, pathB);
-%   % remainder == 'baz';
+%   % remainder == 'baz/thing.txt';
 %
 %   % reproduce pathB
 %   pathB = fullfile(pathA, remainder);
-% @endcode
 %
-% @details
-% Usage:
 %   [isPrefix, remainder] = IsPathPrefix(pathA, pathB)
 %
-% @ingroup Utilities
-function [isPrefix, remainder] = IsPathPrefix(pathA, pathB)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+
+parser = inputParser();
+parser.addRequired('pathA', @ischar);
+parser.addRequired('pathB', @ischar);
+parser.parse(pathA, pathB);
+pathA = parser.Results.pathA;
+pathB = parser.Results.pathB;
 
 isPrefix = false;
 remainder = '';
 
-[tokensA, baseA, extA] = pathTokens(pathA);
+%% Break the paths into tokens, based on the file separator.
+tokensA = pathTokens(pathA);
 [tokensB, baseB, extB] = pathTokens(pathB);
-
 nA = numel(tokensA);
 nB = numel(tokensB);
-nCompare = min(nA, nB);
 
+%% Match up corresponding tokens.
 if nA > nB
     % A cannot be a prefix because it's longer than B
     return;
 end
 
+nCompare = min(nA, nB);
 for ii = 1:nCompare
     % A and B disagree about this parent folder
     if ~strcmp(tokensA{ii}, tokensB{ii})
@@ -72,6 +69,7 @@ end
 
 isPrefix = true;
 remainder = fullfile(tokensB{nCompare+1:end}, [baseB, extB]);
+
 
 %% Break a full path into separate tokens.
 function [tokens, base, ext] = pathTokens(path)

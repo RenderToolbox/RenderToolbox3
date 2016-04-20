@@ -1,23 +1,23 @@
-classdef RtbFileSystemTests < matlab.unittest.TestCase
+classdef RtbFindFilesTests < matlab.unittest.TestCase
     
     methods (Test)
         
         function testFindThisFolder(testCase)
-            thisFile = which('RtbFileSystemTests');
+            thisFile = which('RtbFindFilesTests');
             pathHere = fileparts(thisFile);
             fileList = FindFiles('root', pathHere, 'allowFolders', true);
             testCase.assertTrue(any(strcmp(fileList, pathHere)));
         end
         
         function testFindThisFile(testCase)
-            thisFile = which('RtbFileSystemTests');
+            thisFile = which('RtbFindFilesTests');
             pathHere = fileparts(thisFile);
             fileList = FindFiles('root', pathHere);
             testCase.assertTrue(any(strcmp(fileList, thisFile)));
         end
         
         function testFindThisFileOnly(testCase)
-            thisFile = which('RtbFileSystemTests');
+            thisFile = which('RtbFindFilesTests');
             pathHere = fileparts(thisFile);
             fileList = FindFiles('root', pathHere, ...
                 'filter', thisFile, ...
