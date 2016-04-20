@@ -1,107 +1,109 @@
+function fileList = FindFiles(varargin)
+% Locate files by recursively searching a folder and subfolders.
+%
+% fileList = FindFiles() searches the current folder (pwd()) for files and
+% returns a cell array of files found.  Excludes files that start with '.',
+% or end with '~' or '.asv'.
+%
+% fileList = FindFiles( ... 'root',  root) searches the given rood folder
+% instead of pwd().
+%
+% fileList = FindFiles( ... 'filter', filter) uses the given filter regular
+% expression to filter out files.  The regular expression is applied to the
+% full, absolute path of each file encountered.  Only files that match the
+% regular expression are returned.
+%
+% fileList = FindFiles( ... 'exactMatch', exactMatch) specify whether the
+% given filter should be treated as an exact pattern to match with literal
+% string comparison (true), or treated as a regular expression (false).
+% The default is false, treat filder as a regular expression.
+%
+% fileList = FindFiles( ... 'allowFolders', allowFolders) specify whether
+% to return only file names (false), or to reutrn a mix of file and folder
+% names (true).  The default is false, only return file names.
+%
+% Returns a cell array of strings which are the full, absolute path names
+% of files that were found and matched.
+%
+% fileList = FindFiles(varargin)
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Locate files at or below the given folder.
-%   @param folder path where to start looking for files
-%   @param filter optional regular expression for filtering files
-%   @param isFolders whether to search for files as well as folders
-%   @param isExact whether to use @a filter for exact file name matching
-%
-% @details
-% FindFiles() recursively searches @a folder and its subfolders for files.
-% If @a folder is omitted, uses pwd().  By default, returns all files.  @a
-% filter may contain a regular expression, in which case only files
-% whose names match @filter are included.  Matching is performed on
-% full, absolute path names.
-%
-% @details
-% By default, only returns file names, not folder names.  If @a isFolders
-% is provided and true, returns folder names as well as file names.
-%
-% @details
-% Ignores subfolders that contain '.'.  Ignores files that start with '.'
-% or end with "~" or "ASV".
-%
-% @details
-% Returns a cell array of string which are the full, absolute path names of
-% files that were found and matched.
-%
-% @details
-% Usage:
-%   fileList = FindFiles(folder, filter, isFolders, isExact)
-%
-% @ingroup Utilities
-function fileList = FindFiles(folder, filter, isFolders, isExact)
 
-if nargin < 4 || isempty(isExact)
-    isExact = false;
+parser = inputParser();
+parser.addParameter('root', pwd(), @ischar);
+parser.addParameter('filter', '', @ischar);
+parser.addParameter('exactMatch', false, @islogical);
+parser.addParameter('allowFolders', false, @islogical);
+parser.parse(varargin{:});
+root = parser.Results.root;
+filter = parser.Results.filter;
+exactMatch = parser.Results.exactMatch;
+allowFolders = parser.Results.allowFolders;
+
+%% Convert the root folder to an absolute path.
+
+if 7 ~= exist(root, 'dir')
+    fileList = {};
+    return;
 end
 
-if nargin < 3 || isempty(isFolders)
-    isFolders = false;
+% oddly enough, pwd() doesn't always exist
+initalFolder = pwd();
+if exist(initalFolder, 'dir')
+    cd(root)
+    root = pwd();
+    cd(initalFolder);
 end
 
-if nargin < 2
-    filter = '';
-end
-
-if nargin < 1 || isempty(folder)
-    folder = pwd();
-    
-else
-    % convert relative folder to absolute path
-    initalFolder = pwd();
-    cd(folder)
-    folder = pwd();
-    
-    % oddly enough, pwd() may not have existed!
-    if exist(initalFolder, 'dir')
-        cd(initalFolder);
-    end
-end
-
-% find all files in the present folder
-d = dir(folder);
+%% Find all files in the present folder.
+d = dir(root);
 isSubfolder = [d.isdir];
 files = {d(~isSubfolder).name};
 subfolders = {d(isSubfolder).name};
 
-% include the present folder itself?
-if isFolders && checkMatch(folder, filter, isExact)
-    fileList = {folder};
-else
-    fileList = {};
-end
-
-% append files from the present folder
-for ii = 1:numel(files)
+nFiles = numel(files);
+fileList = cell(1, nFiles);
+isMatch = false(1, nFiles);
+for ii = 1:nFiles
     f = files{ii};
     if ~isempty(f) ...
             && f(1) ~= '.' ...
             && f(end) ~= '~' ...
             && isempty(regexpi(f, '.*\.asv'))
         
-        absPathFile = fullfile(folder, f);
-        if checkMatch(absPathFile, filter, isExact)
-            fileList{end+1} = absPathFile;
+        absPathFile = fullfile(root, f);
+        if checkMatch(absPathFile, filter, exactMatch)
+            fileList{ii} = absPathFile;
+            isMatch(ii) = true;
         end
     end
 end
+fileList = fileList(isMatch);
 
-% descend recursively into subfolders
+%% Include the present folder itself?
+if allowFolders && checkMatch(root, filter, exactMatch)
+    fileList = cat(2, {root}, fileList);
+end
+
+%% Descend recursively into subfolders.
 for ii = 1:numel(subfolders)
     sf = subfolders{ii};
     if ~isempty(sf) && ~any(sf=='.')
-        absSubfolder = fullfile(folder, sf);
+        absSubfolder = fullfile(root, sf);
         fileList = cat(2, fileList, ...
-            FindFiles(absSubfolder, filter, isFolders, isExact));
+            FindFiles('root', absSubfolder, ...
+            'filter', filter, ...
+            'allowFolders', allowFolders, ...
+            'exactMatch', exactMatch));
     end
 end
 
-function isMatch = checkMatch(filePath, filter, isExact)
-if isExact
-    [pathPrefix, baseName, extension] = fileparts(filePath);
+%% Check a file name against a filter pattern.
+function isMatch = checkMatch(filePath, filter, exactMatch)
+if exactMatch
+    [~, baseName, extension] = fileparts(filePath);
     isMatch = strcmp(filter, [baseName, extension]) ...
         || strcmp(filter, filePath);
 else
