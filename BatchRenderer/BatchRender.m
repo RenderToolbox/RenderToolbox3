@@ -1,84 +1,67 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
+function outFiles = BatchRender(scenes, varargin)
 % Render multiple scenes at once.
-%   @param scenes cell array of renderer-native scene descriptions or files
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
 %
-% @details
-% Renders multiple renderer-native scene files in one batch.  @a scenes
-% should be a cell array of renderer-native scene descriptions or scene
+% outFiles = BatchRender(scenes)
+% Renders multiple renderer-native scene files in one batch.  scenes
+% must be a cell array of renderer-native scene descriptions or scene
 % files, such as those produced by MakeSceneFiles().  All renderer-native
-% files should be intended for the same renderer, which should be specified
-% in @a hints.renderer.
+% files should be intended for the same renderer.
 %
-% @details
-% @a hints may be a struct with options that affect the rendering process,
-% as returned from GetDefaultHints().  If @a hints is omitted, default
-% options are used.  For example:
-%   - @a hints.renderer specifies which renderer to use
-%   - @a hints.isParallel specifies whether to render in a "parfor" loop
-%   - @a hints.outputDataFolder specefies where to store multi-spectral
+% outFiles = BatchRender(... 'hints', hints)
+% Specify a hints struct with with options that affect the rendering
+% process, as returned from GetDefaultHints().  If hints is omitted,
+% default options are used.  For example:
+%   - hints.renderer specifies which renderer to use
+%   - hints.isParallel specifies whether to render in a "parfor" loop
+%   - hints.workingFolder specefies where to store multi-spectral
 %   radiance data files.
-%   - @a hints.outputImageFolder specifies where to store RGB image files.
-%   - @a hints.isDryRun specefies whether or not to skip actual rendering.
+%   - hints.isDryRun specefies whether or not to skip actual rendering.
 %   .
 %
-% @details
-% Renders each renderer-native scene n @a scenes, and writes a new mat-file
+% Renders each renderer-native scene in scenes, and writes a new mat-file
 % for each one.  Each mat-file will contain several variables including:
 %   - multispectralImage - matrix of multi-spectral radiance data with size
 %   [height width n]
 %   - S - spectral band description for the rendering with elements [start
 %   delta n]
-%   .
-% height and width are pixel image dimensions and n is the number of
-% spectral bands in the image.  See the RenderToolbox3 wikiw for more about
-% <a
-% href="https://github.com/DavidBrainard/RenderToolbox3/wiki/Spectrum-Bands">Spectrum Bands</a>.
 %
-% @details
+% height and width are pixel image dimensions and n is the number of
+% spectral bands in the image.  See the RenderToolbox3 wiki for more about
+% spectrum bands:
+%  https://github.com/DavidBrainard/RenderToolbox3/wiki/Spectrum-Bands
+%
 % The each mat-file will also contain variables with metadata about how the
 % scene was made and rendererd:
 %   - scene - the renderer-native scene description (e.g. file name,
 %   Collada author info)
-%   - hints - the given @a hints struct, or default hints struct
+%   - hints - the given hints struct, or default hints struct
 %   - versionInfo - struct of version information about RenderToolbox3,
 %   its dependencies, and the current renderer
 %   - commandResult - text output from the the current renderer
 %   - radiometricScaleFactor - scale factor that was used to bring renderer
 %   ouput into physical radiance units
-%   .
 %
-% @details
 % This function uses RenderToolbox3 renderer API functions "Render",
 % "DataToRadiance", and "VersionInfo".  These functions, for the renderer
-% specified in @a hints.renderer, must be on the Matlab path.
+% specified in hints.renderer, must be on the Matlab path.
 %
-% @details
 % Returns a cell array of output mat-file names, with the same dimensions
-% as the given @a scenes.
+% as the given scenes.
 %
-% @details
-% Usage:
-%   outFiles = BatchRender(scenes, hints)
+% outFiles = BatchRender(scenes, varargin)
 %
-% @ingroup BatchRenderer
-function outFiles = BatchRender(scenes, hints)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+
+parser = inputParser();
+parser.addRequired('scenes', @iscell);
+parser.addParameter('hints', GetDefaultHints(), @isstruct);
+parser.parse(scenes, varargin{:});
+scenes = parser.Results.scenes;
+hints = GetDefaultHints(parser.Results.hints);
 
 InitializeRenderToolbox();
-
-%% Parameters
-if nargin < 1 || isempty(scenes)
-    scenes = {};
-end
-
-if nargin < 2
-    hints = GetDefaultHints();
-else
-    hints = GetDefaultHints(hints);
-end
 
 %% Render each scene file.
 % save toolbox version info with renderings

@@ -83,6 +83,7 @@ scene.description = 'SampleRenderer scene description';
 scene.height = 5;
 scene.width = 5;
 scene.value = 1;
+scene.imageName = imageName;
 
 if hints.isReuseSceneFiles
     % may wish to reuse existing scene files instead of creating new ones
