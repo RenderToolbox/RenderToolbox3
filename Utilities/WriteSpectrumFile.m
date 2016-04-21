@@ -1,59 +1,55 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function filename = WriteSpectrumFile(wavelengths, magnitudes, filename)
+%% Write a given spectral power distribution to a text file.
 %
-% Write a given spectral power distribution to a text file.
-%   @param wavelengths matrix of spectrum sampling wavelengths
-%   @param magnitudes matrix of spectrum sample magnitudes
-%   @param filename name of a text file to create or replace
+% filename = WriteSpectrumFile(wavelengths, magnitudes, filename)
+% Writes the given wavelengths and magnitudes to a spectrum data text
+% file, with the given filename.
 %
-% @details
-% Writes the given @a wavelengths and @a magnitudes to a spectrum data text
-% file, with the given @a filename.
-%
-% @details
-% The text file will contain a wavelength-magnitude pair on each line.
+% The text file will contain one wavelength-magnitude pair on each line.
 % This format is suitable for specifying spectra to PBRT or Mitsuba.  For
 % example:
-% @code
 %   300 0.1
 %   550 0.5
 %   800 0.9
-% @endcode
 % where 300, 550, and 800 are wavelengths in namometers, and 0.1, 0.5, and
-% 0.9 are magnutudes for each wavelength.
+% 0.9 are arbitrary magnutudes at each wavelength.
 %
-% @details
-% Returns the given @a filename, or a default file name if none was given.
+% Returns the given filename, for convenience.
 %
-% @details
-% Usage:
-%   filename = WriteSpectrumFile(wavelengths, magnitudes, filename)
+% filename = WriteSpectrumFile(wavelengths, magnitudes, filename)
 %
-% @ingroup Readers
-function filename = WriteSpectrumFile(wavelengths, magnitudes, filename)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-% choose default file name or extension, if none given
-if nargin < 3
-    filename = 'spectrum.spd';
-end
+parser = inputParser();
+parser.addRequired('wavelengths', @isnumeric);
+parser.addRequired('magnitudes', @isnumeric);
+parser.addRequired('filename', @ischar);
+parser.parse(wavelengths, magnitudes, filename);
+wavelengths = parser.Results.wavelengths;
+magnitudes = parser.Results.magnitudes;
+filename = parser.Results.filename;
+
+%% Set up the output file.
 [filePath, fileBase, fileExt] = fileparts(filename);
 if ~isempty(filePath) && ~exist(filePath, 'dir')
     mkdir(filePath);
 end
+
 if isempty(fileExt)
     filename = fullfile(filePath, [fileBase, '.spd']);
 end
 
-% check sanity of wavelengths and magnitudes
+%% Check sanity of wavelengths and magnitudes.
 nWls = numel(wavelengths);
 nMags = numel(magnitudes);
 if nMags ~= nWls
-    warning('Number of wavelengths %d should match number of magnitudes %d.', ...
+    warning('Number of wavelengths %d must match number of magnitudes %d.', ...
         nWls, nMags);
 end
 
-% write the spectrum to file
+%% Write the spectrum to file.
 fid = fopen(filename, 'w');
 nPairs = min(nWls, nMags);
 for ii = 1:nPairs
