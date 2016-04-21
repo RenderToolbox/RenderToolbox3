@@ -1,53 +1,42 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function conditionsFile = WriteConditionsFile(conditionsFile, names, values)
+%% Write conditions data to a text file.
 %
-% Write conditions data to a text file.
-%   @param conditionsFile name of new text file to write.
-%   @param names 1 x n cell array of string variable names
-%   @param values m x n cell array of variable values
+% WriteConditionsFile(conditionsFile, names, values)
+% Writes batch renderer condition variables with the given names and
+% values to a new text file with the given conditionsFile name.  See the
+% RenderToolbox3 wiki for more about conditions files:
+%   https://github.com/DavidBrainard/RenderToolbox3/wiki/Conditions-File-Format
 %
-% @details
-% Writes batch renderer condition variables with the given @a names and @a
-% values to a new text file with the given @a conditionsFile name.  See the
-% RenderToolbox3 wiki for more about <a
-% href="https://github.com/DavidBrainard/RenderToolbox3/wiki/Conditions-File-Format">Conditions
-% Files</a>.
-%
-% @details
-% @a names will appear in the first line of the new file, separated by
-% tabs.  Each of the m rows of @a values will appear in a separate line,
+% Names will appear in the first line of the new file, separated by
+% tabs.  Each of the m rows of values will appear in a separate line,
 % with elements separated by tabs.  So, the values for each variable will
 % appear in a tab-separated column.
 %
-% @details
 % Attempts to convert numeric values to string, as needed.
 %
-% @details
-% Usage:
-%   conditionsFile = WriteConditionsFile(conditionsFile, names, values)
+% Returns the given conditionsFile file name, for convenience.
 %
-% @ingroup BatchRenderer
-function conditionsFile = WriteConditionsFile(conditionsFile, names, values)
+% conditionsFile = WriteConditionsFile(conditionsFile, names, values)
+%
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-if nargin < 1 || isempty(conditionsFile)
-    conditionsFile = 'conditionsFile.txt';
-end
-
-if nargin < 2 || isempty(names)
-    names = {};
-end
-
-if nargin < 3 || isempty(values)
-    values = {};
-end
-
-if isempty(names)
-    warning('No variable names given!');
-    return;
-end
+parser = inputParser();
+parser.addRequired('conditionsFile', @ischar);
+parser.addRequired('names', @iscellstr);
+parser.addRequired('values', @iscell);
+parser.parse(conditionsFile, names, values);
+conditionsFile = parser.Results.conditionsFile;
+names = parser.Results.names;
+values = parser.Results.values;
 
 %% Create a new file.
+conditionsFolder = fileparts(conditionsFile);
+if ~isempty(conditionsFolder) && 7 ~= exist(conditionsFolder, 'dir')
+    mkdir(conditionsFolder);
+end
+
 fid = fopen(conditionsFile, 'w');
 if -1 == fid
     warning('Cannot create conditions file "%s".', conditionsFile);

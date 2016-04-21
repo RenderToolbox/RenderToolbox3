@@ -1,30 +1,25 @@
+function [names, values] = ParseConditions(conditionsFile)
+%% Read conditions data from a text file.
+%
+% [names, values] = ParseConditions(conditionsFile)
+% Reads batch renderer condition variables from the given conditionsFile.
+% See the RenderToolbox3 wiki for more about conditions files:
+%   https://github.com/DavidBrainard/RenderToolbox3/wiki/Conditions-File-Format
+%
+% Returns a 1 x n cell array of string variable names from the first line
+% of conditionsFile.  Also returns an m x n cell array
+% of varible values, with m values per variable, from subsequent lines.
+%
+% [names, values] = ParseConditions(conditionsFile)
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Read conditions data from a text file.
-%   @param conditionsFile
-%
-% @details
-% Reads batch renderer condition variables from the given @a
-% conditionsFile.  See the RenderToolbox3 wiki for more about <a
-% href="https://github.com/DavidBrainard/RenderToolbox3/wiki/Conditions-File-Format">Conditions
-% Files</a>.
-%
-% @details
-% Returns a 1 x n cell array of string variable names from the first line
-% of @a conditionsFile.  Also returns an m x n cell array
-% of varible values, with m values per variable.
-%
-% @details
-% Used internally by MakeSceneFiles().
-%
-% @details
-% Usage:
-%   [names, values] = ParseConditions(conditionsFile)
-%
-% @ingroup Mappings
-function [names, values] = ParseConditions(conditionsFile)
+
+parser = inputParser();
+parser.addRequired('conditionsFile', @ischar);
+parser.parse(conditionsFile);
+conditionsFile = parser.Results.conditionsFile;
 
 %% Prepare to read conditions file.
 if ~exist(conditionsFile, 'file')
@@ -73,5 +68,5 @@ while ischar(nextLine)
     nextLine = fgetl(fid);
 end
 
-%% Done with file
+%% Done with file.
 fclose(fid);
