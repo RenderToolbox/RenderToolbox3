@@ -1,4 +1,4 @@
-classdef RtbPathPrefixTests < matlab.unittest.TestCase
+classdef RtbIsPathPrefixTests < matlab.unittest.TestCase
     
     methods (Test)
         
