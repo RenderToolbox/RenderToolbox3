@@ -29,4 +29,4 @@ end
 S = getpref('PBRT', 'S');
 
 % read output into memory
-multispectralImage = ReadDAT(output, S(3));
+multispectralImage = ReadDAT(output, 'maxPlanes', S(3));

@@ -1,94 +1,67 @@
+function scenes = MakeSceneFiles(colladaFile, varargin)
+%% Make a family of renderer-native scenes based on a Collada parent scene.
+%
+% scenes = MakeSceneFiles(colladaFile)
+% Creates a family of renderer-native scenes, based on the given
+% colladaFile.  colladaFile must be a Collada XML parent scene file.
+%
+% scenes = MakeSceneFiles(... 'conditionsFile', conditionsFile)
+% Specify the conditionsFile which specifies how many scenes to generate
+% and parameters for each scene.  See the RenderToolbox3 wiki for more
+% about the conditions file format:
+%   https://github.com/RenderToolbox3/RenderToolbox3/wiki/Conditions-File-Format
+%
+% scenes = MakeSceneFiles(... 'mappingsFile', mappingsFile)
+% Specify the mappingsFile which specifies how to map conditions file
+% variables and other constants to the parent scene.  See the
+% RenderToolbox3 wiki for more  about the mappings file format:
+%   https://github.com/RenderToolbox3/RenderToolbox3/wiki/Mappings-File-Format
+%
+% scenes = MakeSceneFiles(... 'hints', hints)
+% Specify a struct of options that affect the process of generating
+% renderer-native scene files.  If hints is omitted, values are taken
+% from GetDefaultHints().
+%   - hints.renderer specifies which renderer to target
+%   - hints.tempFolder is the default location for new renderer-native
+%   scene files
+%   - hints.filmType is a renderer-specific film type to specify for the
+%   scene
+%   - hints.imageHeight and @a hints.imageWidth specify the image pixel
+%   dimensions to specify for the scene
+%   - hints.whichConditions is an array of condition numbers used to
+%   select rows from the @a conditionsFile.
+%   - hints.isReuseSceneFiles specefies whether or not renderer
+%   ImportCollada functions should attempt to to skip actual scene file
+%   creation, and use existing files instead.
+%
+% This function uses RenderToolbox3 renderer API functions "ApplyMappings"
+% and "ImportCollada".  These functions, for the renderer specified in
+% hints.renderer, must be on the Matlab path.
+%
+% Returns a cell array of new renderer-native scene descriptions.  By
+% default, each scene file will have the same base name as the given
+% colladaFile, plus a numeric suffix.  If conditionsFile contains an
+% 'imageName' variable, each scene file be named with the value of
+% 'imageName'.
+%
+% scenes = MakeSceneFiles(colladaFile, varargin)
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Make a family of renderer-native scenes based on a Collada parent scene.
-%   @param colladaFile file name or path of a Collada parent scene file
-%   @param conditionsFile file name or path of a conditions file
-%   @param mappingsFile file name or path of a mappings file
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
-%
-% @details
-% Creates a family of renderer-native scenes, based on the given @a
-% colladaFile, @a conditionsFile, and @a mappingsFile.  @a hints.renderer
-% specifies which renderer to target.
-%
-% @details
-% @a colladaFile should be a Collada XML parent scene file.  @a colladaFile
-% may be left empty, if the @a conditionsFile contains a 'colladaFile'
-% variable.
-%
-% @details
-% @a conditionsFile must be a RenderToolbox3 <a
-% href="https://github.com/DavidBrainard/RenderToolbox3/wiki/Conditions-File-Format">Conditions File</a>.
-% @a conditionsFile may be omitted or left empty, if only one
-% renderer-native scene file is to be produced.
-%
-% @details
-% @a mappingsFile must be a RenderToolbox3 <a
-% href="https://github.com/DavidBrainard/RenderToolbox3/wiki/Mappings-File-Format">Mappings File</a>.
-% @a mappingsFile may be omitted or left empty if only one
-% renderer-native scene file is to be produced, or if @a conditionsFile
-% contains a 'mappingsFile' variable.
-%
-% @details
-% @a hints may be a struct with options that affect the process generating
-% of renderer-native scene files.  If @a hints is omitted, values are taken
-% from GetDefaultHints().
-%   - @a hints.renderer specifies which renderer to target
-%   - @a hints.tempFolder is the default location for new renderer-native
-%   scene files
-%   - @a hints.filmType is a renderer-specific film type to specify for the
-%   scene
-%   - @a hints.imageHeight and @a hints.imageWidth specify the image pixel
-%   dimensions to specify for the scene
-%   - @a hints.whichConditions is an array of condition numbers used to
-%   select rows from the @a conditionsFile.
-%   - @a hints.isReuseSceneFiles specefies whether or not renderer
-%   ImportCollada functions should attempt to to skip actual scene file
-%   creation, and use existing files instead.
-%   .
-%
-% @details
-% This function uses RenderToolbox3 renderer API functions "ApplyMappings"
-% and "ImportCollada".  These functions, for the renderer specified in @a
-% hints.renderer, must be on the Matlab path.
-%
-% @details
-% Returns a cell array of new renderer-native scene descriptions.  Each
-% scene description.  By default, each scene file will have the same base
-% name as the given @a colladaFile, plus a numeric suffix.  If @a
-% conditionsFile contains an 'imageName' variable, each scene file be named
-% with the value of 'imageName'.
-%
-% @details
-% Usage:
-%   scenes = MakeSceneFiles(colladaFile, conditionsFile, mappingsFile, hints)
-%
-% @ingroup BatchRenderer
-function scenes = MakeSceneFiles(colladaFile, conditionsFile, mappingsFile, hints)
+
+parser = inputParser();
+parser.addRequired('colladaFile', @ischar);
+parser.addParameter('conditionsFile', '', @ischar);
+parser.addParameter('mappingsFile', fullfile(RenderToolboxRoot(), 'RenderData', 'DefaultMappings.txt'), @ischar);
+parser.addParameter('hints', GetDefaultHints(), @isstruct);
+parser.parse(colladaFile, varargin{:});
+colladaFile = parser.Results.colladaFile;
+conditionsFile = parser.Results.conditionsFile;
+mappingsFile = parser.Results.mappingsFile;
+hints = GetDefaultHints(parser.Results.hints);
 
 InitializeRenderToolbox();
-
-%% Parameters
-if nargin < 1 || isempty(colladaFile)
-    colladaFile = '';
-end
-
-if nargin < 2 || isempty(conditionsFile)
-    conditionsFile = '';
-end
-
-if nargin < 3 || isempty(mappingsFile)
-    mappingsFile = fullfile( ...
-        RenderToolboxRoot(), 'RenderData', 'DefaultMappings.txt');
-end
-
-if nargin < 4
-    hints = GetDefaultHints();
-else
-    hints = GetDefaultHints(hints);
-end
 
 fprintf('\nMakeSceneFiles started at %s.\n\n', datestr(now(), 0));
 
@@ -219,6 +192,10 @@ end
 if isempty(scenePath) && exist(colladaFile, 'file')
     fileInfo = ResolveFilePath(colladaFile, GetWorkingFolder('', false, hints));
     colladaFile = fileInfo.absolutePath;
+end
+
+if isempty(colladaFile)
+    return;
 end
 
 isMatch = strcmp('mappingsFile', varNames);
