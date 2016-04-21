@@ -1,79 +1,67 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, varargin)
+%% Combine several multi-spectral renderings into one sRGB montage.
 %
-% Condense several multi-spectral renderings into one sRGB montage.
-%   @param inFiles cell array of input mat-file names
-%   @param outFile output montage file name (optional)
-%   @param toneMapFactor how to truncate montage luminance (optional)
-%   @param isScale whether or how to scale montage luminance (optional)
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
-%
-% @details
+% SRGBMontage = MakeMontage(inFiles)
 % Condenses several multi-spectral renderings stored in mat-files into a
-% single sRGB montage.  By default, tiles the input images so that the
-% montage has roughly the same aspect ratio as the input images.  If @a
-% inFiles has size other than 1xn, the dimensions of @a inFiles determine
-% the dimensions of the montage.
+% single sRGB montage.  inFiles must be a cell array of mat-file names,
+% each of which must contain multi-spectral renderer output, as returned
+% from BatchRender().
 %
-% @details
+% By default, tiles the input images so that the montage has roughly the
+% same aspect ratio as the input images.  If inFiles has size other than
+% 1xn, the shape of inFiles determine the shape of the montage.
+%
 % Attempts to conserve system memory by loading only one multi-spectral
 % image at a time.
 %
-% @details
-% @a inFiles must be a cell array of mat-file names, each of which must
-% contain multi-spectral renderer output.  BatchRender() returns such a
-% cell array.
-%
-% @details
-% @a outFile determines the file name of the new montage.  The file
-% extension determines the file format:
+% SRGBMontage = MakeMontage( ... 'outFile', outFile) specify the file name
+% of the new montage.  The file extension determines the file format:
 %   - If the extension is '.mat', the montage XYZ and sRGB matrices
 %   will be saved to a .mat data file.
 %   - If the extension matches a standard image format, like '.tiff' or
 %   '.png' (default), the sRGB image will be saved in that format, using
 %   Matlab's built-in imwrite().
-%   .
 %
-% @details
-% If @a toneMapFactor is provided and greater than 0, montage luminances
-% will be truncated above this factor times the mean luminance of the
-% entire montage.
+% sRGBImage = MakeMontage( ... 'toneMapFactor', toneMapFactor)
+% specifies a simple tone mapping threshold.  Truncates lumininces above
+% this factor times the mean luminance.  The default is 0, don't truncate
+% luminances.
 %
-% @details
-% If isScale is provided and logical true, montage luminances will be 
-% scaled so that the maximum input luminance of the entire montage matches 
-% the maximum possible RGB output luminance.  If isScale is a numeric
-% scalar, the montage luminances will be scaled by this amount.
+% sRGBImage = MakeMontage( ... 'isScale', isScale)
+% specifies whether to scale the gamma-corrected image to the display
+% maximum (true) or not (false).  The default is false, don't scale the
+% image.
 %
-% @details
-% @a hints may be a struct with options that affect the montage, such as
-% the output folder, as returned from GetDefaultHints().  If @a hints is
-% omitted, default options are used.
+% outFiles = MakeSensorImages( ... 'hints', hints)
+% Specifies RenderToolbox3 "hints" to control things like the working
+% folder where output should be written.  The default is GetDefaultHints().
 %
-% @details
-% Returns a matrix containing the tone mapped, scaled, sRGB
-% montage with size [height width 3].  Also returns a matrix containing XYZ
-% image data with the same size.  Also returns a scalar, the amount by
-% which montage luminances were scaled.  This may be equal to the given @a
-% isScale, or it might have been calculated.
+% Returns a matrix containing the sRGB montage image with size [height
+% width 3].  Also returns a matrix containing XYZ  image data with the same
+% size.  Also returns a scalar, the amount by which montage luminances were
+% scaled.
 %
-% @details
-% Usage:
-%   [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, outFile, toneMapFactor, isScale, hints)
+% [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, varargin)
 %
-% @ingroup BatchRenderer
-function [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, outFile, toneMapFactor, isScale, hints)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-SRGBMontage = [];
-XYZMontage = [];
+parser = inputParser();
+parser.addRequired('inFiles', @iscellstr);
+parser.addParameter('outFile', '', @ischar);
+parser.addParameter('toneMapFactor', 0, @isnumeric);
+parser.addParameter('isScale', false, @islogical);
+parser.addParameter('hints', GetDefaultHints(), @isstruct);
+parser.parse(inFiles, varargin{:});
+inFiles = parser.Results.inFiles;
+outFile = parser.Results.outFile;
+toneMapFactor = parser.Results.toneMapFactor;
+isScale = parser.Results.isScale;
+hints = GetDefaultHints(parser.Results.hints);
 
-if nargin < 1 || isempty(inFiles)
-    return;
-end
-
-if nargin < 2 || isempty(outFile)
-    [inPath, inBase, inExt] = fileparts(inFiles{1});
+if isempty(outFile)
+    [~, inBase] = fileparts(inFiles{1});
     outFile = [inBase '-montage.png'];
 end
 [outPath, outBase, outExt] = fileparts(outFile);
@@ -82,19 +70,9 @@ if isempty(outPath)
     outPath = GetWorkingFolder('images', true, hints);
 end
 
-if nargin < 3 || isempty(toneMapFactor)
-    toneMapFactor = 0;
-end
+SRGBMontage = [];
+XYZMontage = [];
 
-if nargin < 4 || isempty(isScale)
-    isScale = false;
-end
-
-if nargin < 5
-    hints = GetDefaultHints();
-else
-    hints = GetDefaultHints(hints);
-end
 
 %% If this is a dry run, skip the montage.
 if hints.isDryRun
@@ -139,7 +117,7 @@ for ii = 1:nIns
 end
 
 %% Convert the whole big XYZ montage to SRGB.
-[SRGBMontage, rawImage, luminanceScale] = ...
+[SRGBMontage, ~, luminanceScale] = ...
     XYZToSRGB(XYZMontage, toneMapFactor, 0, isScale);
 
 %% Save to disk.

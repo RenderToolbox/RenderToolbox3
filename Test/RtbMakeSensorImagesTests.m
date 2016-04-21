@@ -1,4 +1,4 @@
-classdef RtbMakeSensorImagesTest < matlab.unittest.TestCase
+classdef RtbMakeSensorImagesTests < matlab.unittest.TestCase
     
     methods (Test)
         
