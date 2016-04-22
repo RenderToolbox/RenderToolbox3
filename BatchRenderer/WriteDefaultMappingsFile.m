@@ -1,96 +1,75 @@
+function mappingsFile = WriteDefaultMappingsFile(colladaFile, varargin)
+%% Write a default mappings file for the given Collada parent scene file.
+%
+% mappingsFile = WriteDefaultMappingsFile(colladaFile)
+% Traverses the Collada document in the given colladaFile and writes a
+% new mappingsFile suitable for use with BatchRender().  The
+% mappingsFile will specify default values, including matte materials and
+% daylight light spectra.
+%
+% WriteDefaultMappingsFile( ... 'mappingsFile', mappingsFile) specifies the
+% name of the new mappings file.  By default the name is based on the name
+% of the given colladaFile.
+%
+% WriteDefaultMappingsFile( ... 'includeFile', includeFile) specifies an
+% existing Mappings file to copy and append to.  By default, copies and
+% appends to RenderData/DefaultMappings.txt.
+%
+% WriteDefaultMappingsFile( ... 'reflectances', reflectances) specifies a
+% list of reflectances to use for materials in the scene.  By default uses
+% various Macbeth Color Checker from RenderData/Macbeth-ColorChecker.
+%
+% WriteDefaultMappingsFile( ... 'lightSpectra', lightSpectra) specifies a
+% list of light spectra to use for lights in the scene.  The default is
+% RenderData/D65.spd.
+%
+% WriteDefaultMappingsFile( ... 'excludePattern', excludePattern) specifies
+% a regular expression to use for filtering out elements of the scene.
+% Only elements whose id matches the given excludePattern will be included
+% in the new mappings file.
+%
+% Returns the name of the new @a mappingsFile.
+%
+% mappingsFile = WriteDefaultMappingsFile(colladaFile, varargin)
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Write a default mappings file for the given Collada parent scene file.
-%   @param colladaFile file name or path of the Collada parent scene file
-%   @param mappingsFile file name or path for a new mappings file
-%   @param includeFile file name or path for a mappings file to include
-%   @param reflectances cell array of matte material reflectances
-%   @param lightSpectra cell array of light source spectra
-%   @param excludePattern regular expression to filter document elements
-%
-% @details
-% Traverses the Collada document in the given @a colladaFile and writes a
-% new @a mappingsFile suitable for use with BatchRender().  The @a
-% mappingsFile will specify default values, including:
-%   - mappings text in @a includeFile or RenderData/DefaultMappings.txt
-%   - matte material for each geometry node
-%   - a spectrum for each light source
-%   .
-% Each material or light source will use a spectrum from a default list, or
-% a provided list.
-%
-% @details
-% By default, prepends the text of RenderData/DefaultMappings.txt to the
-% new mappings file.  If @a includeFile is provided it must specify another
-% text file to prepend instead.
-%
-% @details
-% By default, each matte material will use one of the Color Checker
-% reflectance spectrums found in RenderData/Macbeth-ColorChecker.  If @a
-% reflectances is provided, it must be a cell array of string reflectance
-% values to use instead.
-%
-% @details
-% By default, each light source will use the D65 light spectrum found in
-% RenderData/D65.spd.  If @a lightSpectra is provided, it must be a cell
-% array of string spectrum values to use instead.
-%
-% @details
-% By default, writes mappings for all materials and light sources. If @a
-% excludePattern is provided, it must be a regular expression to match
-% against element id attributes.  Elements whose ids match @a
-% excludePattern will be excluded from the @a mappingsFile.
-%
-% @details
-% Returns the name of the new @a mappingsFile.
-%
-% @details
-% Usage:
-%   WriteDefaultMappingsFile(colladaFile, mappingsFile, includeFile, reflectances, lightSpectra, excludePattern)
-%
-% @ingroup BatchRenderer
-function mappingsFile = WriteDefaultMappingsFile( ...
-    colladaFile, mappingsFile, includeFile, reflectances, lightSpectra, excludePattern)
 
-%% Check Parameters.
-[colladaPath, colladaBase, colladaExt] = fileparts(colladaFile);
+parser = inputParser();
+parser.addRequired('colladaFile', @ischar);
+parser.addParameter('mappingsFile', '', @ischar);
+parser.addParameter('includeFile', fullfile(RenderToolboxRoot(), 'RenderData', 'DefaultMappings.txt'), @ischar);
+parser.addParameter('reflectances', {}, @iscellstr);
+parser.addParameter('lightSpectra', {'D65.spd'}, @iscellstr);
+parser.addParameter('excludePattern', '', @ischar);
+parser.parse(colladaFile, varargin{:});
+colladaFile = parser.Results.colladaFile;
+mappingsFile = parser.Results.mappingsFile;
+includeFile = parser.Results.includeFile;
+reflectances = parser.Results.reflectances;
+lightSpectra = parser.Results.lightSpectra;
+excludePattern = parser.Results.excludePattern;
 
-if nargin < 2 || isempty(mappingsFile)
+[colladaPath, colladaBase] = fileparts(colladaFile);
+if isempty(mappingsFile)
     mappingsFile = fullfile(colladaPath, [colladaBase 'DefaultMappings.txt']);
 end
 
-if nargin < 3 || isempty(includeFile)
-    includeFile = fullfile(RenderToolboxRoot(), 'RenderData', 'DefaultMappings.txt');
-end
-
-if nargin < 4 || isempty(reflectances)
+if isempty(reflectances)
     % find default Color Checker spectrum files
     macbethPath = fullfile(RenderToolboxRoot(), 'RenderData', 'Macbeth-ColorChecker');
-    spdPaths = FindFiles(macbethPath, '\.spd$');
+    spdPaths = FindFiles('root', macbethPath, 'filter', '\.spd$');
     reflectances = cell(size(spdPaths));
     
     % trim off the full path and sort by spectrum number
     for ii = 1:numel(spdPaths)
-        [spdPath, spdBase, spdExt] = fileparts(spdPaths{ii});
+        [~, spdBase, spdExt] = fileparts(spdPaths{ii});
         fileName = [spdBase spdExt];
         token = regexp(fileName, '([0-9]+)', 'tokens');
         number = StringToVector(token{1}{1});
         reflectances{number} = fileName;
     end
-end
-
-if isempty(reflectances)
-    reflectances = {'300:0.5 800:0.5'};
-end
-
-if nargin < 5 || isempty(lightSpectra)
-    lightSpectra = {'D65.spd'};
-end
-
-if nargin < 6
-    excludePattern = '';
 end
 
 %% Scan the Collada file by element id.
@@ -151,6 +130,10 @@ end
 
 %% Dump element info into a mappings file.
 % start with the generic default mappings file
+mappingsFolder = fileparts(mappingsFile);
+if ~isempty(mappingsFolder) && 7 ~= exist(mappingsFolder, 'dir')
+    mkdir(mappingsFolder);
+end
 copyfile(includeFile, mappingsFile);
 fid = fopen(mappingsFile, 'a');
 

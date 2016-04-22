@@ -1,17 +1,11 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function mappings = ParseMappings(mappingsFile)
+%% Read mappings data from a text file.
 %
-% Read mappings data from a text file.
-%   @param mappingsFile
+% mappings = ParseMappings(mappingsFile)
+% Reads batch renderer mappings from the given mappingsFile.  See the
+% RenderToolbox3 wiki for more about mappings files:
+%   https://github.com/DavidBrainard/RenderToolbox3/wiki/Mappings-File-Format
 %
-% @details
-% Reads batch renderer mappings from the given @a mappingsFile.  See the
-% RenderToolbox3 wiki for more about <a
-% href="https://github.com/DavidBrainard/RenderToolbox3/wiki/Mappings-File-Format">Mappings
-% Files</a>.
-%
-% @details
 % Returns a 1xn struct array with mapping data.  The struct array will have
 % one element per mapping, and the following fields:
 %   - text - raw text before parsing
@@ -21,9 +15,7 @@
 %   - left - a struct of info about the left-hand string
 %   - operator - the operator string
 %   - right - a struct of info about the right-hand string
-%   .
 %
-% @details
 % Each 'left' or 'right' field will contain a struct with data about a
 % string, with the following fields
 %   - text - the raw text before parsing
@@ -31,15 +23,16 @@
 %   - value - the text found within enclosing brackets
 %   .
 %
-% @details
-% Used internally by MakeSceneFiles().
+% mappings = ParseMappings(mappingsFile)
 %
-% @details
-% Usage:
-%   mappings = ParseMappings(mappingsFile)
-%
-% @ingroup Mappings
-function mappings = ParseMappings(mappingsFile)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+
+parser = inputParser();
+parser.addRequired('mappingsFile', @ischar);
+parser.parse(mappingsFile);
+mappingsFile = parser.Results.mappingsFile;
 
 %% Make a default mappints struct.
 mappings = struct( ...
