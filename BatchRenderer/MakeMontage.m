@@ -121,6 +121,10 @@ end
     XYZToSRGB(XYZMontage, toneMapFactor, 0, isScale);
 
 %% Save to disk.
+if ~isempty(outPath) && 7 ~= exist(outPath, 'dir')
+    mkdir(outPath);
+end
+
 outFullPath = fullfile(outPath, [outBase outExt]);
 if strcmp(outExt, '.mat')
     % write multi-spectral data

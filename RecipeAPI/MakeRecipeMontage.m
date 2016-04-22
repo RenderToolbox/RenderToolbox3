@@ -1,33 +1,35 @@
+function recipe = MakeRecipeMontage(recipe, varargin)
+%% Make an sRGB montage from a recipe's radianceDataFiles.
+%
+% recipe = MakeRecipeMontage(recipe) Uses the given recipe's radiance data
+% files to make an sRGB montage.
+%
+% recipe = MakeRecipeMontage( ... 'toneMapFactor', toneMapFactor) specify a
+% simple tone mapping threshold -- luminances above this factor times the
+% mean luminance will be truncated.  The default is 0, don't truncate
+% luminances.
+%
+% recipe = MakeRecipeMontage( ... 'isScale', isScale) specify whether to
+% scale the output image so that the image maxiumum is the display maximum.
+% The default is false, don't scale the image.
+%
+% Returns the given recipe, with recipe.processing.xyzMontage and
+% recipe.processing.srgbMontage and filled in.
+%
+% recipe = MakeRecipeMontage(recipe, varargin)
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Make an sRGB montage from a recipe's radianceDataFiles.
-%   @param recipe a recipe struct
-%   @toneMapFactor tone mapping scale factor to pass to MakeMontage()
-%   @isScale RGB scaling flag to to pass to MakeMontage()
-%
-% @details
-% Uses the given @a recipe's radiance data files to make an sRGB montage.
-%
-% @details
-% Returns the given @a recipe, with @a recipe.processing.xyzMontage and @a
-% recipe.processing.srgbMontage and filled in.
-%
-% @details
-% Usage:
-%   recipe = MakeRecipeMontage(recipe, toneMapFactor, isScale)
-%
-% @ingroup RecipeAPI
-function recipe = MakeRecipeMontage(recipe, toneMapFactor, isScale)
 
-if nargin < 2 || isempty(toneMapFactor)
-    toneMapFactor = [];
-end
-
-if nargin < 3 || isempty(isScale)
-    isScale = [];
-end
+parser = inputParser();
+parser.addRequired('recipe', @isstruct);
+parser.addParameter('toneMapFactor', 0, @isnumeric);
+parser.addParameter('isScale', false, @islogical);
+parser.parse(recipe);
+recipe = parser.Results.recipe;
+toneMapFactor = parser.Results.toneMapFactor;
+isScale = parser.Results.isScale;
 
 recipe = ChangeToRecipeFolder(recipe);
 
@@ -40,7 +42,10 @@ try
     
     [recipe.processing.srgbMontage, recipe.processing.xyzMontage] = ...
         MakeMontage(recipe.rendering.radianceDataFiles, ...
-        montageFile, toneMapFactor, isScale, recipe.input.hints);
+        'outFile', montageFile, ...
+        'toneMapFactor', toneMapFactor, ...
+        'isScale', isScale, ...
+        'hints', recipe.input.hints);
     
     if IsStructFieldPresent(recipe.processing, 'images')
         recipe.processing.images{end+1} = montageFile;
