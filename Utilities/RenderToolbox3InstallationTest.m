@@ -1,34 +1,35 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
+function [renderResults, comparison] = RenderToolbox3InstallationTest(varargin)
 % Make sure a new RenderToolbox3 installation is working.
-%   @param referenceRoot path to RenderTooblox3 reference data
 %
-% @details
-% Initialize RenderToolbox3 after installation and then put it through some
-% basic tests.  If this function runs properly, you're off to the races.
+% RenderToolbox3InstallationTest() Initializes RenderToolbox3 after
+% installation and then put it through some basic tests.  If this function
+% runs properly, you're off to the races.
 %
-% @details
-% If @a referenceRoot is provided, it must be the path to a set of
-% RenderToolbox3 reference data.  Rendering produced locally will be
-% compared to renderings in the reference data set.
+% RenderToolbox3InstallationTest( ... 'referenceRoot', referenceRoot)
+% provide the path to a set of RenderToolbox3 reference data.  Rendering
+% produced locally will be compared to renderings in the reference data
+% set.
 %
-% @details
-% Returns a struct of results from rendering test scenes.  If @a
+% RenderToolbox3InstallationTest( ... 'doAll', doAll) specify whether to to
+% all available test renderings (true), or just a few (false). The default
+% is false, do just a few test renderings.
+%
+% Returns a struct of results from rendering test scenes.  If
 % referenceRoot is provided, also returns a struct of comparisons between
 % local renderings and reference renderings.
 %
-% @details
-% Usage:
-%   [renderResults, comparison] = RenderToolbox3InstallationTest(referenceRoot)
+% [renderResults, comparison] = RenderToolbox3InstallationTest(varargin)
 %
-% @ingroup Utilities
-function [renderResults, comparison] = RenderToolbox3InstallationTest(referenceRoot)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-if nargin < 1
-    referenceRoot = '';
-end
+parser = inputParser();
+parser.addParameter('referenceRoot', '', @ischar);
+parser.addParameter('doAll', false, @islogical);
+parser.parse(varargin{:});
+referenceRoot = parser.Results.referenceRoot;
+doAll = parser.Results.doAll;
 
 renderResults = [];
 comparison = [];
@@ -106,22 +107,22 @@ for ii = 1:numel(execPrefs)
     end
 end
 
-%% Render a few example scenes.
-%% Render example scenes.  Set DO_ALL = true to do them
-% all, false to run just a few.
-DO_ALL = false;
-testScenes = { ...
-    'MakeCoordinatesTest.m', ...
-    'MakeCheckerboard.m', ...
-    'MakeMaterialSphere.m'};
-if (DO_ALL)
+%% Render some example scenes.
+if doAll
     fprintf('\nTesting rendering with all example scripts.\n');
     fprintf('This might take a while.\n');
     renderResults = TestAllExampleScenes([], []);
+    
 else
+    testScenes = { ...
+        'MakeCoordinatesTest.m', ...
+        'MakeDragon.m', ...
+        'MakeMaterialSphereBumps.m'};
+    
     fprintf('\nTesting rendering with %d example scripts.\n', numel(testScenes));
     fprintf('You should see several figures with rendered images.\n\n');
     renderResults = TestAllExampleScenes([], testScenes);
+    
 end
 
 if all([renderResults.isSuccess])

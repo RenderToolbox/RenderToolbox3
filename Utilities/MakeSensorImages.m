@@ -50,7 +50,7 @@ parser = inputParser();
 parser.addRequired('inFiles', @iscell);
 parser.addRequired('matchingFunctions', @iscell);
 parser.addParameter('matchingS', {}, @iscell);
-parser.addParameter('names', {}, @iscellstr);
+parser.addParameter('names', {}, @iscell);
 parser.addParameter('hints', GetDefaultHints(), @isstruct);
 parser.parse(inFiles, matchingFunctions, varargin{:});
 inFiles = parser.Results.inFiles;
