@@ -56,25 +56,19 @@ else
         'hints.workingFolder is missing, using pwd() instead');
     copyDir = pwd();
 end
-[scenePath, sceneBase, sceneExt] = fileparts(sceneFile);
+[~, sceneBase, sceneExt] = fileparts(sceneFile);
 sceneCopy = fullfile(copyDir, [sceneBase, sceneExt]);
 fprintf('PBRT needs to copy %s \n  to %s\n', sceneFile, sceneCopy);
-[isSuccess, message] = copyfile(sceneFile, sceneCopy, 'f');
+[~, ~] = copyfile(sceneFile, sceneCopy, 'f');
 
 renderings = GetWorkingFolder('renderings', true, hints);
 output = fullfile(renderings, [sceneBase '.dat']);
 
 %% Invoke PBRT.
-% set the dynamic library search path
-[newLibPath, originalLibPath, libPathName] = SetRenderToolboxLibraryPath();
-
 % find the PBRT executable
 renderCommand = sprintf('%s --outfile %s %s', pbrt.executable, output, sceneCopy);
 fprintf('%s\n', renderCommand);
 [status, result] = RunCommand(renderCommand, hints);
-
-% restore the library search path
-setenv(libPathName, originalLibPath);
 
 %% Show a warning or figure?
 if status ~= 0

@@ -44,17 +44,19 @@ renderings = GetWorkingFolder('renderings', true, hints);
 output = fullfile(renderings, [sceneBase '.exr']);
 
 %% Invoke Mitsuba.
-% set the dynamic library search path
-[newLibPath, originalLibPath, libPathName] = SetRenderToolboxLibraryPath();
 
 % find the Mitsuba executable
+libPathName = getpref('Mitsuba', 'libraryPathName');
+libPath = getpref('Mitsuba', 'libraryPath');
 executable = fullfile(mitsuba.app, mitsuba.executable);
-renderCommand = sprintf('"%s" -o "%s" "%s"', executable, output, sceneFile);
+renderCommand = sprintf('%s="%s" "%s" -o "%s" "%s"', ...
+    libPathName, ...
+    libPath, ...
+    executable, ...
+    output, ...
+    sceneFile);
 fprintf('%s\n', renderCommand);
 [status, result] = RunCommand(renderCommand, hints);
-
-% restore the library search path
-setenv(libPathName, originalLibPath);
 
 %% Show a warning or figure?
 if status ~= 0

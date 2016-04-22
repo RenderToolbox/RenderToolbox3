@@ -26,7 +26,7 @@
 %
 
 %% Start with RenderToolbox3 "fresh out of the box" configuration.
-InitializeRenderToolbox(true);
+InitializeRenderToolbox('force', true);
 
 %% Tell RenderToolbox3 where to save outputs.
 % choose Matlab's default "user folder"
@@ -64,6 +64,8 @@ if ismac()
     %   they tell RenderToolbox3 where to look inside the app bundle
     myMistubaExecutable = 'Contents/MacOS/mitsuba';
     myMistubaImporter = 'Contents/MacOS/mtsimport';
+    myMistubaLibPathName = 'DYLD_LIBRARY_PATH';
+    myMistubaLibPath = '';
     
 else
     % on Linux and Windows, Mitsuba has separate executable files
@@ -71,14 +73,13 @@ else
     % use the default executable paths
     myMistubaExecutable = '/usr/local/bin/mitsuba';
     myMistubaImporter = '/usr/local/bin/mtsimport';
+    myMistubaLibPathName = 'LD_LIBRARY_PATH';
+    myMistubaLibPath = '/usr/local/lib';
     
     % or choose where you installed Mitsuba
     %myMistubaExecutable = '/my/mitsuba/path/dist/mitsuba';
     %myMistubaImporter = '/my/mitsuba/path/dist/mtsimport';
-    
-    % if you used a custom build of Mitsuba, 
-    %   set the library path to point at your custom build folder 
-    setpref('RenderToolbox3', 'libPath', '/my/mitsuba/path/dist');
+    %myMistubaLibPath = '/my/mitsuba/path/dist';
     
     % don't change this--
     %   the "app" path is only meaningful for OS X
@@ -91,6 +92,8 @@ setpref('Mitsuba', 'radiometricScaleFactor', radiometricScaleFactor);
 setpref('Mitsuba', 'app', myMistubaApp);
 setpref('Mitsuba', 'executable', myMistubaExecutable);
 setpref('Mitsuba', 'importer', myMistubaImporter);
+setpref('Mitsuba', 'libraryPathName', myMistubaLibPathName);
+setpref('Mitsuba', 'libraryPath', myMistubaLibPath);
 
 
 %% Set Up PBRT Preferences.

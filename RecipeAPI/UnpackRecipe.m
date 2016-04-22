@@ -57,9 +57,6 @@ recipe = matData.recipe;
 
 %% Update recipe hints with local configuration.
 recipe.input.hints.workingFolder = hints.workingFolder;
-recipe.input.hints.libPathName = hints.libPathName;
-recipe.input.hints.libPath = hints.libPath;
-recipe.input.hints.libPathLast = hints.libPathLast;
 
 %% Copy dependencies from the temp folder to the local working folder.
 unpackedFolder = fullfile(tempFolder, archiveBase);
