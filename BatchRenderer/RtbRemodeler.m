@@ -6,15 +6,21 @@ classdef RtbRemodeler < handle
     %
     % This is an alternative to the "old" way of doing things based on
     % functions that have specific names.  See GetRemodelerAPIFunction().
+    %
+    % Each method is optional for subclasses to override.  So the required
+    % methods are no-ops instead of abstract.
     
-    methods (Abstract)
+    methods
         % Modify the scene once, before all other processing.
-        scene = beforeAll(obj, scene, hints);
+        function scene = beforeAll(obj, scene)
+        end
         
         % Modify the scene once per condition, before mappings are applied.
-        scene = beforeCondition(obj, scene, hints);
+        function scene = beforeCondition(obj, scene, mappings, varNames, varValues, conditionNumber)
+        end
         
         % Modify the scene once per condition, after mappings are applied.
-        scene = afterCondition(obj, scene, hints);
+        function scene = afterCondition(obj, scene, mappings, varNames, varValues, conditionNumber)
+        end
     end
 end
