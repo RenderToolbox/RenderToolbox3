@@ -11,27 +11,48 @@ classdef RtbBatchRenderStrategy < handle
     % batch rendering functions to follow this outline.  Then we will
     % implement two or more concrete strategies: one for the old Collada
     % way of doing things, and one for the new Assimp and JSON.
+    %
+    % All of this deals with the basic scene representation.  When if comes
+    % to the renderer, we delegate to an RtbConverter and an RtbRenderer.
+    % The converter knows how to convert the basic scene representation to
+    % a renderer-native format.  The renderer doesn't care about the basic
+    % scene representation, and only deals with the renderer-native format.
+    %
     
     properties
+        % which RtbConverter to use
+        converter;
+        
         % which RtbRenderer to use
         renderer;
-        
-        % which RtbRemodeler to use
-        remodeler;
     end
     
     methods (Abstract)
+        % load basic scene representation from file
         scene = loadScene(obj, sceneFile);
         
+        % hook to alter the basic scene representation
+        scene = remodelBeforeAll(obj, scene);
+        
+        % load variable names and values from file
         [names, values] = loadConditions(obj, conditionsFile);
         
+        % load scene alteration instructions from file
         mappings = loadMappings(obj, mappingsFile);
         
-        mappings = applyVariablesToMappings(obj, mappings, names, values);
+        % modify mappings for the next condition
+        mappings = applyVariablesToMappings(obj, scene, mappings, names, values);
         
+        % modify mappings for locally available files
         mappings = resolveResources(obj, mappings);
         
-        scene = applyMappings(obj, scene, mappings);
+        % hook to alter the basic scene representation
+        scene = remodelBeforeCondition(obj, scene, mappings, varNames, varValues, conditionNumber);
         
+        % alter the basich scene representation based on mappings
+        scene = applyBasicMappings(obj, scene, mappings, groupName);
+        
+        % hook to alter the basic scene representation
+        scene = remodelAfterCondition(obj, scene, mappings, varNames, varValues, conditionNumber);
     end
 end
