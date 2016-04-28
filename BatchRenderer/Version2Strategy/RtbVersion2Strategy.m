@@ -148,6 +148,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             
             remodelerFunction = GetRemodelerAPIFunction(functionName, obj.hints);
             if isempty(remodelerFunction)
+                colladaCopy = colladaFile;
                 return;
             end
             
