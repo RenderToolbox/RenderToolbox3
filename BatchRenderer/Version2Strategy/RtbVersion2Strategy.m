@@ -80,7 +80,8 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
         function mappings = loadMappings(obj, mappingsFile)
             if isempty(mappingsFile)
                 mappingsFile = fullfile(RenderToolboxRoot(), ...
-                    'Deprecated', 'RenderData', 'DefaultMappings.txt');
+                    'BatchRenderer', 'Version2Strategy', 'Deprecated', 'RenderData', ...
+                    'DefaultMappings.txt');
             end
             mappings = ParseMappings(mappingsFile);
         end
