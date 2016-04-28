@@ -39,7 +39,7 @@ function mappingsFile = WriteDefaultMappingsFile(colladaFile, varargin)
 parser = inputParser();
 parser.addRequired('colladaFile', @ischar);
 parser.addParameter('mappingsFile', '', @ischar);
-parser.addParameter('includeFile', fullfile(RenderToolboxRoot(), 'RenderData', 'DefaultMappings.txt'), @ischar);
+parser.addParameter('includeFile', '', @ischar);
 parser.addParameter('reflectances', {}, @iscellstr);
 parser.addParameter('lightSpectra', {'D65.spd'}, @iscellstr);
 parser.addParameter('excludePattern', '', @ischar);
@@ -50,6 +50,12 @@ includeFile = parser.Results.includeFile;
 reflectances = parser.Results.reflectances;
 lightSpectra = parser.Results.lightSpectra;
 excludePattern = parser.Results.excludePattern;
+
+if isempty(includeFile)
+    includeFile = fullfile(RenderToolboxRoot(), ...
+        'BatchRenderer', 'Version2Strategy', 'Deprecated', 'RenderData', ...
+        'DefaultMappings.txt');
+end
 
 [colladaPath, colladaBase] = fileparts(colladaFile);
 if isempty(mappingsFile)

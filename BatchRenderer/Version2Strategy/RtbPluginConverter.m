@@ -73,6 +73,11 @@ classdef RtbPluginConverter < handle
         end
         
         function nativeScene = finishImport(obj, parentScene, nativeScene, imageName)
+            if isempty(parentScene)
+                nativeScene = [];
+                return;
+            end
+            
             % convert the scene to native
             importColladaFunction = GetRendererAPIFunction('ImportCollada', obj.hints);
             if isempty(importColladaFunction)

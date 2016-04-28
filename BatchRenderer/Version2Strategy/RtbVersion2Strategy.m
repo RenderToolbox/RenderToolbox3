@@ -62,7 +62,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
         end
         
         function scene = remodelBeforeAll(obj, scene)
-            scene = obj.remodelCollada(scene, obj.hints, 'BeforeAll');
+            scene = obj.remodelCollada(scene, 'BeforeAll');
         end
         
         function [names, values] = loadConditions(obj, conditionsFile)
@@ -95,11 +95,15 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
         end
         
         function scene = remodelBeforeCondition(obj, scene, mappings, varNames, varValues, conditionNumber)
-            scene = obj.remodelCollada(scene, obj.hints, 'BeforeCondition', ...
+            scene = obj.remodelCollada(scene, 'BeforeCondition', ...
                 mappings, varNames, varValues, conditionNumber);
         end
         
         function scene = applyBasicMappings(obj, scene, mappings, groupName)
+            if isempty(scene)
+                return;
+            end
+            
             % apply Collada mappings to the scene
             if ~isempty(mappings)
                 
@@ -128,7 +132,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
         end
         
         function scene = remodelAfterCondition(obj, scene, mappings, varNames, varValues, conditionNumber)
-            scene = obj.remodelCollada(scene, obj.hints, 'AfterCondition', ...
+            scene = obj.remodelCollada(scene, 'AfterCondition', ...
                 mappings, varNames, varValues, conditionNumber);
         end
     end
