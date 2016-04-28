@@ -7,7 +7,7 @@ classdef RtbRenderer < handle
     
     methods (Abstract)
         % Invoke the renderer with the native scene.
-        [status, result, image, sampling] = render(obj, nativeScene);
+        [status, result, image, sampling, imageName] = render(obj, nativeScene);
         
         % Convert a rendering to radiance units.
         [radianceImage, scaleFactor] = toRadiance(obj, image, sampling, nativeScene);

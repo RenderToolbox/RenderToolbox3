@@ -24,16 +24,18 @@ classdef RtbPluginRenderer < RtbRenderer
             info = feval(versionInfoFunction);
         end
         
-        function [status, result, image, sampling] = render(obj, nativeScene)
+        function [status, result, image, sampling, imageName] = render(obj, nativeScene)
             renderFunction = GetRendererAPIFunction('Render', obj.hints);
             if isempty(renderFunction)
                 status = [];
                 result = [];
                 image = [];
                 sampling = [];
+                imageName = '';
                 return;
             end
-            [status, result, image, sampling] = feval(renderFunction, nativeScene, obj.hints);
+            [status, result, image, sampling] = feval(renderFunction, nativeScene.scene, obj.hints);
+            imageName = nativeScene.scene.imageName;
         end
         
         function [radianceImage, scaleFactor] = toRadiance(obj, image, sampling, nativeScene)
@@ -44,7 +46,7 @@ classdef RtbPluginRenderer < RtbRenderer
                 scaleFactor = [];
                 return;
             end
-            [radianceImage, scaleFactor] = feval(dataToRadianceFunction, image, nativeScene, obj.hints);
+            [radianceImage, scaleFactor] = feval(dataToRadianceFunction, image, nativeScene.scene, obj.hints);
         end
     end
 end

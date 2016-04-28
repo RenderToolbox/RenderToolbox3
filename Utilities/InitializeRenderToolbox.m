@@ -50,6 +50,7 @@ defaultConfig.workingFolder = fullfile(GetUserFolder(), 'render-toolbox');
 defaultConfig.recipeName = '';
 
 % default scene file and rendering options
+defaultConfig.batchRenderStrategy = 'RtbVersion2Strategy';
 defaultConfig.renderer = 'SampleRenderer';
 defaultConfig.remodeler = '';
 defaultConfig.filmType = '';

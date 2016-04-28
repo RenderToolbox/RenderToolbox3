@@ -1,7 +1,7 @@
-function outFiles = BatchRender(scenes, varargin)
-% Render multiple scenes at once.
+function outFiles = BatchRender(nativeScenes, varargin)
+% Render multiple nativeScenes at once.
 %
-% outFiles = BatchRender(scenes)
+% outFiles = BatchRender(nativeScenes)
 % Renders multiple renderer-native scene files in one batch.  scenes
 % must be a cell array of renderer-native scene descriptions or scene
 % files, such as those produced by MakeSceneFiles().  All renderer-native
@@ -11,12 +11,9 @@ function outFiles = BatchRender(scenes, varargin)
 % Specify a hints struct with with options that affect the rendering
 % process, as returned from GetDefaultHints().  If hints is omitted,
 % default options are used.  For example:
-%   - hints.renderer specifies which renderer to use
-%   - hints.isParallel specifies whether to render in a "parfor" loop
-%   - hints.workingFolder specefies where to store multi-spectral
-%   radiance data files.
-%   - hints.isDryRun specefies whether or not to skip actual rendering.
-%   .
+%   - hints.strategy specifies how to load and manipulate scene data (e.g.
+%   Collada vs Assimp).  The default is RtbVersion3Strategy.
+%   - hints.renderer specifies which renderer to target
 %
 % Renders each renderer-native scene in scenes, and writes a new mat-file
 % for each one.  Each mat-file will contain several variables including:
@@ -41,115 +38,88 @@ function outFiles = BatchRender(scenes, varargin)
 %   - radiometricScaleFactor - scale factor that was used to bring renderer
 %   ouput into physical radiance units
 %
-% This function uses RenderToolbox3 renderer API functions "Render",
-% "DataToRadiance", and "VersionInfo".  These functions, for the renderer
-% specified in hints.renderer, must be on the Matlab path.
-%
 % Returns a cell array of output mat-file names, with the same dimensions
 % as the given scenes.
 %
 % outFiles = BatchRender(scenes, varargin)
 %
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-parser = inputParser();
-parser.addRequired('scenes', @iscell);
-parser.addParameter('hints', GetDefaultHints(), @isstruct);
-parser.parse(scenes, varargin{:});
-scenes = parser.Results.scenes;
-hints = GetDefaultHints(parser.Results.hints);
-
 InitializeRenderToolbox();
 
-%% Render each scene file.
-% save toolbox version info with renderings
-versionInfo = GetRenderToolbox3VersionInfo();
+parser = inputParser();
+parser.addRequired('nativeScenes', @iscell);
+parser.addParameter('hints', GetDefaultHints(), @isstruct);
+parser.parse(nativeScenes, varargin{:});
+nativeScenes = parser.Results.nativeScenes;
+hints = GetDefaultHints(parser.Results.hints);
 
-% render with local "for" or distributed "parfor" loop
-nScenes = numel(scenes);
-outFiles = cell(size(scenes));
+% don't plot during batch processing
+hints.isPlot = false;
+
+%% Choose the batch rendering strategy.
+if 2 == exist(hints.batchRenderStrategy, 'file')
+    constructorFunction = str2func(hints.batchRenderStrategy);
+    strategy = feval(constructorFunction, hints);
+else
+    strategy = RtbVersion2Strategy(hints);
+end
+fprintf('Using strategy %s\n\n', class(strategy));
+
+
+%% Record toolbox and renderer version info.
+versionInfo = GetRenderToolbox3VersionInfo();
+versionInfo.rendererVersionInfo = strategy.renderer.versionInfo();
+
+
+%% Render each scene file.
 fprintf('\nBatchRender started with isParallel=%d at %s.\n\n', ...
     hints.isParallel, datestr(now(), 0));
 renderTick = tic();
-err = [];
-try
-    if hints.isParallel
-        % distributed "parfor" loop, don't time individual iterations
-        parfor ii = 1:nScenes
-            outFiles{ii} = ...
-                renderScene(scenes{ii}, versionInfo, hints);
-        end
-    else
-        % local "for" loop, makes sense to time each iteration
-        for ii = 1:nScenes
-            fprintf('\nStarting scene %d of %d at %s (%.1fs elapsed).\n\n', ...
-                ii, nScenes, datestr(now(), 0), toc(renderTick));
-            
-            outFiles{ii} = ...
-                renderScene(scenes{ii}, versionInfo, hints);
-            
-            fprintf('\nFinished scene %d of %d at %s (%.1fs elapsed).\n\n', ...
-                ii, nScenes, datestr(now(), 0), toc(renderTick));
-        end
+
+nScenes = numel(nativeScenes);
+outFiles = cell(size(nativeScenes));
+if hints.isParallel
+    % distributed "parfor" loop, don't time individual iterations
+    parfor ii = 1:nScenes
+        outFiles{ii} = renderScene(strategy, nativeScenes{ii}, versionInfo, hints);
     end
-catch err
-    disp('Rendering error!')
+    
+else
+    % local "for" loop, makes sense to time each iteration
+    for ii = 1:nScenes
+        fprintf('\nStarting scene %d of %d at %s (%.1fs elapsed).\n\n', ...
+            ii, nScenes, datestr(now(), 0), toc(renderTick));
+        
+        outFiles{ii} = renderScene(strategy, nativeScenes{ii}, versionInfo, hints);
+        
+        fprintf('\nFinished scene %d of %d at %s (%.1fs elapsed).\n\n', ...
+            ii, nScenes, datestr(now(), 0), toc(renderTick));
+    end
 end
 
 fprintf('\nBatchRender finished at %s (%.1fs elapsed).\n\n', ...
     datestr(now(), 0), toc(renderTick));
 
-% report the error, if any
-if ~isempty(err)
-    rethrow(err)
-end
 
-% Render a scene and save a .mat data file.
-function outFile = renderScene(scene, versionInfo, hints)
+%% Render a scene and save a .mat data file.
+function outFile = renderScene(strategy, scene, versionInfo, hints)
 
-outFile = '';
-
-% if this is a dry run, skip the rendering
 if hints.isDryRun
-    disp(['Dry run of ' hints.renderer ' scene:'])
-    disp(scene)
-    drawnow();
+    outFile = '';
     return;
 end
 
-% record renderer version info
-versionInfoFunction = GetRendererAPIFunction('VersionInfo', hints);
-if ~isempty(versionInfoFunction)
-    versionInfo.rendererVersionInfo = feval(versionInfoFunction);
-end
-
-% render the scene
-renderFunction = GetRendererAPIFunction('Render', hints);
-if isempty(renderFunction)
-    return
-end
-
-% renderer plugin need not preview results
-hints.isPlot = false;
-[status, commandResult, multispectralImage, S] = ...
-    feval(renderFunction, scene, hints);
-if 0 ~= status
-    return
-end
-
-% convert rendered image to radiance units
-dataToRadianceFunction = ...
-    GetRendererAPIFunction('DataToRadiance', hints);
-if isempty(dataToRadianceFunction)
-    return
-end
+% invoke the renderer and convert to radiance
+[status, commandResult, multispectralImage, S, imageName] = ...
+    strategy.renderer.render(scene);
 [multispectralImage, radiometricScaleFactor] = ...
-    feval(dataToRadianceFunction, multispectralImage, scene, hints);
+    strategy.renderer.toRadiance(multispectralImage, S, scene);
 
 % save a .mat file with multispectral data and metadata
 outPath = GetWorkingFolder('renderings', true, hints);
-outFile = fullfile(outPath, [scene(1).imageName '.mat']);
+outFile = fullfile(outPath, [imageName '.mat']);
 save(outFile, 'multispectralImage', 'S', 'radiometricScaleFactor', ...
     'hints', 'scene', 'versionInfo', 'commandResult');

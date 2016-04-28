@@ -29,7 +29,7 @@ classdef RtbBatchRenderStrategy < handle
     
     methods (Abstract)
         % load basic scene representation from file
-        scene = loadScene(obj, sceneFile);
+        scene = loadScene(obj, sceneFile, imageName);
         
         % hook to alter the basic scene representation
         scene = remodelBeforeAll(obj, scene);

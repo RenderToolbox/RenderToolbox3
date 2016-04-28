@@ -31,7 +31,7 @@ classdef RtbPluginConverter < handle
             end
             
             % apply native mappings
-            rendererName = objhints.renderer;
+            rendererName = obj.hints.renderer;
             rendererPathName = [rendererName '-path'];
             if ~isempty(mappings)
                 
@@ -86,7 +86,7 @@ classdef RtbPluginConverter < handle
             nativeScene.scene.imageName = imageName;
             
             % add Collada author info for good measure
-            [authoringTool, asset] = GetColladaAuthorInfo(colladaCopy);
+            [authoringTool, asset] = GetColladaAuthorInfo(parentScene);
             authorInfo.authoringTool = authoringTool;
             authorInfo.asset = asset;
             nativeScene.scene.authorInfo = authorInfo;

@@ -32,8 +32,8 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
         end
     end
     
-    methods (Abstract)
-        function scene = loadScene(obj, sceneFile)
+    methods
+        function scene = loadScene(obj, sceneFile, imageName)
             % look carefully for the file
             [scenePath, sceneBase, sceneExt] = fileparts(sceneFile);
             if isempty(scenePath) && exist(sceneFile, 'file')
@@ -53,12 +53,16 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             sceneCopy = fullfile(tempFolder, [sceneBase '-' imageName '-7bit-clean' sceneExt]);
             WriteSceneDOM(sceneCopy, cleanDoc);
             
+            % call out the original Collada authoring tool (Blender, etc.)
+            authoringTool = GetColladaAuthorInfo(sceneFile);
+            fprintf('Original Collada scene authored with %s.\n\n', authoringTool);
+            
             % the basic scene is just the file name
             scene = sceneCopy;
         end
         
         function scene = remodelBeforeAll(obj, scene)
-            scene = remodelCollada(scene, obj.hints, 'BeforeAll');
+            scene = obj.remodelCollada(scene, obj.hints, 'BeforeAll');
         end
         
         function [names, values] = loadConditions(obj, conditionsFile)
@@ -74,6 +78,10 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
         end
         
         function mappings = loadMappings(obj, mappingsFile)
+            if isempty(mappingsFile)
+                mappingsFile = fullfile(RenderToolboxRoot(), ...
+                    'Deprecated', 'RenderData', 'DefaultMappings.txt');
+            end
             mappings = ParseMappings(mappingsFile);
         end
         
@@ -86,7 +94,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
         end
         
         function scene = remodelBeforeCondition(obj, scene, mappings, varNames, varValues, conditionNumber)
-            scene = remodelCollada(scene, obj.hints, 'BeforeCondition', ...
+            scene = obj.remodelCollada(scene, obj.hints, 'BeforeCondition', ...
                 mappings, varNames, varValues, conditionNumber);
         end
         
@@ -119,7 +127,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
         end
         
         function scene = remodelAfterCondition(obj, scene, mappings, varNames, varValues, conditionNumber)
-            scene = remodelCollada(scene, obj.hints, 'AfterCondition', ...
+            scene = obj.remodelCollada(scene, obj.hints, 'AfterCondition', ...
                 mappings, varNames, varValues, conditionNumber);
         end
     end
