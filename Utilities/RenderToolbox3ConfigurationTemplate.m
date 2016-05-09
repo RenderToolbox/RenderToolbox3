@@ -46,7 +46,7 @@ end
 
 % choose the file with default adjustments
 adjustmentsFile = fullfile(RenderToolboxRoot(), ...
-    'Deprecated', 'RendererPlugins', 'Mitsuba', 'MitsubaDefaultAdjustments.xml');
+    'BatchRenderer', 'Version2Strategy', 'Deprecated', 'RendererPlugins', 'Mitsuba', 'MitsubaDefaultAdjustments.xml');
 
 % choose the default scale factor for radiance units
 radiometricScaleFactor = 0.0795827427;
@@ -104,7 +104,7 @@ end
 
 % choose the file with default adjustments
 adjustmentsFile = fullfile(RenderToolboxRoot(), ...
-    'Deprecated', 'RendererPlugins', 'PBRT', 'PBRTDefaultAdjustments.xml');
+    'BatchRenderer', 'Version2Strategy', 'Deprecated', 'RendererPlugins', 'PBRT', 'PBRTDefaultAdjustments.xml');
 
 % choose the default scale factor for radiance units
 radiometricScaleFactor = 0.0063831432;

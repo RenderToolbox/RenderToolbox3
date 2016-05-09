@@ -33,7 +33,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
     end
     
     methods
-        function scene = loadScene(obj, sceneFile, imageName)
+        function scene = loadScene(obj, sceneFile)
             % look carefully for the file
             [scenePath, sceneBase, sceneExt] = fileparts(sceneFile);
             if isempty(scenePath) && exist(sceneFile, 'file')
@@ -43,14 +43,14 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             
             % strip out non-ascii 7-bit characters
             tempFolder = GetWorkingFolder('temp', true, obj.hints);
-            collada7Bit = fullfile(tempFolder, [sceneBase '-' imageName '-7bit' sceneExt]);
+            collada7Bit = fullfile(tempFolder, [sceneBase '-7bit' sceneExt]);
             WriteASCII7BitOnly(sceneFile, collada7Bit);
             
             % clean up Collada elements and resource paths
             colladaDoc = ReadSceneDOM(collada7Bit);
             workingFolder = GetWorkingFolder('', false, obj.hints);
             cleanDoc = CleanUpColladaDocument(colladaDoc, workingFolder);
-            sceneCopy = fullfile(tempFolder, [sceneBase '-' imageName '-7bit-clean' sceneExt]);
+            sceneCopy = fullfile(tempFolder, [sceneBase '-7bit-clean' sceneExt]);
             WriteSceneDOM(sceneCopy, cleanDoc);
             
             % call out the original Collada authoring tool (Blender, etc.)
@@ -65,15 +65,15 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             scene = obj.remodelCollada(scene, 'BeforeAll');
         end
         
-        function [names, values] = loadConditions(obj, conditionsFile)
+        function [names, allValues] = loadConditions(obj, conditionsFile)
             if isempty(conditionsFile)
                 % no conditions, do a single rendering
                 names = {};
-                values = {};
+                allValues = {};
                 
             else
                 % read variables and values for each condition
-                [names, values] = ParseConditions(conditionsFile);
+                [names, allValues] = ParseConditions(conditionsFile);
             end
         end
         
@@ -86,23 +86,25 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             mappings = ParseMappings(mappingsFile);
         end
         
-        function mappings = applyVariablesToMappings(obj, scene, mappings, names, values)
-            mappings = ResolveMappingsValues(mappings, names, values, scene, [], obj.hints);
+        function [scene, mappings] = applyVariablesToMappings(obj, scene, mappings, names, conditionValues, conditionNumber)
+            mappings = ResolveMappingsValues(mappings, names, conditionValues, scene, [], obj.hints);
         end
         
-        function mappings = resolveResources(obj, mappings)
+        function [scene, mappings] = resolveResources(obj, scene, mappings)
             % no-op, handled in applyVariablesToMappings
         end
         
-        function scene = remodelBeforeCondition(obj, scene, mappings, varNames, varValues, conditionNumber)
+        function [scene, mappings] = remodelBeforeCondition(obj, scene, mappings, names, conditionValues, conditionNumber)
             scene = obj.remodelCollada(scene, 'BeforeCondition', ...
-                mappings, varNames, varValues, conditionNumber);
+                mappings, names, conditionValues, conditionNumber);
         end
         
-        function scene = applyBasicMappings(obj, scene, mappings, groupName)
+        function [scene, mappings] = applyBasicMappings(obj, scene, mappings, names, conditionValues, conditionNumber)
             if isempty(scene)
                 return;
             end
+            
+            groupName = GetNamedValue(names, conditionValues, 'groupName', '');
             
             % apply Collada mappings to the scene
             if ~isempty(mappings)
@@ -131,9 +133,9 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             end
         end
         
-        function scene = remodelAfterCondition(obj, scene, mappings, varNames, varValues, conditionNumber)
+        function [scene, mappings] = remodelAfterCondition(obj, scene, mappings, names, conditionValues, conditionNumber)
             scene = obj.remodelCollada(scene, 'AfterCondition', ...
-                mappings, varNames, varValues, conditionNumber);
+                mappings, names, conditionValues, conditionNumber);
         end
     end
     

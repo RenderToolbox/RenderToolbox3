@@ -90,7 +90,7 @@ mappings = strategy.loadMappings(mappingsFile);
 if isempty(parentScene)
     scene = [];
 else
-    scene = strategy.loadScene(parentScene, '');
+    scene = strategy.loadScene(parentScene);
     scene = strategy.remodelBeforeAll(scene);
 end
 
@@ -140,38 +140,37 @@ fprintf('\nMakeSceneFiles finished at %s (%.1fs elapsed).\n\n', ...
 function nativeScene = makeSceneForCondition(strategy, ...
     scene, mappings, cc, names, conditionValues, hints)
 
-% possibly take the scene name from the conditions file
-imageName = getConditionValue(names, conditionValues, 'imageName', ...
-    sprintf('scene-%03d', cc));
-
 % possibly load a new scene named in the conditions file
-parentScene = getConditionValue(names, conditionValues, 'parentScene', '');
+parentScene = GetNamedValue(names, conditionValues, 'parentScene', '');
 if ~isempty(parentScene)
-    scene = strategy.loadScene(parentScene, imageName);
+    scene = strategy.loadScene(parentScene);
     scene = strategy.remodelBeforeAll(scene);
 end
 
 % possibly load new mappings named in the conditions file
-mappingsFile = getConditionValue(names, conditionValues, 'mappingsFile', '');
+mappingsFile = GetNamedValue(names, conditionValues, 'mappingsFile', '');
 if ~isempty(mappingsFile)
     mappings = strategy.loadMappings(mappingsFile);
 end
 
 % possibly load image dimensions from the conditions file
-hints.imageHeight = getConditionValue(names, conditionValues, 'imageHeight', hints.imageHeight);
-hints.imageWidth = getConditionValue(names, conditionValues, 'imageWidth', hints.imageWidth);
-
-% possibly choose the mappings group from the conditoins file
-groupName = getConditionValue(names, conditionValues, 'groupName', '');
+hints.imageHeight = GetNamedValue(names, conditionValues, 'imageHeight', hints.imageHeight);
+hints.imageWidth = GetNamedValue(names, conditionValues, 'imageWidth', hints.imageWidth);
 
 % update the mappings for this condition
-mappings = strategy.applyVariablesToMappings(scene, mappings, names, conditionValues);
-mappings = strategy.resolveResources(mappings);
+[scene, mappings] = strategy.applyVariablesToMappings(scene, mappings, names, conditionValues, cc);
+[scene, mappings] = strategy.resolveResources(scene, mappings);
 
 % apply basic mappings to the scene
-scene = strategy.remodelBeforeCondition(scene, mappings, names, conditionValues, cc);
-scene = strategy.applyBasicMappings(scene, mappings, groupName);
-scene = strategy.remodelAfterCondition(scene, mappings, names, conditionValues, cc);
+[scene, mappings] = strategy.remodelBeforeCondition(scene, mappings, names, conditionValues, cc);
+[scene, mappings] = strategy.applyBasicMappings(scene, mappings, names, conditionValues, cc);
+[scene, mappings] = strategy.remodelAfterCondition(scene, mappings, names, conditionValues, cc);
+
+% possibly take the scene name from the conditions file
+imageName = GetNamedValue(names, conditionValues, 'imageName', ...
+    sprintf('scene-%03d', cc));
+
+groupName = GetNamedValue(names, conditionValues, 'groupName', '');
 
 % apply renderer-specific mappings to the scene.
 nativeScene = strategy.converter.startImport(scene, imageName);
@@ -180,10 +179,3 @@ nativeScene = strategy.converter.finishImport(scene, nativeScene, imageName);
 
 
 %% Find a conditions value by name, or use default
-function value = getConditionValue(names, values, name, defaultValue)
-isMatch = strcmp(name, names);
-if any(isMatch)
-    value = values{find(isMatch, 1, 'first')};
-else
-    value = defaultValue;
-end
