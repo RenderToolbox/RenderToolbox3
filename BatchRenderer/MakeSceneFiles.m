@@ -166,16 +166,7 @@ hints.imageWidth = GetNamedValue(names, conditionValues, 'imageWidth', hints.ima
 [scene, mappings] = strategy.applyBasicMappings(scene, mappings, names, conditionValues, cc);
 [scene, mappings] = strategy.remodelAfterCondition(scene, mappings, names, conditionValues, cc);
 
-% possibly take the scene name from the conditions file
-imageName = GetNamedValue(names, conditionValues, 'imageName', ...
-    sprintf('scene-%03d', cc));
-
-groupName = GetNamedValue(names, conditionValues, 'groupName', '');
-
 % apply renderer-specific mappings to the scene.
-nativeScene = strategy.converter.startImport(scene, imageName);
-nativeScene = strategy.converter.applyMappings(nativeScene, mappings, groupName);
-nativeScene = strategy.converter.finishImport(scene, nativeScene, imageName);
-
-
-%% Find a conditions value by name, or use default
+nativeScene = strategy.converter.startImport(scene, mappings, names, conditionValues, cc);
+nativeScene = strategy.converter.applyMappings(scene, nativeScene, mappings, names, conditionValues, cc);
+nativeScene = strategy.converter.finishImport(scene, nativeScene, mappings, names, conditionValues, cc);

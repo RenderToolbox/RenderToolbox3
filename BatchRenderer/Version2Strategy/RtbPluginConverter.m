@@ -15,7 +15,7 @@ classdef RtbPluginConverter < handle
             obj.hints = hints;
         end
         
-        function nativeScene = startImport(obj, parentScene, imageName)
+        function nativeScene = startImport(obj, parentScene, mappings, names, conditionValues, conditionNumber)
             applyMappingsFunction = GetRendererAPIFunction('ApplyMappings', obj.hints);
             if isempty(applyMappingsFunction)
                 nativeScene = [];
@@ -24,7 +24,9 @@ classdef RtbPluginConverter < handle
             nativeScene.adjustments = feval(applyMappingsFunction, [], []);
         end
         
-        function nativeScene = applyMappings(obj, nativeScene, mappings, groupName)
+        function nativeScene = applyMappings(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
+            groupName = GetNamedValue(names, conditionValues, 'groupName', '');
+            
             applyMappingsFunction = GetRendererAPIFunction('ApplyMappings', obj.hints);
             if isempty(applyMappingsFunction)
                 return;
@@ -72,7 +74,11 @@ classdef RtbPluginConverter < handle
             end
         end
         
-        function nativeScene = finishImport(obj, parentScene, nativeScene, imageName)
+        function nativeScene = finishImport(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
+            
+            imageName = GetNamedValue(names, conditionValues, 'imageName', ...
+                sprintf('scene-%03d', conditionNumber));
+            
             if isempty(parentScene)
                 nativeScene = [];
                 return;
