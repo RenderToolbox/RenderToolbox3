@@ -30,4 +30,4 @@ if ~iscell(originalMappings)
         'Could not load mappings cell from JSON <%s>\n', fileName);
 end
 
-mappings = rtbValidateJsonMappings(originalMappings);
+mappings = rtbValidateMappings(originalMappings);

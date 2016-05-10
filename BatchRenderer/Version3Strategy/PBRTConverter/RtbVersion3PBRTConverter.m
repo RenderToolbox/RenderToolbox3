@@ -1,19 +1,12 @@
-classdef RtbPBRTConverter < handle
+classdef RtbVersion3PBRTConverter < handle
     %% Implementation for how to make scene files with the RendererPluginAPI.
     %
     % This class is a bridge between the "old" way of finding renderers
     % using functions that have conventional names, and the "new" way of
     % subclassing an abstract renderer supertype.
     %
-    
-    properties
-        hints = [];
-    end
-    
+        
     methods
-        function obj = RtbPBRTConverter(hints)
-            obj.hints = hints;
-        end
         
         function defaultMappings = loadDefaultMappings(obj, varargin)
             parser = inputParser();

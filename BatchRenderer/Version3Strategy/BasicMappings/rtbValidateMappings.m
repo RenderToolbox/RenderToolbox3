@@ -31,20 +31,21 @@ for mm = 1:nMappings
     parser.parse(rawMappings{mm});
     mapping = parser.Results;
     
-    % convert single-element properties to cell, for processing convenience
-    if isstruct(mapping.properties)
-        mapping.properties = {mapping.properties};
-    end
-    
     % check each property element one at a time
-    if iscell(mapping.properties)
-        nProperties = numel(mapping.properties);
-        validatedProperties = cell(1, nProperties);
+    nProperties = numel(mapping.properties);
+    validatedProperties = cell(1, nProperties);
+    if isstruct(mapping.properties)
+        % properties may be a struct array
+        for pp = 1:nProperties
+            validatedProperties{pp} = rtbMappingProperty(mapping.properties(pp));
+        end
+    elseif iscell(mapping.properties)
+        % properties may be a cell array
         for pp = 1:nProperties
             validatedProperties{pp} = rtbMappingProperty(mapping.properties{pp});
         end
-        mapping.properties = [validatedProperties{:}];
     end
+    mapping.properties = [validatedProperties{:}];
     
     validatedMappings{mm} = mapping;
 end

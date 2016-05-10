@@ -37,7 +37,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         end
     end
     
-    methods (Static, Access = private)
+    methods (Static)
         function converter = chooseConverter(hints)
             rendererName = hints.renderer;
             constructorName = ['RtbVersion3' rendererName 'Converter'];
@@ -120,17 +120,40 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         end
         
         function mappings = loadMappings(obj, mappingsFile)
-            defaultBasicMappings = RtbVersion3Strategy.loadDefaultMappings(obj.mappingsArgs);
-            defaultConverterMappings = obj.converter.loadDefaultMappings(obj.mappingsArgs);
+            defaultBasicMappings = RtbVersion3Strategy.loadDefaultMappings(obj.mappingsArgs{:});
+            defaultConverterMappings = obj.converter.loadDefaultMappings(obj.mappingsArgs{:});
             sceneMappings = rtbLoadJsonMappings(mappingsFile);
             rawMappings = cat(2, defaultBasicMappings, defaultConverterMappings, sceneMappings);
             mappings = rtbValidateMappings(rawMappings);
         end
         
         function [scene, mappings] = applyVariablesToMappings(obj, scene, mappings, names, conditionValues, conditionNumber)
+            mappings = rtbVisitStructFields(mappings, @rtbSubstituteStringVariables, ...
+                names, conditionValues);
         end
         
         function [scene, mappings] = resolveResources(obj, scene, mappings)
+            % locate files and fix up names
+            resourceFolder = GetWorkingFolder('resources', false, obj.hints);
+            mappings = rtbVisitStructFields(mappings, @rtbLocateResource, ...
+                'resourceFolder', resourceFolder, ...
+                'writeFullPaths', false, ...
+                'relativePath', 'resources', ...
+                'toReplace', ':-', ...
+                'copyOnReplace', true);
+            scene = rtbVisitStructFields(scene, @rtbLocateResource, ...
+                'resourceFolder', resourceFolder, ...
+                'writeFullPaths', false, ...
+                'relativePath', 'resources', ...
+                'toReplace', ':-', ...
+                'copyOnReplace', true);
+            
+            mappings = rtbVisitStructFields(mappings, @rtbRecodeImage, ...
+                'toReplace', {'gif'}, ...
+                'targetFormat', 'png');
+            scene = rtbVisitStructFields(scene, @rtbRecodeImage, ...
+                'toReplace', {'gif'}, ...
+                'targetFormat', 'png');
         end
         
         function [scene, mappings] = remodelBeforeCondition(obj, scene, mappings, names, conditionValues, conditionNumber)

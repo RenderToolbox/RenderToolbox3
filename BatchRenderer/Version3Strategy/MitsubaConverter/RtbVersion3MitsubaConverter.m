@@ -1,4 +1,4 @@
-classdef RtbMitsubaConverter < handle
+classdef RtbVersion3MitsubaConverter < handle
     %% Implementation for how to make scene files with the RendererPluginAPI.
     %
     % This class is a bridge between the "old" way of finding renderers
@@ -6,14 +6,7 @@ classdef RtbMitsubaConverter < handle
     % subclassing an abstract renderer supertype.
     %
     
-    properties
-        hints = [];
-    end
-    
     methods
-        function obj = RtbMitsubaConverter(hints)
-            obj.hints = hints;
-        end
         
         function defaultMappings = loadDefaultMappings(obj, varargin)
             parser = inputParser();
