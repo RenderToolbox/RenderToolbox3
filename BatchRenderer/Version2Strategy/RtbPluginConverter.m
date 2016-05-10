@@ -15,6 +15,10 @@ classdef RtbPluginConverter < handle
             obj.hints = hints;
         end
         
+        function defaultMappings = loadDefaultMappings(obj, varargin)
+            defaultMappings = [];
+        end
+        
         function nativeScene = startImport(obj, parentScene, mappings, names, conditionValues, conditionNumber)
             applyMappingsFunction = GetRendererAPIFunction('ApplyMappings', obj.hints);
             if isempty(applyMappingsFunction)

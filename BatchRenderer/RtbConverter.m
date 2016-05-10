@@ -5,6 +5,9 @@ classdef RtbConverter < handle
     %
     
     methods (Abstract)
+        % Build the default mappings for this renderer.
+        defaultMappings = loadDefaultMappings(obj, varargin);
+        
         % Convert the scene to native format, or return a placeholder.
         nativeScene = startImport(obj, parentScene, mappings, names, conditionValues, conditionNumber);
         

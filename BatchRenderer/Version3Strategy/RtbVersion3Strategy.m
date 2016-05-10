@@ -21,6 +21,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
     properties
         hints = [];
         importArgs = {'ignoreRootTransform', false, 'flipUVs', true};
+        mappingsArgs = {};
         remodelBeforeAllFunction = [];
         remodelBeforeConditionFunction = [];
         remodelAfterConditionFunction = [];
@@ -30,6 +31,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         function obj = RtbVersion3Strategy(hints, varargin)
             obj.hints = hints;
             obj.importArgs = cat(2, obj.importArgs, varargin);
+            obj.mappingsArgs = cat(2, {hints}, varargin);
             obj.converter = RtbVersion3Strategy.chooseConverter(hints);
             obj.renderer = RtbVersion3Strategy.chooseRenderer(hints);
         end
@@ -55,6 +57,50 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
                 renderer = [];
             end
         end
+        
+        function defaultMappings = loadDefaultMappings(varargin)
+            parser = inputParser();
+            parser.KeepUnmatched = true;
+            parser.addParameter('fov', pi()/3, @isnumeric);
+            parser.addParameter('imageWidth', 320, @isnumeric);
+            parser.addParameter('imageHeight', 240, @isnumeric);
+            parser.addParameter('lookAtDirection', [0 0 -1]', @isnumeric);
+            parser.addParameter('upDirection', [0 1 0]', @isnumeric);
+            parser.parse(varargin{:});
+            fov = parser.Results.fov;
+            imageWidth = parser.Results.imageWidth;
+            imageHeight = parser.Results.imageHeight;
+            lookAtDirection = parser.Results.lookAtDirection;
+            upDirection = parser.Results.upDirection;
+            
+            mm = 1;
+            defaultMappings{mm}.name = 'Camera';
+            defaultMappings{mm}.broadType = 'nodes';
+            defaultMappings{mm}.operation = 'update';
+            defaultMappings{mm}.destination = 'mexximp';
+            defaultMappings{mm}.properties(1).name = 'transformation';
+            defaultMappings{mm}.properties(1).valueType = 'matrix';
+            defaultMappings{mm}.properties(1).value = mexximpScale([-1 1 1]);
+            defaultMappings{mm}.properties(1).operation = 'value * oldValue';
+            
+            mm = mm + 1;
+            defaultMappings{mm}.name = 'Camera';
+            defaultMappings{mm}.broadType = 'cameras';
+            defaultMappings{mm}.operation = 'update';
+            defaultMappings{mm}.destination = 'mexximp';
+            defaultMappings{mm}.properties(1).name = 'lookAtDirection';
+            defaultMappings{mm}.properties(1).valueType = 'lookAt';
+            defaultMappings{mm}.properties(1).value = lookAtDirection;
+            defaultMappings{mm}.properties(2).name = 'upDirection';
+            defaultMappings{mm}.properties(2).valueType = 'lookAt';
+            defaultMappings{mm}.properties(2).value = upDirection;
+            defaultMappings{mm}.properties(3).name = 'horizontalFov';
+            defaultMappings{mm}.properties(3).valueType = 'float';
+            defaultMappings{mm}.properties(3).value = fov;
+            defaultMappings{mm}.properties(4).name = 'aspectRatio';
+            defaultMappings{mm}.properties(4).valueType = 'float';
+            defaultMappings{mm}.properties(4).value = imageWidth / imageHeight;
+        end
     end
     
     methods
@@ -70,9 +116,15 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         end
         
         function [names, allValues] = loadConditions(obj, conditionsFile)
+            [names, allValues] = ParseConditions(conditionsFile);
         end
         
         function mappings = loadMappings(obj, mappingsFile)
+            defaultBasicMappings = RtbVersion3Strategy.loadDefaultMappings(obj.mappingsArgs);
+            defaultConverterMappings = obj.converter.loadDefaultMappings(obj.mappingsArgs);
+            sceneMappings = rtbLoadJsonMappings(mappingsFile);
+            rawMappings = cat(2, defaultBasicMappings, defaultConverterMappings, sceneMappings);
+            mappings = rtbValidateMappings(rawMappings);
         end
         
         function [scene, mappings] = applyVariablesToMappings(obj, scene, mappings, names, conditionValues, conditionNumber)
@@ -89,6 +141,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         end
         
         function [scene, mappings] = applyBasicMappings(obj, scene, mappings, names, conditionValues, conditionNumber)
+            scene = applyMexximpMappings(scene, mappings);
         end
         
         function [scene, mappings] = remodelAfterCondition(obj, scene, mappings, names, conditionValues, conditionNumber)
