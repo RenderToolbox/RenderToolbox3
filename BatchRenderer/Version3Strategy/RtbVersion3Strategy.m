@@ -22,9 +22,9 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         hints = [];
         importArgs = {'ignoreRootTransform', false, 'flipUVs', true};
         mappingsArgs = {};
-        remodelBeforeAllFunction = [];
-        remodelBeforeConditionFunction = [];
-        remodelAfterConditionFunction = [];
+        remodelOnceBeforeAllFunction = [];
+        remodelPerConditionBeforeFunction = [];
+        remodelPerConditionAfterFunction = [];
     end
     
     methods
@@ -108,11 +108,11 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
             scene = mexximpCleanImport(sceneFile, obj.importArgs{:});
         end
         
-        function scene = remodelBeforeAll(obj, scene)
-            if isempty(obj.remodelBeforeAllFunction)
+        function scene = remodelOnceBeforeAll(obj, scene)
+            if isempty(obj.remodelOnceBeforeAllFunction)
                 return;
             end
-            scene = feval(obj.remodelBeforeAllFunction, scene);
+            scene = feval(obj.remodelOnceBeforeAllFunction, scene);
         end
         
         function [names, allValues] = loadConditions(obj, conditionsFile)
@@ -156,22 +156,22 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
                 'targetFormat', 'png');
         end
         
-        function [scene, mappings] = remodelBeforeCondition(obj, scene, mappings, names, conditionValues, conditionNumber)
-            if isempty(obj.remodelBeforeConditionFunction)
+        function [scene, mappings] = remodelPerConditionBefore(obj, scene, mappings, names, conditionValues, conditionNumber)
+            if isempty(obj.remodelPerConditionBeforeFunction)
                 return;
             end
-            [scene, mappings] = feval(obj.remodelBeforeConditionFunction, scene, mappings, names, conditionValues, conditionNumber);
+            [scene, mappings] = feval(obj.remodelPerConditionBeforeFunction, scene, mappings, names, conditionValues, conditionNumber);
         end
         
         function [scene, mappings] = applyBasicMappings(obj, scene, mappings, names, conditionValues, conditionNumber)
             scene = applyMexximpMappings(scene, mappings);
         end
         
-        function [scene, mappings] = remodelAfterCondition(obj, scene, mappings, names, conditionValues, conditionNumber)
-            if isempty(obj.remodelAfterConditionFunction)
+        function [scene, mappings] = remodelPerConditionAfter(obj, scene, mappings, names, conditionValues, conditionNumber)
+            if isempty(obj.remodelPerConditionAfterFunction)
                 return;
             end
-            [scene, mappings] = feval(obj.remodelAfterConditionFunction, scene, mappings, names, conditionValues, conditionNumber);
+            [scene, mappings] = feval(obj.remodelPerConditionAfterFunction, scene, mappings, names, conditionValues, conditionNumber);
         end
     end
 end

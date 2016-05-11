@@ -33,7 +33,7 @@ classdef RtbBatchRenderStrategy < handle
         scene = loadScene(obj, sceneFile);
         
         % hook to alter the basic scene representation
-        scene = remodelBeforeAll(obj, scene);
+        scene = remodelOnceBeforeAll(obj, scene);
         
         % load variable names and values from file
         [names, allValues] = loadConditions(obj, conditionsFile);
@@ -48,12 +48,12 @@ classdef RtbBatchRenderStrategy < handle
         [scene, mappings] = resolveResources(obj, scene, mappings);
         
         % hook to alter the basic scene representation or mappings
-        [scene, mappings] = remodelBeforeCondition(obj, scene, mappings, names, conditionValues, conditionNumber);
+        [scene, mappings] = remodelPerConditionBefore(obj, scene, mappings, names, conditionValues, conditionNumber);
         
         % alter the basic scene representation based on mappings
         [scene, mappings] = applyBasicMappings(obj, scene, mappings, names, conditionValues, conditionNumber);
         
         % hook to alter the basic scene representation or mappings
-        [scene, mappings] = remodelAfterCondition(obj, scene, mappings, names, conditionValues, conditionNumber);
+        [scene, mappings] = remodelPerConditionAfter(obj, scene, mappings, names, conditionValues, conditionNumber);
     end
 end

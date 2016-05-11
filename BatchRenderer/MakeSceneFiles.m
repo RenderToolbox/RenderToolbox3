@@ -91,7 +91,7 @@ if isempty(parentScene)
     scene = [];
 else
     scene = strategy.loadScene(parentScene);
-    scene = strategy.remodelBeforeAll(scene);
+    scene = strategy.remodelOnceBeforeAll(scene);
 end
 
 
@@ -144,7 +144,7 @@ function nativeScene = makeSceneForCondition(strategy, ...
 parentScene = GetNamedValue(names, conditionValues, 'parentScene', '');
 if ~isempty(parentScene)
     scene = strategy.loadScene(parentScene);
-    scene = strategy.remodelBeforeAll(scene);
+    scene = strategy.remodelOnceBeforeAll(scene);
 end
 
 % possibly load new mappings named in the conditions file
@@ -162,9 +162,9 @@ hints.imageWidth = GetNamedValue(names, conditionValues, 'imageWidth', hints.ima
 [scene, mappings] = strategy.resolveResources(scene, mappings);
 
 % apply basic mappings to the scene
-[scene, mappings] = strategy.remodelBeforeCondition(scene, mappings, names, conditionValues, cc);
+[scene, mappings] = strategy.remodelPerConditionBefore(scene, mappings, names, conditionValues, cc);
 [scene, mappings] = strategy.applyBasicMappings(scene, mappings, names, conditionValues, cc);
-[scene, mappings] = strategy.remodelAfterCondition(scene, mappings, names, conditionValues, cc);
+[scene, mappings] = strategy.remodelPerConditionAfter(scene, mappings, names, conditionValues, cc);
 
 % apply renderer-specific mappings to the scene.
 nativeScene = strategy.converter.startConversion(scene, mappings, names, conditionValues, cc);

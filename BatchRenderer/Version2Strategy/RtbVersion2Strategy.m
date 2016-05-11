@@ -61,7 +61,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             scene = sceneCopy;
         end
         
-        function scene = remodelBeforeAll(obj, scene)
+        function scene = remodelOnceBeforeAll(obj, scene)
             scene = obj.remodelCollada(scene, 'BeforeAll');
         end
         
@@ -94,7 +94,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             % no-op, handled in applyVariablesToMappings
         end
         
-        function [scene, mappings] = remodelBeforeCondition(obj, scene, mappings, names, conditionValues, conditionNumber)
+        function [scene, mappings] = remodelPerConditionBefore(obj, scene, mappings, names, conditionValues, conditionNumber)
             scene = obj.remodelCollada(scene, 'BeforeCondition', ...
                 mappings, names, conditionValues, conditionNumber);
         end
@@ -133,7 +133,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             end
         end
         
-        function [scene, mappings] = remodelAfterCondition(obj, scene, mappings, names, conditionValues, conditionNumber)
+        function [scene, mappings] = remodelPerConditionAfter(obj, scene, mappings, names, conditionValues, conditionNumber)
             scene = obj.remodelCollada(scene, 'AfterCondition', ...
                 mappings, names, conditionValues, conditionNumber);
         end
