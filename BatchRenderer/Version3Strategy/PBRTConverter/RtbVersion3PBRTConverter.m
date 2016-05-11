@@ -67,7 +67,7 @@ classdef RtbVersion3PBRTConverter < handle
             defaultMappings{mm}.properties(2).value = imageHeight;
         end
         
-        function nativeScene = startImport(obj, parentScene, mappings, names, conditionValues, conditionNumber)
+        function nativeScene = startConversion(obj, parentScene, mappings, names, conditionValues, conditionNumber)
             nativeScene = [];
         end
         
@@ -75,7 +75,7 @@ classdef RtbVersion3PBRTConverter < handle
             nativeScene = [];
         end
         
-        function nativeScene = finishImport(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
+        function nativeScene = finishConversion(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
             nativeScene = [];
         end
     end

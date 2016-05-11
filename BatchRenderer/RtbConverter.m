@@ -9,12 +9,12 @@ classdef RtbConverter < handle
         defaultMappings = loadDefaultMappings(obj, varargin);
         
         % Convert the scene to native format, or return a placeholder.
-        nativeScene = startImport(obj, parentScene, mappings, names, conditionValues, conditionNumber);
+        nativeScene = startConversion(obj, parentScene, mappings, names, conditionValues, conditionNumber);
         
         % Apply mappings to adjust the native scene in progress.
         nativeScene = applyMappings(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber);
         
         % Convert the scene to native format, if not done yet.
-        nativeScene = finishImport(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber);
+        nativeScene = finishConversion(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber);
     end
 end

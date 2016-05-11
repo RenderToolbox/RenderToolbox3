@@ -167,6 +167,6 @@ hints.imageWidth = GetNamedValue(names, conditionValues, 'imageWidth', hints.ima
 [scene, mappings] = strategy.remodelAfterCondition(scene, mappings, names, conditionValues, cc);
 
 % apply renderer-specific mappings to the scene.
-nativeScene = strategy.converter.startImport(scene, mappings, names, conditionValues, cc);
+nativeScene = strategy.converter.startConversion(scene, mappings, names, conditionValues, cc);
 nativeScene = strategy.converter.applyMappings(scene, nativeScene, mappings, names, conditionValues, cc);
-nativeScene = strategy.converter.finishImport(scene, nativeScene, mappings, names, conditionValues, cc);
+nativeScene = strategy.converter.finishConversion(scene, nativeScene, mappings, names, conditionValues, cc);
