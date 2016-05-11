@@ -45,7 +45,7 @@ ChangeToFolder(tempFolder);
 unzip(archiveName, tempFolder);
 
 % extract the recipe struct
-recipeFiles = FindFiles(tempFolder, 'recipe\.mat');
+recipeFiles = FindFiles('root', tempFolder, 'filter', 'recipe\.mat');
 if 1 == numel(recipeFiles)
     recipeFileName = recipeFiles{1};
 else
@@ -60,7 +60,7 @@ recipe.input.hints.workingFolder = hints.workingFolder;
 
 %% Copy dependencies from the temp folder to the local working folder.
 unpackedFolder = fullfile(tempFolder, archiveBase);
-dependencies = FindFiles(unpackedFolder);
+dependencies = FindFiles('root', unpackedFolder);
 for ii = 1:numel(dependencies)
     tempPath = dependencies{ii};
     if strfind(tempPath, 'recipe.mat')

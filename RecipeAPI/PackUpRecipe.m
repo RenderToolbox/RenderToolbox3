@@ -65,7 +65,7 @@ end
 
 %% Copy dependencies from the working folder to the temp folder.
 workingRoot = GetWorkingFolder('', false, recipe.input.hints);
-dependencies = FindFiles(workingRoot);
+dependencies = FindFiles('root', workingRoot);
 for ii = 1:numel(dependencies)
     localPath = dependencies{ii};
     
