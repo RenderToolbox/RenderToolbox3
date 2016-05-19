@@ -271,7 +271,7 @@ end
 % create a new file named like the polylist name
 %   put it in the working scenes folder
 meshFolder = 'pbrt-mesh-data';
-meshFullPath = fullfile(GetWorkingFolder('scenes', true, hints), meshFolder);
+meshFullPath = fullfile(rtbWorkingFolder('scenes', true, hints), meshFolder);
 if ~exist(meshFullPath, 'dir')
     mkdir(meshFullPath);
 end

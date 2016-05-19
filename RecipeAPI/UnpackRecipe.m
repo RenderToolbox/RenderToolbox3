@@ -35,7 +35,7 @@ end
 
 %% Set up a clean, temporary folder.
 hints.recipeName = mfilename();
-tempFolder = GetWorkingFolder('', false, hints);
+tempFolder = rtbWorkingFolder('', false, hints);
 if exist(tempFolder, 'dir')
     rmdir(tempFolder, 's');
 end

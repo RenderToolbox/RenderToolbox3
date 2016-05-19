@@ -47,7 +47,7 @@
 % other auxiliary files.  It should put any new files in the current
 % working "scenes" folder, obtained as follows:
 % @code
-%   scenesFolder = GetWorkingFolder('scenes', true, hints);
+%   scenesFolder = rtbWorkingFolder('scenes', true, hints);
 % @endcode
 %
 % @details

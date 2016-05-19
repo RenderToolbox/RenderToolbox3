@@ -118,7 +118,7 @@ end
     strategy.renderer.toRadiance(multispectralImage, S, scene);
 
 % save a .mat file with multispectral data and metadata
-outPath = GetWorkingFolder('renderings', true, hints);
+outPath = rtbWorkingFolder('renderings', true, hints);
 outFile = fullfile(outPath, [imageName '.mat']);
 save(outFile, 'multispectralImage', 'S', 'radiometricScaleFactor', ...
     'hints', 'scene', 'versionInfo', 'commandResult');

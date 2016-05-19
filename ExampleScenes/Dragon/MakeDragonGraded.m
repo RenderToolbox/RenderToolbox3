@@ -17,7 +17,7 @@ hints.imageHeight = 240;
 hints.recipeName = mfilename();
 ChangeToWorkingFolder(hints);
 
-resources = GetWorkingFolder('resources', false, hints);
+resources = rtbWorkingFolder('resources', false, hints);
 
 %% Write graded spectrum files.
 % choose two spectrums to grade between

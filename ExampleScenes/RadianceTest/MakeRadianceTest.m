@@ -36,7 +36,7 @@ hints.imageHeight = 100;
 hints.recipeName = mfilename();
 ChangeToWorkingFolder(hints);
 
-resources = GetWorkingFolder('resources', false, hints);
+resources = rtbWorkingFolder('resources', false, hints);
 
 %% Choose illuminant spectra.
 % uniform white spectrum sampled every 5mn

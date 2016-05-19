@@ -21,8 +21,8 @@
 function scene = RTB_ImportCollada_PBRT(colladaFile, adjustments, imageName, hints)
 
 % choose new files to create
-scenesFolder = GetWorkingFolder('scenes', true, hints);
-tempFolder = GetWorkingFolder('temp', true, hints);
+scenesFolder = rtbWorkingFolder('scenes', true, hints);
+tempFolder = rtbWorkingFolder('temp', true, hints);
 pbrtFile = fullfile(scenesFolder, [imageName '.pbrt']);
 pbrtXMLFile = fullfile(scenesFolder, [imageName 'pbrt.xml']);
 adjustmentsFile = fullfile(tempFolder, [imageName 'Adjustments.xml']);

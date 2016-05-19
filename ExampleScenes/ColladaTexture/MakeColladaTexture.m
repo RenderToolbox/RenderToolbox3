@@ -20,8 +20,8 @@ hints.recipeName = mfilename();
 ChangeToWorkingFolder(hints);
 
 %% Copy images to working folder where renders can find them
-copyfile(stoneWallImage, GetWorkingFolder('', false, hints));
-copyfile(earthImage, GetWorkingFolder('', false, hints));
+copyfile(stoneWallImage, rtbWorkingFolder('', false, hints));
+copyfile(earthImage, rtbWorkingFolder('', false, hints));
 
 %% Render with Mitsuba and PBRT.
 toneMapFactor = 100;

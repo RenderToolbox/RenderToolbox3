@@ -1,27 +1,31 @@
 classdef RtbMitsubaRenderer < RtbRenderer
-    %% Implementation for how to render with the RendererPluginAPI.
-    %
-    % This class is a bridge between the "old" way of finding renderers
-    % using functions that have conventional names, and the "new" way of
-    % subclassing an abstract renderer supertype.
-    %
+    %% Implementation for rendering with Mitsuba.
     
     properties
+        % RenderToolbox3 options struct, see rtbDefaultHints()
         hints = [];
+        
+        % Mitsuba info struct.
+        mitsuba;
+        
+        % Where to write output files.
+        outputFolder;
     end
     
     methods
-        function obj = RtbPluginRenderer(hints)
+        function obj = RtbMitsubaRenderer(hints)
             obj.hints = hints;
+            obj.mitsuba = getpref('Mitsuba');
+            obj.outputFolder = rtbWorkingFolder('renderings', true, hints);
         end
         
         function info = versionInfo(obj)
-            versionInfoFunction = GetRendererAPIFunction('VersionInfo', obj.hints);
-            if isempty(versionInfoFunction)
-                info = [];
-                return;
+            try
+                executable = fullfile(obj.mitsuba.app, obj.mitsuba.executable);
+                info = dir(executable);
+            catch err
+                info = err;
             end
-            info = feval(versionInfoFunction);
         end
         
         function [status, result, image, sampling, imageName] = render(obj, nativeScene)

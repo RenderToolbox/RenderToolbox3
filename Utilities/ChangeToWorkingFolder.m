@@ -7,7 +7,7 @@
 %
 % @details
 % cd() to the working folder for the given @a hints, used by a recipe.  See
-% GetWorkingFolder().  Create the working folder if it doesn't exist yet.
+% rtbWorkingFolder().  Create the working folder if it doesn't exist yet.
 %
 % @details
 % Returns true if @a folder had to be created.
@@ -25,5 +25,5 @@ else
     hints = rtbDefaultHints(hints);
 end
 
-workingFolder = GetWorkingFolder('', false, hints);
+workingFolder = rtbWorkingFolder('', false, hints);
 wasCreated = ChangeToFolder(workingFolder);

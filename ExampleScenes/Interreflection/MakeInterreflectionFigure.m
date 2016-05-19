@@ -30,7 +30,7 @@ hints.recipeName = 'MakeInterreflection';
 for ii = 1:nImages
     % read PBRT data for this condition
     hints.renderer = 'PBRT';
-    dataFolder = GetWorkingFolder('renderings', true, hints);
+    dataFolder = rtbWorkingFolder('renderings', true, hints);
     file = FindFiles(dataFolder, [imageNames{ii} '.mat']);
     data = load(file{1});
     pbrt(ii).imageSpectral = data.multispectralImage;
@@ -39,7 +39,7 @@ for ii = 1:nImages
     
     % read Mitsuba data for this condition
     hints.renderer = 'Mitsuba';
-    dataFolder = GetWorkingFolder('renderings', true, hints);
+    dataFolder = rtbWorkingFolder('renderings', true, hints);
     file = FindFiles(dataFolder, [imageNames{ii} '.mat']);
     data = load(file{1});
     mitsuba(ii).imageSpectral = data.multispectralImage;

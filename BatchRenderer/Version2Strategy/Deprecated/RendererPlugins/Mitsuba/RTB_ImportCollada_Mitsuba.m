@@ -21,8 +21,8 @@
 function scene = RTB_ImportCollada_Mitsuba(colladaFile, adjustments, imageName, hints)
 
 % choose new files to create
-scenesFolder = GetWorkingFolder('scenes', true, hints);
-tempFolder = GetWorkingFolder('temp', true, hints);
+scenesFolder = rtbWorkingFolder('scenes', true, hints);
+tempFolder = rtbWorkingFolder('temp', true, hints);
 mitsubaFile = fullfile(scenesFolder, [imageName '.xml']);
 unadjustedMitsubaFile = fullfile(tempFolder, [imageName 'Unadjusted.xml']);
 geometryFile = fullfile(tempFolder, [imageName 'Unadjusted.serialized']);

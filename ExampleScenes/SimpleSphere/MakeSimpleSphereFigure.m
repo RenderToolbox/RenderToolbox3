@@ -16,7 +16,7 @@ dataFilePattern = 'SimpleSphere[0-9\-]*\.mat';
 % get output from the Render Toolbox reference renderer
 %   normalize it, scale it
 hints.renderer = 'SphereRenderer';
-dataFolder = GetWorkingFolder('renderings', true, hints);
+dataFolder = rtbWorkingFolder('renderings', true, hints);
 matFile = FindFiles(dataFolder, dataFilePattern);
 fprintf('Using Matlab Sphere Renderer output found here: \n  %s\n', ...
     matFile{1});
@@ -27,7 +27,7 @@ refData.multispectralImage = refData.multispectralImage/refMax;
 % get output from PBRT
 %   normalize it, scale it
 hints.renderer = 'PBRT';
-dataFolder = GetWorkingFolder('renderings', true, hints);
+dataFolder = rtbWorkingFolder('renderings', true, hints);
 matFile = FindFiles(dataFolder, dataFilePattern);
 PBRTData = load(matFile{1});
 PBRTMax = max(PBRTData.multispectralImage(:));
@@ -36,7 +36,7 @@ PBRTData.multispectralImage = PBRTData.multispectralImage/PBRTMax;
 % get output from Mitsuba
 %   normalize it, scale it
 hints.renderer = 'Mitsuba';
-dataFolder = GetWorkingFolder('renderings', true, hints);
+dataFolder = rtbWorkingFolder('renderings', true, hints);
 matFile = FindFiles(dataFolder, dataFilePattern);
 mitsubaData = load(matFile{1});
 mitsubaMax = max(mitsubaData.multispectralImage(:));

@@ -33,10 +33,10 @@
 %
 % @details
 % Usage:
-%   folder = GetWorkingFolder(folderName, isRendererSpecific, hints)
+%   folder = rtbWorkingFolder(folderName, isRendererSpecific, hints)
 %
 % @ingroup Utilities
-function folder = GetWorkingFolder(folderName, isRendererSpecific, hints)
+function folder = rtbWorkingFolder(folderName, isRendererSpecific, hints)
 
 if nargin < 2
     isRendererSpecific = false;

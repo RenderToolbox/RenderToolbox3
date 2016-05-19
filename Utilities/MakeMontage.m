@@ -67,7 +67,7 @@ end
 [outPath, outBase, outExt] = fileparts(outFile);
 
 if isempty(outPath)
-    outPath = GetWorkingFolder('images', true, hints);
+    outPath = rtbWorkingFolder('images', true, hints);
 end
 
 SRGBMontage = [];

@@ -9,7 +9,7 @@ hints = rtbDefaultHints();
 hints.recipeName = mfilename();
 ChangeToWorkingFolder(hints);
 
-resources = GetWorkingFolder('resources', false, hints);
+resources = rtbWorkingFolder('resources', false, hints);
 
 %% Choose some illuminants and RGB colors to render
 % yellow daylight

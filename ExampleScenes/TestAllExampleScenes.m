@@ -43,7 +43,7 @@
 function results = TestAllExampleScenes(outputRoot, makeFunctions)
 
 if nargin < 1  || isempty(outputRoot)
-    outputRoot = GetWorkingFolder();
+    outputRoot = rtbWorkingFolder();
 else
     setpref('RenderToolbox3', 'workingFolder', outputRoot);
 end

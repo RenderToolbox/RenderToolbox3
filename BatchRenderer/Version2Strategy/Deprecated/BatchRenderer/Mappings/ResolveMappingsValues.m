@@ -73,7 +73,7 @@ if ischar(adjustments)
     [adjustDoc, adjustIDMap] = ReadSceneDOM(adjustments);
 end
 
-workingFolder = GetWorkingFolder('', false, hints);
+workingFolder = rtbWorkingFolder('', false, hints);
 
 for mm = 1:numel(mappings)
     % replace (varName) expressions with varValue values

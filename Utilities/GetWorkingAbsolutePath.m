@@ -9,7 +9,7 @@
 % @details
 % Converts the given @a originalPath to a local absolute path.  Assumes
 % that @a originalPath is a relative path relative to the working folder
-% specified by the given @a hints.  See GetWorkingFolder().
+% specified by the given @a hints.  See rtbWorkingFolder().
 %
 % @details
 % Usage:
@@ -24,5 +24,5 @@ else
     hints = rtbDefaultHints(hints);
 end
 
-workingFolder = GetWorkingFolder('', false, hints);
+workingFolder = rtbWorkingFolder('', false, hints);
 absolutePath = fullfile(workingFolder, originalPath);

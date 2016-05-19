@@ -36,7 +36,7 @@ rtbInitialize();
 
 %% Where to get/put the input/output
 [scenePath, sceneBase] = fileparts(sceneFile);
-renderings = GetWorkingFolder('renderings', true, hints);
+renderings = rtbWorkingFolder('renderings', true, hints);
 output = fullfile(renderings, [sceneBase '.exr']);
 
 %% Invoke Mitsuba.

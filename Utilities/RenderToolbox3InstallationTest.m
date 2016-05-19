@@ -35,7 +35,7 @@ renderResults = [];
 comparison = [];
 
 %% Check working folder for write permission.
-workingFolder = GetWorkingFolder();
+workingFolder = rtbWorkingFolder();
 fprintf('\nChecking working folder:\n');
 
 % make sure the folder exists
@@ -132,7 +132,7 @@ end
 
 %% Compare renderings to reference renderings?
 if ~isempty(referenceRoot)
-    localRoot = GetWorkingFolder();
+    localRoot = rtbWorkingFolder();
     fprintf('\nComparing local renderings\n  %s\n', localRoot);
     fprintf('with reference renderings\n  %s\n', referenceRoot);
     fprintf('You should see several more figures.\n\n');

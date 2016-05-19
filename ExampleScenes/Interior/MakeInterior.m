@@ -15,7 +15,7 @@ hints.whichConditions = [];
 hints.recipeName = mfilename();
 ChangeToWorkingFolder(hints);
 
-resources = GetWorkingFolder('resources', false, hints);
+resources = rtbWorkingFolder('resources', false, hints);
 
 %% Write some spectra to use.
 load B_cieday

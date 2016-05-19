@@ -42,7 +42,7 @@ hints.recipeName = 'MakeTableSphere';
 for ii = 1:nImages
     % make a PBRT sRGB image and read the pixel of interest
     hints.renderer = 'PBRT';
-    dataFolder = GetWorkingFolder('renderings', true, hints);
+    dataFolder = rtbWorkingFolder('renderings', true, hints);
     file = FindFiles(dataFolder, [imageNames{ii} '.mat']);
     PBRTData = load(file{1});
     PBRTSRGB = MultispectralToSRGB(PBRTData.multispectralImage, ...
@@ -52,7 +52,7 @@ for ii = 1:nImages
     
     % make a Mitsuba sRGB image and read the pixel of interest
     hints.renderer = 'Mitsuba';
-    dataFolder = GetWorkingFolder('renderings', true, hints);
+    dataFolder = rtbWorkingFolder('renderings', true, hints);
     file = FindFiles(dataFolder, [imageNames{ii} '.mat']);
     mitsubaData = load(file{1});
     mitsubaSRGB = MultispectralToSRGB(mitsubaData.multispectralImage, ...

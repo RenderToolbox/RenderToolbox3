@@ -8,7 +8,7 @@
 %
 % @details
 % Converts the given @a originalPath to a relative path, relative to the
-% working folder specified by the given @a hints.  See GetWorkingFolder().
+% working folder specified by the given @a hints.  See rtbWorkingFolder().
 %
 % @details
 % If @a originalPath can be found within the working folder specified by
@@ -30,7 +30,7 @@ end
 
 relativePath = '';
 
-workingFolder = GetWorkingFolder('', false, hints);
+workingFolder = rtbWorkingFolder('', false, hints);
 info = ResolveFilePath(originalPath, workingFolder);
 if info.isRootFolderMatch
     relativePath = info.resolvedPath;
