@@ -52,15 +52,11 @@ defaultConfig.recipeName = '';
 % default scene file and rendering options
 defaultConfig.batchRenderStrategy = 'RtbVersion2Strategy';
 defaultConfig.renderer = 'SampleRenderer';
-defaultConfig.remodeler = '';
-defaultConfig.filmType = '';
 defaultConfig.imageHeight = 240;
 defaultConfig.imageWidth = 320;
 defaultConfig.whichConditions = [];
-defaultConfig.isDryRun = false;
 defaultConfig.isReuseSceneFiles = false;
 defaultConfig.isParallel = false;
-defaultConfig.isPlot = true;
 defaultConfig.isCaptureCommandResults = true;
 
 %% Replace or update current preferences.

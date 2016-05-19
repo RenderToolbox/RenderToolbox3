@@ -7,15 +7,6 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
     % We choose a scene file converter and renderer based on the
     % hints.renderer passed to the constructor.
     %
-    % TODO: we want a way to customize scene loading based on the input
-    % format and various hacky things required for taming wild scenes.  We
-    % would like to start with some sensible defaults.  We would like to
-    % provide the user a way to override these on a per-scene basis.  Maybe
-    % choose defaults here, and accept a varargin from MakeSceneFiles, in
-    % addition to the hints.
-    %
-    % TODO: we want to let the user supply 0-3 remodeling functions.  Is
-    % each of these yet another vararg from MakeSceneFiles?
     %
     
     properties
