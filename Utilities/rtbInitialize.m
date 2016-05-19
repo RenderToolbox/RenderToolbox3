@@ -52,7 +52,7 @@ defaultConfig.recipeName = '';
 % default scene file and rendering options
 defaultConfig.batchRenderStrategy = 'RtbVersion2Strategy';
 defaultConfig.renderer = 'SampleRenderer';
-defaultConfig.converter = 'SampleRenderer';
+defaultConfig.converter = '';
 defaultConfig.imageHeight = 240;
 defaultConfig.imageWidth = 320;
 defaultConfig.whichConditions = [];

@@ -30,10 +30,10 @@
 %
 % @details
 % Usage:
-%   [wls, S, order] = GetWlsFromSliceNames(sliceNames, namePattern)
+%   [wls, S, order] = rtbWlsFromSliceNames(sliceNames, namePattern)
 %
 % @ingroup Readers
-function [wls, S, order] = GetWlsFromSliceNames(sliceNames, namePattern)
+function [wls, S, order] = rtbWlsFromSliceNames(sliceNames, namePattern)
 
 if nargin < 2 || isempty(namePattern)
     namePattern = '%f-%f';

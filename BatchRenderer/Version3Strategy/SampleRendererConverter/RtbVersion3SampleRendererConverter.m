@@ -8,6 +8,9 @@ classdef RtbVersion3SampleRendererConverter < handle
     
     methods
         
+        function obj = RtbVersion3SampleRendererConverter(hints)
+        end
+        
         function defaultMappings = loadDefaultMappings(obj, varargin)
             defaultMappings = {};
         end

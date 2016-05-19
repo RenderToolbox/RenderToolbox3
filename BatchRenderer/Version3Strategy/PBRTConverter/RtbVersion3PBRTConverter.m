@@ -1,12 +1,51 @@
 classdef RtbVersion3PBRTConverter < handle
-    %% Implementation for how to make scene files with the RendererPluginAPI.
+    %% Implementation for rendering converting mexximp to Pbrt.
     %
-    % This class is a bridge between the "old" way of finding renderers
-    % using functions that have conventional names, and the "new" way of
-    % subclassing an abstract renderer supertype.
-    %
+    
+    properties
+        % RenderToolbox3 options struct, see rtbDefaultHints()
+        hints;
         
+        % default material for mexximp conversion
+        material;
+        
+        % material parameter to receive diffuse reflectance data
+        diffuseParameter;
+        
+        % material parameter to receive specular reflectance data
+        specularParameter;
+        
+        % where to write output files, like scene or geometry
+        outputFolder;
+        
+        % subfolder for geometry within the workingFolder
+        meshSubfolder;
+        
+        % whether to overwrite/update existing mesh files
+        rewriteMeshData;
+    end
+    
+    methods (Static)
+        function material = defaultMaterial()
+            material = MPbrtElement.makeNamedMaterial('', 'anisoward');
+            material.setParameter('Kd', 'spectrum', '300:0 800:0');
+            material.setParameter('Ks', 'rgb', [0.5 0.5 0.5]);
+            material.setParameter('alphaU', 'float', 0.15);
+            material.setParameter('alphaV', 'float', 0.15);
+        end
+    end
+    
     methods
+        
+        function obj = RtbVersion3PBRTConverter(hints)
+            obj.hints = rtbDefaultHints(hints);
+            obj.material = RtbVersion3PBRTConverter.defaultMaterial();
+            obj.diffuseParameter = 'Kd';
+            obj.specularParameter = '';
+            obj.outputFolder = rtbWorkingFolder('', false, obj.hints);
+            obj.meshSubfolder = 'scenes/PBRT/pbrt-geometry';
+            obj.rewriteMeshData = true;
+        end
         
         function defaultMappings = loadDefaultMappings(obj, varargin)
             parser = inputParser();
@@ -68,15 +107,33 @@ classdef RtbVersion3PBRTConverter < handle
         end
         
         function nativeScene = startConversion(obj, parentScene, mappings, names, conditionValues, conditionNumber)
-            nativeScene = [];
+            nativeScene = mexximpToMPbrt(parentScene, ...
+                'materialDefault', obj.material, ...
+                'materialDiffuseParameter', obj.diffuseParameter, ...
+                'materialSpecularParameter', obj.specularParameter, ...
+                'workingFolder', obj.outputFolder, ...
+                'meshSubfolder', obj.meshSubfolder, ...
+                'rewriteMeshData', obj.rewriteMeshData);
         end
         
         function nativeScene = applyMappings(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
-            nativeScene = [];
+            groupName = rtbGetNamedValue(names, conditionValues, 'groupName', '');
+            if isempty(groupName)
+                groupMappings = mappings;
+            else
+                isInGroup = strcmp(groupName, {mappings.group});
+                groupMappings = mappings(isInGroup);
+            end
+            nativeScene = rtbApplyMPbrtMappings(nativeScene, groupMappings);
+            nativeScene = rtbApplyMPbrtGenericMappings(nativeScene, groupMappings);
         end
         
-        function nativeScene = finishConversion(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
-            nativeScene = [];
+        % transition in-memory nativeScene to on-disk pbrtFile
+        function pbrtFile = finishConversion(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
+            imageName = rtbGetNamedValue(names, conditionValues, 'imageName', ...
+                sprintf('scene-%03d', conditionNumber));
+            pbrtFile = fullfile(obj.outputFolder, [imageName '.pbrt']);
+            nativeScene.printToFile(pbrtFile);
         end
     end
 end

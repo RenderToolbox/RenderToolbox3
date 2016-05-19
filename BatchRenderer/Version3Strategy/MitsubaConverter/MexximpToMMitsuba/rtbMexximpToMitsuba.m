@@ -36,7 +36,7 @@ elements = mexximpSceneElements(mexximpScene);
 elementTypes = {elements.type};
 cameraInds = find(strcmp('cameras', elementTypes));
 for cc = cameraInds
-    mitsubaNode = mexximpCameraToMMitsuba(mexximpScene, elements(cc), varargin{:});
+    mitsubaNode = rtbMexximpCameraToMMitsuba(mexximpScene, elements(cc), varargin{:});
     mitsubaScene.append(mitsubaNode);
 end
 
@@ -46,7 +46,7 @@ materialInds = find(strcmp('materials', elementTypes));
 nMaterials = numel(materialInds);
 materialIds = cell(1, nMaterials);
 for mm = 1:nMaterials
-    mitsubaNode = mexximpMaterialToMMitsuba(mexximpScene, elements(materialInds(mm)), varargin{:});
+    mitsubaNode = rtbMexximpMaterialToMMitsuba(mexximpScene, elements(materialInds(mm)), varargin{:});
     mitsubaScene.append(mitsubaNode);
     materialIds{mm} = mitsubaNode.id;
 end
@@ -54,7 +54,7 @@ end
 %% Emitters and toWorld transformations.
 lightInds = find(strcmp('lights', elementTypes));
 for ll = lightInds
-    mitsubaNode = mexximpLightToMMitsuba(mexximpScene, elements(ll), varargin{:});
+    mitsubaNode = rtbMexximpLightToMMitsuba(mexximpScene, elements(ll), varargin{:});
     mitsubaScene.append(mitsubaNode);
 end
 
@@ -64,13 +64,13 @@ meshInds = find(strcmp('meshes', elementTypes));
 nMeshes = numel(meshInds);
 meshFiles = cell(1, nMeshes);
 for mm = 1:nMeshes
-    [~, meshFiles{mm}] = mexximpMeshToMMitsuba(mexximpScene, elements(meshInds(mm)), varargin{:});
+    [~, meshFiles{mm}] = rtbMexximpMeshToMMitsuba(mexximpScene, elements(meshInds(mm)), varargin{:});
 end
 
 % PLY shape element for each node.
 nodeInds = find(strcmp('nodes', elementTypes));
 for nn = nodeInds
-    mitsubaNodes = mexximpNodeToMMitsuba(mexximpScene, elements(nn), meshFiles, materialIds, varargin{:});
+    mitsubaNodes = rtbMexximpNodeToMMitsuba(mexximpScene, elements(nn), meshFiles, materialIds, varargin{:});
     
     % skip nodes that don't invoke any mesh objects
     for oo = 1:numel(mitsubaNodes)

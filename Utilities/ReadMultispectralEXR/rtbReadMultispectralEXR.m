@@ -47,10 +47,10 @@
 %
 % @details
 % Usage:
-%   [imageData, wls, S] = ReadMultispectralEXR(exrFile, namePattern)
+%   [imageData, wls, S] = rtbReadMultispectralEXR(exrFile, namePattern)
 %
 % @ingroup Readers
-function [imageData, wls, S] = ReadMultispectralEXR(exrFile, namePattern)
+function [imageData, wls, S] = rtbReadMultispectralEXR(exrFile, namePattern)
 
 if nargin < 2 || isempty(namePattern)
     namePattern = '%f-%f';
@@ -61,7 +61,7 @@ end
 
 % scan channel names for wavelength info
 sliceNames = {sliceInfo.name};
-[wls, S, order] = GetWlsFromSliceNames(sliceNames, namePattern);
+[wls, S, order] = rtbWlsFromSliceNames(sliceNames, namePattern);
 
 % sort data slices by wavelength
 imageData = imageData(:,:,order);

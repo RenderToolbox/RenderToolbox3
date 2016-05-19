@@ -15,10 +15,10 @@
 %
 % @details
 % Usage:
-%   fig = PlotSlices(sliceInfo, data)
+%   fig = rtbPlotSlices(sliceInfo, data)
 %
 % @ingroup Utilities
-function fig = PlotSlices(sliceInfo, data)
+function fig = rtbPlotSlices(sliceInfo, data)
 
 fig = figure();
 

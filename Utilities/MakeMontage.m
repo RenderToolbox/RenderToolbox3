@@ -73,12 +73,6 @@ end
 SRGBMontage = [];
 XYZMontage = [];
 
-
-%% If this is a dry run, skip the montage.
-if hints.isDryRun
-    return;
-end
-
 %% Pick the montage dimensions.
 nIns = numel(inFiles);
 dims = size(inFiles);

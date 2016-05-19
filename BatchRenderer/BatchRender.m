@@ -106,11 +106,6 @@ fprintf('\nBatchRender finished at %s (%.1fs elapsed).\n\n', ...
 %% Render a scene and save a .mat data file.
 function outFile = renderScene(strategy, scene, versionInfo, hints)
 
-if hints.isDryRun
-    outFile = '';
-    return;
-end
-
 % invoke the renderer and convert to radiance
 [status, commandResult, multispectralImage, S, imageName] = ...
     strategy.renderer.render(scene);

@@ -68,7 +68,7 @@ for ii = 1:numel(dependencies)
     end
     
     [isPrefix, relativePath] = IsPathPrefix(unpackedFolder, tempPath);
-    localPath = GetWorkingAbsolutePath(relativePath, recipe.input.hints);
+    localPath = rtbWorkingAbsolutePath(relativePath, recipe.input.hints);
     
     localPrefix = fileparts(localPath);
     if ~exist(localPrefix, 'dir')

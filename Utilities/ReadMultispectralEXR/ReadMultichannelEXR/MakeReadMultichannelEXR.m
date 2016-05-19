@@ -35,7 +35,7 @@
 function MakeReadMultichannelEXR()
 
 %% Choose the source and function files
-cd(fullfile(RenderToolboxRoot(), 'Utilities', 'ReadMultispectralEXR', 'ReadMultichannelEXR'));
+cd(fullfile(RenderToolboxRoot(), 'Utilities', 'rtbReadMultispectralEXR', 'ReadMultichannelEXR'));
 source = 'ReadMultichannelEXR.cpp';
 output = '-output ReadMultichannelEXR';
 
@@ -58,4 +58,4 @@ fprintf('If you see a figure with several images, MakeReadMultichannelEXR() is w
 
 % show each image layer
 close all;
-PlotSlices(sliceInfo, data);
+rtbPlotSlices(sliceInfo, data);

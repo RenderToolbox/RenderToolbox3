@@ -7,7 +7,7 @@
 %   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
-% RunCommand() executes the given @a command string using Matlab's built-in
+% rtbRunCommand() executes the given @a command string using Matlab's built-in
 % system() function, and attempts to capture status codes and messages that
 % result.  Attempts to never throw an exception.  Instead, captures and
 % returns any exception thrown.
@@ -25,10 +25,10 @@
 %
 % @details
 % Usage:
-%   [status, result, exception] = RunCommand(command, hints)
+%   [status, result, exception] = rtbRunCommand(command, hints)
 %
 % @ingroup Utilities
-function [status, result, exception] = RunCommand(command, hints)
+function [status, result, exception] = rtbRunCommand(command, hints)
 
 status = [];
 result = '';

@@ -13,7 +13,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         hints = [];
         
         % args to pass to mexximpCleanImport() for scene loading
-        importArgs = {'ignoreRootTransform', false, 'flipUVs', true};
+        importArgs = {'ignoreRootTransform', true, 'flipUVs', true};
         
         % args to pass to loadDefaultMappings() for mappings loading
         mappingsArgs = {};
@@ -30,11 +30,11 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
     
     methods
         function obj = RtbVersion3Strategy(hints, varargin)
-            obj.hints = hints;
+            obj.hints = rtbDefaultHints(hints);
             obj.importArgs = cat(2, obj.importArgs, varargin);
             obj.mappingsArgs = cat(2, {hints}, varargin);
-            obj.converter = RtbVersion3Strategy.chooseConverter(hints);
-            obj.renderer = RtbVersion3Strategy.chooseRenderer(hints);
+            obj.converter = RtbVersion3Strategy.chooseConverter(obj.hints);
+            obj.renderer = RtbVersion3Strategy.chooseRenderer(obj.hints);
         end
     end
     
@@ -54,7 +54,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
             converterName = hints.converter;
             constructorName = ['RtbVersion3' converterName 'Converter'];
             if 2 == exist(constructorName, 'file')
-                converter = feval(constructorName);
+                converter = feval(constructorName, hints);
             else
                 converter = [];
             end
@@ -70,7 +70,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
             rendererName = hints.renderer;
             constructorName = ['Rtb' rendererName 'Renderer'];
             if 2 == exist(constructorName, 'file')
-                renderer = feval(constructorName);
+                renderer = feval(constructorName, hints);
             else
                 renderer = [];
             end
@@ -127,6 +127,13 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
                 % pass-through for a pre-loaded scene
                 scene = sceneFile;
                 return;
+            end
+            
+            % look carefully for the file
+            scenePath = fileparts(sceneFile);
+            if isempty(scenePath)
+                fileInfo = ResolveFilePath(sceneFile, rtbWorkingFolder('', false, obj.hints));
+                sceneFile = fileInfo.absolutePath;
             end
             scene = mexximpCleanImport(sceneFile, obj.importArgs{:});
         end

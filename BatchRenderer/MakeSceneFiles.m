@@ -143,21 +143,21 @@ function nativeScene = makeSceneForCondition(strategy, ...
     scene, mappings, cc, names, conditionValues, hints)
 
 % possibly load a new scene named in the conditions file
-parentScene = GetNamedValue(names, conditionValues, 'parentScene', '');
+parentScene = rtbGetNamedValue(names, conditionValues, 'parentScene', '');
 if ~isempty(parentScene)
     scene = strategy.loadScene(parentScene);
     scene = strategy.remodelOnceBeforeAll(scene);
 end
 
 % possibly load new mappings named in the conditions file
-mappingsFile = GetNamedValue(names, conditionValues, 'mappingsFile', '');
+mappingsFile = rtbGetNamedValue(names, conditionValues, 'mappingsFile', '');
 if ~isempty(mappingsFile)
     mappings = strategy.loadMappings(mappingsFile);
 end
 
 % possibly load image dimensions from the conditions file
-hints.imageHeight = GetNamedValue(names, conditionValues, 'imageHeight', hints.imageHeight);
-hints.imageWidth = GetNamedValue(names, conditionValues, 'imageWidth', hints.imageWidth);
+hints.imageHeight = rtbGetNamedValue(names, conditionValues, 'imageHeight', hints.imageHeight);
+hints.imageWidth = rtbGetNamedValue(names, conditionValues, 'imageWidth', hints.imageWidth);
 
 % update the mappings for this condition
 [scene, mappings] = strategy.applyVariablesToMappings(scene, mappings, names, conditionValues, cc);

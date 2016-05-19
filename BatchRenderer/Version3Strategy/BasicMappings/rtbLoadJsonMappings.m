@@ -23,7 +23,11 @@ argParser.addRequired('fileName', @ischar);
 argParser.parse(fileName);
 fileName = argParser.Results.fileName;
 
-originalMappings = loadjson(fileName);
+if 2 == exist(fileName, 'file')
+    originalMappings = loadjson(fileName);
+else
+    originalMappings = {};
+end
 
 if ~iscell(originalMappings)
     error('parseJsonMappings:invalidJson', ...

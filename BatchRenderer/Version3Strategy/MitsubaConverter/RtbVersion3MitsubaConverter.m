@@ -1,12 +1,51 @@
 classdef RtbVersion3MitsubaConverter < handle
-    %% Implementation for how to make scene files with the RendererPluginAPI.
-    %
-    % This class is a bridge between the "old" way of finding renderers
-    % using functions that have conventional names, and the "new" way of
-    % subclassing an abstract renderer supertype.
+    %% Implementation for rendering converting mexximp to Mitsuba.
     %
     
+    properties
+        % RenderToolbox3 options struct, see rtbDefaultHints()
+        hints;
+        
+        % default material for mexximp conversion
+        material;
+        
+        % material parameter to receive diffuse reflectance data
+        diffuseParameter;
+        
+        % material parameter to receive specular reflectance data
+        specularParameter;
+        
+        % where to write output files, like scene or geometry
+        outputFolder;
+        
+        % subfolder for geometry within the workingFolder
+        meshSubfolder;
+        
+        % whether to overwrite/update existing mesh files
+        rewriteMeshData;
+    end
+    
+    methods (Static)
+        function material = defaultMaterial()
+            material = MMitsubaElement('', 'bsdf', 'ward');
+            material.append(MMitsubaProperty.withValue('diffuseReflectance', 'spectrum', '300:0 800:0'));
+            material.append(MMitsubaProperty.withValue('specularReflectance', 'rgb', [0.5 0.5 0.5]));
+            material.append(MMitsubaProperty.withValue('alphaU', 'float', 0.15));
+            material.append(MMitsubaProperty.withValue('alphaV', 'float', 0.15));
+        end
+    end
+    
     methods
+        
+        function obj = RtbVersion3MitsubaConverter(hints)
+            obj.hints = rtbDefaultHints(hints);
+            obj.material = RtbVersion3MitsubaConverter.defaultMaterial();
+            obj.diffuseParameter = 'diffuseReflectance';
+            obj.specularParameter = '';
+            obj.outputFolder = rtbWorkingFolder('scenes', true, obj.hints);
+            obj.meshSubfolder = 'mitsuba-geometry';
+            obj.rewriteMeshData = true;
+        end
         
         function defaultMappings = loadDefaultMappings(obj, varargin)
             parser = inputParser();
@@ -91,15 +130,33 @@ classdef RtbVersion3MitsubaConverter < handle
         end
         
         function nativeScene = startConversion(obj, parentScene, mappings, names, conditionValues, conditionNumber)
-            nativeScene = [];
+            nativeScene = rtbMexximpToMitsuba(parentScene, ...
+                'materialDefault', obj.material, ...
+                'materialDiffuseParameter', obj.diffuseParameter, ...
+                'materialSpecularParameter', obj.specularParameter, ...
+                'workingFolder', obj.outputFolder, ...
+                'meshSubfolder', obj.meshSubfolder, ...
+                'rewriteMeshData', obj.rewriteMeshData);
         end
         
         function nativeScene = applyMappings(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
-            nativeScene = [];
+            groupName = rtbGetNamedValue(names, conditionValues, 'groupName', '');
+            if isempty(groupName)
+                groupMappings = mappings;
+            else
+                isInGroup = strcmp(groupName, {mappings.group});
+                groupMappings = mappings(isInGroup);
+            end
+            nativeScene = rtbApplyMMitsubaMappings(nativeScene, groupMappings);
+            nativeScene = rtbApplyMMitsubaGenericMappings(nativeScene, groupMappings);
         end
         
-        function nativeScene = finishConversion(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
-            nativeScene = [];
+        % transition in-memory nativeScene to on-disk mitsubaFile
+        function mitsubaFile = finishConversion(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
+            imageName = rtbGetNamedValue(names, conditionValues, 'imageName', ...
+                sprintf('scene-%03d', conditionNumber));
+            mitsubaFile = fullfile(obj.outputFolder, [imageName '.xml']);
+            nativeScene.printToFile(mitsubaFile);
         end
     end
 end

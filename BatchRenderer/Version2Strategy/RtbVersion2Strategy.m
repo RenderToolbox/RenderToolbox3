@@ -104,7 +104,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
                 return;
             end
             
-            groupName = GetNamedValue(names, conditionValues, 'groupName', '');
+            groupName = rtbGetNamedValue(names, conditionValues, 'groupName', '');
             
             % apply Collada mappings to the scene
             if ~isempty(mappings)

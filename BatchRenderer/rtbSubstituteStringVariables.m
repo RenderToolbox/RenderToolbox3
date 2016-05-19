@@ -49,6 +49,6 @@ for vv = nMatches:-1:1
     ss = starts(vv);
     ee = ends(vv);
     name = string(ss+1:ee-1);
-    value = GetNamedValue(names, values, name, defaultValue);
+    value = rtbGetNamedValue(names, values, name, defaultValue);
     string = [string(1:ss-1) value string(ee+1:end)];
 end

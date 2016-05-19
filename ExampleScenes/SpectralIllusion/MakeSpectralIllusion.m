@@ -79,11 +79,6 @@ montageFile = [montageName '.png'];
 [SRGBMontage, XYZMontage] = ...
     MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
 
-% only makes sense to proceed with fresh renderings and scene files
-if hints.isReuseSceneFiles || hints.isDryRun
-    return;
-end
-
 %% Plot the initial rendering.
 axInitial = subplot(5, 2, [1 3], 'Parent', f);
 imshow(uint8(SRGBMontage), 'Parent', axInitial);

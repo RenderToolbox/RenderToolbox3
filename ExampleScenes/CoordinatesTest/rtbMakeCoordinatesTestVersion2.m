@@ -13,6 +13,9 @@ hints.imageHeight = 240;
 hints.recipeName = mfilename();
 ChangeToWorkingFolder(hints);
 
+hints.remodeler='';
+hints.filmType='';
+
 %% Render with Mitsuba and PBRT.
 toneMapFactor = 100;
 isScale = true;

@@ -13,10 +13,10 @@
 %
 % @details
 % Usage:
-%   absolutePath = GetWorkingAbsolutePath(originalPath, hints)
+%   absolutePath = rtbWorkingAbsolutePath(originalPath, hints)
 %
 % @ingroup Utilities
-function absolutePath = GetWorkingAbsolutePath(originalPath, hints)
+function absolutePath = rtbWorkingAbsolutePath(originalPath, hints)
 
 if nargin < 2
     hints = rtbDefaultHints();

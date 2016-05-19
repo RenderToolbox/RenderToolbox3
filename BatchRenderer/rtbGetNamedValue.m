@@ -1,7 +1,7 @@
-function value = GetNamedValue(names, values, name, defaultValue)
+function value = rtbGetNamedValue(names, values, name, defaultValue)
 %% Find a value by name, or use a default.
 %
-% value = GetNamedValue(names, values, name, defaultValue)
+% value = rtbGetNamedValue(names, values, name, defaultValue)
 % Locates the given name among the cell array of given names, and returns
 % the corresponding value from the cell array of given values.  If no such
 % name is found, returns the given defaultValue.
@@ -9,7 +9,7 @@ function value = GetNamedValue(names, values, name, defaultValue)
 % This is a convenience function to make it a one-liner to access names and
 % values from parallel cell arrays.
 %
-% value = GetNamedValue(names, values, name, defaultValue)
+% value = rtbGetNamedValue(names, values, name, defaultValue)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

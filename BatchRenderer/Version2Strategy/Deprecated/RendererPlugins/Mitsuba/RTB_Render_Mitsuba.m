@@ -17,7 +17,7 @@
 function [status, result, multispectralImage, S] = RTB_Render_Mitsuba(scene, hints)
 
 % resolve the scene which should be located in the working folder
-sceneFile = GetWorkingAbsolutePath(scene.mitsubaFile, hints);
+sceneFile = rtbWorkingAbsolutePath(scene.mitsubaFile, hints);
 
 % invoke Mitsuba!
 [status, result, output] = RunMitsuba(sceneFile, hints);
@@ -27,4 +27,4 @@ end
 
 % read raw output into memory
 %   including explicit spectral sampling, "S"
-[multispectralImage, wls, S] = ReadMultispectralEXR(output);
+[multispectralImage, wls, S] = rtbReadMultispectralEXR(output);
