@@ -12,7 +12,6 @@ classdef RtbRecipeTests < matlab.unittest.TestCase
             hints.workingFolder = fullfile(tempdir(), 'RtbRecipeTests');
             hints.renderer = 'SampleRenderer';
             hints.remodeler = 'SampleRemodeler';
-            hints.isPlot = false;
             
             recipe = NewRecipe( ...
                 'configureScript', configureScript, ...

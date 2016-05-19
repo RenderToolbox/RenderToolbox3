@@ -40,7 +40,7 @@ function nativeScenes = MakeSceneFiles(parentScene, varargin)
 rtbInitialize();
 
 parser = inputParser();
-parser.addRequired('parentScene', @ischar);
+parser.addRequired('parentScene');
 parser.addParameter('conditionsFile', '', @ischar);
 parser.addParameter('mappingsFile', '', @ischar);
 parser.addParameter('hints', rtbDefaultHints(), @isstruct);
@@ -54,7 +54,9 @@ fprintf('\nMakeSceneFiles started at %s.\n\n', datestr(now(), 0));
 
 
 %% Choose the batch rendering strategy.
-if 2 == exist(hints.batchRenderStrategy, 'file')
+if isobject(hints.batchRenderStrategy)
+    strategy = hints.batchRenderStrategy;
+elseif 2 == exist(hints.batchRenderStrategy, 'file')
     constructorFunction = str2func(hints.batchRenderStrategy);
     strategy = feval(constructorFunction, hints);
 else

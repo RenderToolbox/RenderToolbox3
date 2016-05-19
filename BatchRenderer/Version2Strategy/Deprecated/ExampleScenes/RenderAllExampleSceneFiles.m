@@ -30,7 +30,6 @@
 setpref('RenderToolbox3', 'isParallel', true);
 setpref('RenderToolbox3', 'isDryRun', false);
 setpref('RenderToolbox3', 'isReuseSceneFiles', true);
-setpref('RenderToolbox3', 'isPlot', false);
 
 %% Invoke executive scripts.
 % choose where to put output files

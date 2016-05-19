@@ -7,17 +7,24 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
     % We choose a scene file converter and renderer based on the
     % hints.renderer passed to the constructor.
     %
-    %
     
     properties
         % options for batch rendering, see rtbDefaultHints()
         hints = [];
         
-        % 
+        % args to pass to mexximpCleanImport() for scene loading
         importArgs = {'ignoreRootTransform', false, 'flipUVs', true};
+        
+        % args to pass to loadDefaultMappings() for mappings loading
         mappingsArgs = {};
+        
+        % optional function_handle for remodeling
         remodelOnceBeforeAllFunction = [];
+        
+        % optional function_handle for remodeling
         remodelPerConditionBeforeFunction = [];
+        
+        % optional function_handle for remodeling
         remodelPerConditionAfterFunction = [];
     end
     

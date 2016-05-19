@@ -13,10 +13,6 @@
 % Matlab's unix() command.
 %
 % @details
-% if @a hints.isPlot is provided and true, displays an sRGB representation
-% of the output image in a new figure.
-%
-% @details
 % Returns the numeric status code and text output from Mitsuba.
 % Also returns the name of the expected output file from Mitsuba.
 %
@@ -62,10 +58,4 @@ fprintf('%s\n', renderCommand);
 if status ~= 0
     warning(result)
     warning('Could not render scene "%s".', sceneFile)
-elseif hints.isPlot
-    [multispectral, wls, S] = ReadMultispectralEXR(output);
-    toneMapFactor = 10;
-    isScale = true;
-    sRGB = MultispectralToSRGB(multispectral, S, toneMapFactor, isScale);
-    ShowXYZAndSRGB([], sRGB, sceneBase);
 end

@@ -24,8 +24,7 @@
 %
 % @details
 % If @a hints is provided, it must be a struct of RenderToolbox3 options,
-% as returned from rtbDefaultHints().  If hints.isPlot is false, returns
-% without plotting anything.
+% as returned from rtbDefaultHints().
 %
 % @details
 % Usage:
@@ -42,10 +41,6 @@ if nargin < 3
     hints = rtbDefaultHints();
 else
     hints = rtbDefaultHints(hints);
-end
-
-if ~hints.isPlot
-    return;
 end
 
 %% compute bin edges

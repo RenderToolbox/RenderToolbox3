@@ -56,11 +56,10 @@ parser.parse(nativeScenes, varargin{:});
 nativeScenes = parser.Results.nativeScenes;
 hints = rtbDefaultHints(parser.Results.hints);
 
-% don't plot during batch processing
-hints.isPlot = false;
-
 %% Choose the batch rendering strategy.
-if 2 == exist(hints.batchRenderStrategy, 'file')
+if isobject(hints.batchRenderStrategy)
+    strategy = hints.batchRenderStrategy;
+elseif 2 == exist(hints.batchRenderStrategy, 'file')
     constructorFunction = str2func(hints.batchRenderStrategy);
     strategy = feval(constructorFunction, hints);
 else

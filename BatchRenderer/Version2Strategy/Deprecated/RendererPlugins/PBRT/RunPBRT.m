@@ -13,10 +13,6 @@
 % Matlab's unix() command.
 %
 % @details
-% if @a hints.isPlot is provided and true, displays an sRGB representation
-% of the output image in a new figure.
-%
-% @details
 % RenderToolbox3 assumes that relative paths in scene files are relative to
 % @a hints.workingFolder.  But PBRT assumes that relative paths are
 % relative to the folder that contains the scene file.  These are usually
@@ -73,12 +69,5 @@ fprintf('%s\n', renderCommand);
 %% Show a warning or figure?
 if status ~= 0
     warning(result)
-    warning('Could not render scene "%s".', sceneBase)
-    
-elseif hints.isPlot
-    multispectral = ReadDAT(output, pbrt.S(3));
-    toneMapFactor = 10;
-    isScale = true;
-    sRGB = MultispectralToSRGB(multispectral, pbrt.S, toneMapFactor, isScale);
-    ShowXYZAndSRGB([], sRGB, sceneBase);
+    warning('Could not render scene "%s".', sceneBase)    
 end
