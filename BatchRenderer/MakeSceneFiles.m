@@ -20,7 +20,7 @@ function nativeScenes = MakeSceneFiles(parentScene, varargin)
 % scenes = MakeSceneFiles(... 'hints', hints)
 % Specify a struct of options that affect the process of generating
 % renderer-native scene files.  If hints is omitted, values are taken
-% from GetDefaultHints().
+% from rtbDefaultHints().
 %   - hints.strategy specifies how to load and manipulate scene data (e.g.
 %   Collada vs Assimp).  The default is RtbVersion3Strategy.
 %   - hints.renderer specifies which renderer to target
@@ -43,12 +43,12 @@ parser = inputParser();
 parser.addRequired('parentScene', @ischar);
 parser.addParameter('conditionsFile', '', @ischar);
 parser.addParameter('mappingsFile', '', @ischar);
-parser.addParameter('hints', GetDefaultHints(), @isstruct);
+parser.addParameter('hints', rtbDefaultHints(), @isstruct);
 parser.parse(parentScene, varargin{:});
 parentScene = parser.Results.parentScene;
 conditionsFile = parser.Results.conditionsFile;
 mappingsFile = parser.Results.mappingsFile;
-hints = GetDefaultHints(parser.Results.hints);
+hints = rtbDefaultHints(parser.Results.hints);
 
 fprintf('\nMakeSceneFiles started at %s.\n\n', datestr(now(), 0));
 

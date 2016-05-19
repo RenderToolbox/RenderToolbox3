@@ -4,7 +4,7 @@
 %
 % Convert a local absoute path to a relative working path.
 %   @param originalPath string file name or absolute path to convert
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Converts the given @a originalPath to a relative path, relative to the
@@ -23,9 +23,9 @@
 function relativePath = GetWorkingRelativePath(originalPath, hints)
 
 if nargin < 2
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 relativePath = '';

@@ -4,7 +4,7 @@
 %
 % Run a system command and capture results or display them live.
 %   @param command string command to run with built-in system()
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % RunCommand() executes the given @a command string using Matlab's built-in
@@ -15,7 +15,7 @@
 % @details
 % If @a hints.isCaptureCommandResults is false, allows Matlab to print
 % command results to the Command Window immediately as they happen, instead
-% of capturing them.  If @hints is omitted, uses GetDefaultHints().
+% of capturing them.  If @hints is omitted, uses rtbDefaultHints().
 %
 % @details
 % Returns the numeric status code and string result from the system()
@@ -35,7 +35,7 @@ result = '';
 exception = [];
 
 if nargin < 2
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 end
 
 if ~IsStructFieldPresent(hints, 'isCaptureCommandResults')

@@ -4,7 +4,7 @@
 %
 % Convert a relative working path to a local absoute path.
 %   @param originalPath string relative working path to convert
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Converts the given @a originalPath to a local absolute path.  Assumes
@@ -19,9 +19,9 @@
 function absolutePath = GetWorkingAbsolutePath(originalPath, hints)
 
 if nargin < 2
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 workingFolder = GetWorkingFolder('', false, hints);

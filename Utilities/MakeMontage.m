@@ -34,7 +34,7 @@ function [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, vararg
 %
 % outFiles = MakeSensorImages( ... 'hints', hints)
 % Specifies RenderToolbox3 "hints" to control things like the working
-% folder where output should be written.  The default is GetDefaultHints().
+% folder where output should be written.  The default is rtbDefaultHints().
 %
 % Returns a matrix containing the sRGB montage image with size [height
 % width 3].  Also returns a matrix containing XYZ  image data with the same
@@ -52,13 +52,13 @@ parser.addRequired('inFiles', @iscellstr);
 parser.addParameter('outFile', '', @ischar);
 parser.addParameter('toneMapFactor', 0, @isnumeric);
 parser.addParameter('isScale', false, @islogical);
-parser.addParameter('hints', GetDefaultHints(), @isstruct);
+parser.addParameter('hints', rtbDefaultHints(), @isstruct);
 parser.parse(inFiles, varargin{:});
 inFiles = parser.Results.inFiles;
 outFile = parser.Results.outFile;
 toneMapFactor = parser.Results.toneMapFactor;
 isScale = parser.Results.isScale;
-hints = GetDefaultHints(parser.Results.hints);
+hints = rtbDefaultHints(parser.Results.hints);
 
 if isempty(outFile)
     [~, inBase] = fileparts(inFiles{1});

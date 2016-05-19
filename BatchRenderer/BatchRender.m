@@ -9,7 +9,7 @@ function outFiles = BatchRender(nativeScenes, varargin)
 %
 % outFiles = BatchRender(... 'hints', hints)
 % Specify a hints struct with with options that affect the rendering
-% process, as returned from GetDefaultHints().  If hints is omitted,
+% process, as returned from rtbDefaultHints().  If hints is omitted,
 % default options are used.  For example:
 %   - hints.strategy specifies how to load and manipulate scene data (e.g.
 %   Collada vs Assimp).  The default is RtbVersion3Strategy.
@@ -51,10 +51,10 @@ rtbInitialize();
 
 parser = inputParser();
 parser.addRequired('nativeScenes', @iscell);
-parser.addParameter('hints', GetDefaultHints(), @isstruct);
+parser.addParameter('hints', rtbDefaultHints(), @isstruct);
 parser.parse(nativeScenes, varargin{:});
 nativeScenes = parser.Results.nativeScenes;
-hints = GetDefaultHints(parser.Results.hints);
+hints = rtbDefaultHints(parser.Results.hints);
 
 % don't plot during batch processing
 hints.isPlot = false;

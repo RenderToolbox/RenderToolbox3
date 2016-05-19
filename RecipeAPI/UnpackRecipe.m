@@ -4,7 +4,7 @@
 %
 % Load a recipe and its file dependencies from an archive file.
 %   @param archiveName name of the archive file to unpack
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Creates a new recipe struct based on the given @a archiveName, as
@@ -28,9 +28,9 @@ end
 [archivePath, archiveBase] = fileparts(archiveName);
 
 if nargin < 2
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 %% Set up a clean, temporary folder.

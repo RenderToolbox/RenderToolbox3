@@ -29,7 +29,7 @@
 % node Java object, as returned from ReadSceneDom().  This @a docNode
 % will represent the entire Collada parent scene.  It must accept as its 
 % second argument a struct of RenderToolbox3 options as returned from
-% GetDefaultHints().
+% rtbDefaultHints().
 %
 % @details
 % A BeforeAll function may modify the given XML document in any way, or not

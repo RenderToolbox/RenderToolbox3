@@ -4,7 +4,7 @@
 %
 % Invoke the Mitsuba renderer.
 %   @param sceneFile filename or path of a Mitsuba-native scene file.
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %   @param mitsuba struct of mitsuba config., see getpref("Mitsuba")
 %
 % @details
@@ -27,9 +27,9 @@
 function [status, result, output] = RunMitsuba(sceneFile, hints, mitsuba)
 
 if nargin < 2 || isempty(hints)
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 if nargin < 3 || isempty(mitsuba)

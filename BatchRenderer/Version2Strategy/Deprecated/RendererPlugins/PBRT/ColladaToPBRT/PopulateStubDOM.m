@@ -5,7 +5,7 @@
 % Populate a PBRT-XML "stub" document with Collada data.
 %   @param stubIDMap
 %   @param colladaIDMap
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Fills in a PBRT-XML stub document with data from a Collada scene file.

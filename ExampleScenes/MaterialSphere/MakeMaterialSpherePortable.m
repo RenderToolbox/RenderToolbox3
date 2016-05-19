@@ -81,7 +81,7 @@ clear;
 archiveName = fullfile(GetWorkingFolder(), 'MaterialSpherePortable.zip');
 
 % un-pack the recipe into the new folder
-hints = GetDefaultHints();
+hints = rtbDefaultHints();
 recipe = UnpackRecipe(archiveName, hints);
 
 % render the recipe from pre-generated scene files

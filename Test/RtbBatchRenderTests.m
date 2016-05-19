@@ -12,7 +12,7 @@ classdef RtbBatchRenderTests < matlab.unittest.TestCase
         function testRenderSampleRenderer(testCase)
             hints.workingFolder = fullfile(tempdir(), 'RtbBatchRenderTests');
             hints.renderer = 'SampleRenderer';
-            hints = GetDefaultHints(hints);
+            hints = rtbDefaultHints(hints);
             
             nativeScene.scene = RTB_ImportCollada_SampleRenderer('', '', 'sample', hints);
             scenes = {nativeScene, nativeScene};

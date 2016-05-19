@@ -10,7 +10,10 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
     %
     
     properties
+        % options for batch rendering, see rtbDefaultHints()
         hints = [];
+        
+        % 
         importArgs = {'ignoreRootTransform', false, 'flipUVs', true};
         mappingsArgs = {};
         remodelOnceBeforeAllFunction = [];
@@ -30,8 +33,19 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
     
     methods (Static)
         function converter = chooseConverter(hints)
-            rendererName = hints.renderer;
-            constructorName = ['RtbVersion3' rendererName 'Converter'];
+            if isobject(hints.converter)
+                % pass-through for pre-constructed converter
+                converter = hints.converter;
+                return;
+            end
+            
+            if isempty(hints.converter)
+                % choose converter based on the renderer.
+                hints.converter = hints.renderer;
+            end
+            
+            converterName = hints.converter;
+            constructorName = ['RtbVersion3' converterName 'Converter'];
             if 2 == exist(constructorName, 'file')
                 converter = feval(constructorName);
             else
@@ -40,6 +54,12 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         end
         
         function renderer = chooseRenderer(hints)
+            if isobject(hints.renderer)
+                % pass-through for pre-constructed renderer
+                renderer = hints.renderer;
+                return;
+            end
+            
             rendererName = hints.renderer;
             constructorName = ['Rtb' rendererName 'Renderer'];
             if 2 == exist(constructorName, 'file')
@@ -96,6 +116,11 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
     
     methods
         function scene = loadScene(obj, sceneFile)
+            if isstruct(sceneFile)
+                % pass-through for a pre-loaded scene
+                scene = sceneFile;
+                return;
+            end
             scene = mexximpCleanImport(sceneFile, obj.importArgs{:});
         end
         

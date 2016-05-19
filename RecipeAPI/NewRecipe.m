@@ -30,7 +30,7 @@ function recipe = NewRecipe(varargin)
 % variables to the parent scene.
 %
 % recipe = NewRecipe( ... 'hints', hints) specify a a struct of hints as
-% from GetDefaultHints(), which controls aspects of recuipe execution, like
+% from rtbDefaultHints(), which controls aspects of recuipe execution, like
 % where to find and write files and which renderer to use.
 %
 % recipe = NewRecipe(varargin)
@@ -46,14 +46,14 @@ parser.addParameter('executive', {}, @iscell);
 parser.addParameter('parentSceneFile', '', @ischar);
 parser.addParameter('conditionsFile', '', @ischar);
 parser.addParameter('mappingsFile', '', @ischar);
-parser.addParameter('hints', GetDefaultHints(), @isstruct);
+parser.addParameter('hints', rtbDefaultHints(), @isstruct);
 parser.parse(varargin{:});
 configureScript = parser.Results.configureScript;
 executive = parser.Results.executive;
 parentSceneFile = parser.Results.parentSceneFile;
 conditionsFile = parser.Results.conditionsFile;
 mappingsFile = parser.Results.mappingsFile;
-hints = GetDefaultHints(parser.Results.hints);
+hints = rtbDefaultHints(parser.Results.hints);
 
 %% Brand new recipe struct with basic fields filled in.
 % note: struct() needs executive cell array to be wrapped in another cell

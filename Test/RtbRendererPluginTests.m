@@ -3,7 +3,7 @@ classdef RtbRendererPluginTests < matlab.unittest.TestCase
     methods (Test)
         
         function testNonexistentRenderer(testCase)
-            hints = GetDefaultHints();
+            hints = rtbDefaultHints();
             hints.renderer = 'notARenderer';
             try
                 [remodelerFunction, functionPath] = GetRendererAPIFunction('ApplyMappings', hints);
@@ -16,7 +16,7 @@ classdef RtbRendererPluginTests < matlab.unittest.TestCase
         end
         
         function testNonexistentFunction(testCase)
-            hints = GetDefaultHints();
+            hints = rtbDefaultHints();
             hints.remodeler = 'SampleRenderer';
             try
                 [remodelerFunction, functionPath] = GetRemodelerAPIFunction('notAFunction', hints);
@@ -29,7 +29,7 @@ classdef RtbRendererPluginTests < matlab.unittest.TestCase
         end
         
         function testSampleRenderer(testCase)
-            hints = GetDefaultHints();
+            hints = rtbDefaultHints();
             hints.remodeler = 'SampleRenderer';
             
             [remodelerFunction, functionPath] = GetRendererAPIFunction('ApplyMappings', hints);

@@ -16,7 +16,7 @@
 %   MakeRadianceTest(renderer)
 function MakeRadianceTest(renderer)
 
-hints = GetDefaultHints();
+hints = rtbDefaultHints();
 if nargin > 0
     hints.renderer = renderer;
 else

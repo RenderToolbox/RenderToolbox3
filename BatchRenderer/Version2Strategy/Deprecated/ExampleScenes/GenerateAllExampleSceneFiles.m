@@ -35,7 +35,7 @@ setpref('RenderToolbox3', 'isPlot', false);
 %% Invoke execcutive scripts.
 % choose where to put output files
 %   for example '/Users/myName/epic-scene-test'
-%   or empty '' for default folders (see GetDefaultHints())
+%   or empty '' for default folders (see rtbDefaultHints())
 outputRoot = '';
 makeFunctions = { ...
     'MakeCheckerboard.m', ...

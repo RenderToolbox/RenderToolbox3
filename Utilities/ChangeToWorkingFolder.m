@@ -3,7 +3,7 @@
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 %
 % Change to the working folder for a recipe, create it if necessary.
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % cd() to the working folder for the given @a hints, used by a recipe.  See
@@ -20,9 +20,9 @@
 function wasCreated = ChangeToWorkingFolder(hints)
 
 if nargin < 1
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 workingFolder = GetWorkingFolder('', false, hints);

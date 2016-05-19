@@ -5,7 +5,7 @@
 % Convert a "node" node from a Collada document to a PBRT-XML document.
 %   @param PBRTFile name for a new PBRT scene text file
 %   @param PBRTXMLFile name of a PBRT-XML file.
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Write an new .pbrt text scene file with the given @a PBRTFile name, based
@@ -36,9 +36,9 @@ function WritePBRTFile(PBRTFile, PBRTXMLFile, hints)
 pbrtFID = fopen(PBRTFile, 'w');
 
 if nargin < 3
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 %% Top-level PBRT configuration

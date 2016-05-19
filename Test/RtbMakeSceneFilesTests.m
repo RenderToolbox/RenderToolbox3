@@ -14,7 +14,7 @@ classdef RtbMakeSceneFilesTests < matlab.unittest.TestCase
             hints.workingFolder = fullfile(tempdir(), 'RtbBatchRenderTests');
             hints.renderer = 'SampleRenderer';
             hints.remodeler = 'SampleRemodeler';
-            hints = GetDefaultHints(hints);
+            hints = rtbDefaultHints(hints);
             
             colladaFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'CoordinatesTest.dae');
             hints.workingFolder = fullfile(tempdir(), 'RtbMakeSceneFilesTests');

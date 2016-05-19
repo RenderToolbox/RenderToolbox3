@@ -29,7 +29,7 @@ function rtbInitialize(varargin)
 %
 % Setting these values with setpref() makes the changes persistent.
 % Normally you can set the same values in a temporary way, using a "hints"
-% struct.  See GetDefaultHints().
+% struct.  See rtbDefaultHints().
 %
 % rtbInitialize(varargin)
 %
@@ -52,6 +52,7 @@ defaultConfig.recipeName = '';
 % default scene file and rendering options
 defaultConfig.batchRenderStrategy = 'RtbVersion2Strategy';
 defaultConfig.renderer = 'SampleRenderer';
+defaultConfig.converter = 'SampleRenderer';
 defaultConfig.imageHeight = 240;
 defaultConfig.imageWidth = 320;
 defaultConfig.whichConditions = [];

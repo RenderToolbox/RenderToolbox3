@@ -5,7 +5,7 @@
 % Get a complete RenderToolbox3 working folder folder.
 %   @param folderName string name of a RenderToolbox3 recipe folder
 %   @param isRendererSpecific whether or not folder is renderer specific
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Returns the full path to a RenderToolbox3 recipe folder.  This will
@@ -29,7 +29,7 @@
 %   .
 %
 % @details
-% If @a hints is not provided, uses GetDefaultHints() instead.
+% If @a hints is not provided, uses rtbDefaultHints() instead.
 %
 % @details
 % Usage:
@@ -43,9 +43,9 @@ if nargin < 2
 end
 
 if nargin < 3
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 if isRendererSpecific

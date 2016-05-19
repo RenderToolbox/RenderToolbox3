@@ -11,7 +11,7 @@ initialConditionsFile = 'SpectralIllusionConditionsInitial.txt';
 cleverConditionsFile = 'SpectralIllusionConditionsClever.txt';
 
 %% Choose batch renderer options.
-hints = GetDefaultHints();
+hints = rtbDefaultHints();
 hints.renderer = 'Mitsuba';
 hints.imageWidth = 640;
 hints.imageHeight = 480;

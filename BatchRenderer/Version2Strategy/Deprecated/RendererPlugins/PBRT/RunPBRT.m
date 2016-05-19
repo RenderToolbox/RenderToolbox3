@@ -4,7 +4,7 @@
 %
 % Invoke the PBRT renderer.
 %   @param sceneFile filename or path of a PBRT-native text scene file.
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %   @param pbrt struct of pbrt config., see getpref("pbrt")
 %
 % @details
@@ -35,9 +35,9 @@
 function [status, result, output] = RunPBRT(sceneFile, hints, pbrt)
 
 if nargin < 2 || isempty(hints)
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 if nargin < 3 || isempty(pbrt)

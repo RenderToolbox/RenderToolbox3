@@ -35,7 +35,7 @@
 %
 % @details
 % @a hints will be a struct with RenderToolbox3 options, as returned from
-% GetDefaultHints(), which may inform the conversion process.
+% rtbDefaultHints(), which may inform the conversion process.
 %
 % @details
 % An ImportCollada function must return a struct that describes the

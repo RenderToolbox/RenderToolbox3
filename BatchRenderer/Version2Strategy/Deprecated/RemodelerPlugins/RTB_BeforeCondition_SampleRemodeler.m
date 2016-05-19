@@ -36,7 +36,7 @@
 % as subsequent arguments: a struct of mappings data as returned from
 % ParseMappings(), a cell array of variable names and variable values for
 % the current condition, the number of the current condition, and a struct
-% of RenderToolbox3 options as returned from GetDefaultHints().
+% of RenderToolbox3 options as returned from rtbDefaultHints().
 %
 % @details
 % A BeforeCondition function may modify the XML document in any way, or not

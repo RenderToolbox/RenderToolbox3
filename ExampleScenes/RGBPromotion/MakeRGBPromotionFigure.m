@@ -5,7 +5,7 @@
 %% Probe the RGB spectral promotion algortigms of renderers.
 
 %% Move to temp folder before creating new files.
-hints = GetDefaultHints();
+hints = rtbDefaultHints();
 hints.recipeName = mfilename();
 ChangeToWorkingFolder(hints);
 
@@ -69,7 +69,7 @@ end
 
 %% Plot RGB, and promoted spectra.
 close all
-hints = GetDefaultHints();
+hints = rtbDefaultHints();
 RGBMarkers = {'x', 'o'};
 RGBOutMarkers = {'+', 'square'};
 spectrumMarkers = {'x', 'o'};

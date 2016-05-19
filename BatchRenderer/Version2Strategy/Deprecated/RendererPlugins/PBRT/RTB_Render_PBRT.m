@@ -4,7 +4,7 @@
 %
 % Invoke PBRT.
 %   @param scene struct description of the scene to be rendererd
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % This function is the RenderToolbox3 "Render" function for PBRT.
