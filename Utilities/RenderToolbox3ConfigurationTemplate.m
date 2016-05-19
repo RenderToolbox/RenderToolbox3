@@ -26,7 +26,7 @@
 %
 
 %% Start with RenderToolbox3 "fresh out of the box" configuration.
-InitializeRenderToolbox('force', true);
+rtbInitialize('force', true);
 
 %% Tell RenderToolbox3 where to save outputs.
 % choose Matlab's default "user folder"

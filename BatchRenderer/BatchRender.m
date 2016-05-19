@@ -47,7 +47,7 @@ function outFiles = BatchRender(nativeScenes, varargin)
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-InitializeRenderToolbox();
+rtbInitialize();
 
 parser = inputParser();
 parser.addRequired('nativeScenes', @iscell);

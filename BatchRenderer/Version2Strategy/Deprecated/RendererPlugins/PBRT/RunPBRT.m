@@ -44,7 +44,7 @@ if nargin < 3 || isempty(pbrt)
     pbrt = getpref('PBRT');
 end
 
-InitializeRenderToolbox();
+rtbInitialize();
 
 %% Where to get/put the input/output
 % copy scene file to working folder
