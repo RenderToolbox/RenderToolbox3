@@ -45,8 +45,12 @@ function [fileName, isLocated, info] = rtbLocateResource(fileName, varargin)
 % existing files.  The default is true, make new copies or resource files
 % as their names are replaced.
 %
+% rtbLocateResource( ... 'useMatlabPath', useMatlabPath) specifies whether
+% to search the Matlab path for resource files, after searching the given
+% resourceFolder.  The default is true, do search the Matlab path.
+%
 % Returns the given fileName, with modifications.  Also returns a logical
-% flag, true when the resource was located.  Also returns a struct 
+% flag, true when the resource was located.  Also returns a struct
 % of information about what happened.
 %
 % [fileName, isLocated, info] = rtbLocateResource(fileName, varargin)
@@ -54,12 +58,13 @@ function [fileName, isLocated, info] = rtbLocateResource(fileName, varargin)
 % Copyright (c) 2016 mexximp Teame
 
 parser = inputParser();
-parser.addRequired('fileName', @isstruct);
+parser.addRequired('fileName', @ischar);
 parser.addParameter('resourceFolder', pwd(), @ischar);
-parser.addParameter('writeFullPaths', true, @logical);
+parser.addParameter('writeFullPaths', true, @islogical);
 parser.addParameter('relativePath', '', @ischar);
 parser.addParameter('toReplace', '-:', @ischar);
-parser.addParameter('copyOnReplace', true, @logical);
+parser.addParameter('copyOnReplace', true, @islogical);
+parser.addParameter('useMatlabPath', true, @islogical);
 parser.parse(fileName, varargin{:});
 fileName = parser.Results.fileName;
 resourceFolder = parser.Results.resourceFolder;
@@ -67,6 +72,7 @@ writeFullPaths = parser.Results.writeFullPaths;
 relativePath = parser.Results.relativePath;
 toReplace = parser.Results.toReplace;
 copyOnReplace = parser.Results.copyOnReplace;
+useMatlabPath = parser.Results.useMatlabPath;
 
 isLocated = false;
 
@@ -79,6 +85,21 @@ resources = {resourceDir(~isDir).name};
 %% Try to find a the local file.
 resourceMatch = matchResource(fileName, resources);
 if isempty(resourceMatch)
+    % fall back on Matlab path?
+    if useMatlabPath && 2 == exist(fileName, 'file')
+        % report full path to file on Matlab path
+        fullPathName = which(fileName);
+        info.verbatimName = fileName;
+        info.writtenName = fullPathName;
+        info.isMatched = false;
+        info.matchName = fileName;
+        info.matchFullPath = fullPathName;
+        
+        fileName = fullPathName;
+        isLocated = true;
+        return;
+    end
+    
     % report an unmatched file
     info.verbatimName = fileName;
     info.writtenName = fileName;
