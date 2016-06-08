@@ -103,7 +103,24 @@ for mm = 1:numel(mappings)
             map.right.value = fileInfo.resolvedPath;
             
             if ~fileInfo.isRootFolderMatch
-                disp(['Using absolute resource path: ' fileInfo.resolvedPath])
+                
+                % Copy absolute resources over to recipe folder
+                % Note: This is primarily used for docker compatibility,
+                % since the docker container needs all resource files to be
+                % in the same folder.
+                if(hints.copyResources)
+                    resources = GetWorkingFolder('resources', true, hints);
+                    copyfile(fileInfo.resolvedPath,resources);
+                    fprintf('Copied %s to %s \n',fileInfo.resolvedPath,resources);
+                    
+                    % Rename path to be written in generated PBRT file. We
+                    % specify with respect to the recipe root folder.
+                    outputLoc = fullfile('resources',hints.renderer,fileInfo.verbatimName);
+                    map.right.value = outputLoc;
+                else
+                    disp(['Using absolute resource path: ' fileInfo.resolvedPath])
+                end
+                
             end
         end
     end
