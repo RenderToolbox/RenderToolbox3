@@ -8,7 +8,12 @@
 % Surely we will want utilities to make this easier going forward.
 %
 % BSH
-function scene = rtbMakeTestScene()
+function scene = rtbMakeTestScene(varargin)
+
+parser = inputParser();
+parser.addParameter('wallImage', which('stone_wall.exr'), @ischar);
+parser.parse(varargin{:});
+wallImage = parser.Results.wallImage;
 
 % mexximpConstants gives us template structs to fill in
 scene = mexximpConstants('scene');
@@ -32,7 +37,7 @@ yellowLight.position = [0 0 0];
 yellowLight.type = 'spot';
 yellowLight.lookAtDirection = [0 0 -1]';
 yellowLight.innerConeAngle = pi()/6;
-yellowLight.outerConeAngle = pi()/6;
+yellowLight.outerConeAngle = pi()/3;
 yellowLight.constantAttenuation = 1;
 yellowLight.linearAttenuation = 0;
 yellowLight.quadraticAttenuation = 1;
@@ -56,7 +61,7 @@ distantLight.position = [0 0 0]';
 distantLight.type = 'directional';
 distantLight.lookAtDirection = [0 0 -1]';
 distantLight.innerConeAngle = 0;
-distantLight.outerConeAngle = 0;
+distantLight.outerConeAngle = pi()/2;
 distantLight.constantAttenuation = 1;
 distantLight.linearAttenuation = 0;
 distantLight.quadraticAttenuation = 0;
@@ -86,8 +91,7 @@ uberProps = makeUberProperties('whiteMatte', ...
     [0 0 0 0], ...
     0, ...
     1);
-fileName = which('stone_wall.exr');
-textureProps = makeUVTextureProps(fileName, 'diffuse', 0);
+textureProps = makeUVTextureProps(wallImage, 'diffuse', 0);
 whiteMatte.properties = [uberProps textureProps];
 
 scene.materials = [whiteShiny, whiteMatte];

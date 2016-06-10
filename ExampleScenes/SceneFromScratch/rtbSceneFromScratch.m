@@ -11,7 +11,16 @@
 clear;
 clc;
 
-scene = rtbMakeTestScene();
+wallImage = 'stone_wall.exr';
+%wallImage = 'brick_wall.jpg';
+scene = rtbMakeTestScene('wallImage', wallImage);
+
+%% Export the new scene to Collada so we can sanity check it.
+%   ~/render/blender-2.77a-linux-glibc211-x86_64/blender-softwaregl
+format = 'collada';
+pathHere = fileparts(which('rtbSceneFromScratch'));
+colladaFile = fullfile(pathHere, 'rtbSceneFromScratch.dae');
+status = mexximpExport(scene, format, colladaFile, []);
 
 %% Choose batch processing options.
 hints.imageWidth = 320;
@@ -21,8 +30,62 @@ hints.recipeName = 'rtbSceneFromScratch';
 hints.renderer = 'Mitsuba';
 hints.batchRenderStrategy = RtbVersion3Strategy(hints);
 
-%% Convert to Mitsuba-native scene file.
-nativeSceneFiles = MakeSceneFiles(scene, 'hints', hints);
+%% Convert to Mitsuba scene file as-is.
+nativeSceneFiles = MakeSceneFiles(scene, ...
+    'hints', hints);
+
+%% Use JSON mappings to specify light and reflectance spectra.
+mappings{1}.name = 'yellowLight';
+mappings{1}.broadType = 'lights';
+mappings{1}.specificType = 'spot';
+mappings{1}.operation = 'update';
+mappings{1}.properties(1).name = 'intensity';
+mappings{1}.properties(1).valueType = 'spectrum';
+mappings{1}.properties(1).value = 'D65.spd';
+
+mappings{2}.name = 'redLight';
+mappings{2}.broadType = 'lights';
+mappings{2}.specificType = 'spot';
+mappings{2}.operation = 'update';
+mappings{2}.properties(1).name = 'intensity';
+mappings{2}.properties(1).valueType = 'spectrum';
+mappings{2}.properties(1).value = 'D65.spd';
+
+mappings{3}.name = 'greenLight';
+mappings{3}.broadType = 'lights';
+mappings{3}.specificType = 'spot';
+mappings{3}.operation = 'update';
+mappings{3}.properties(1).name = 'intensity';
+mappings{3}.properties(1).valueType = 'spectrum';
+mappings{3}.properties(1).value = 'D65.spd';
+
+mappings{4}.name = 'distantLight';
+mappings{4}.broadType = 'lights';
+mappings{4}.specificType = 'directional';
+mappings{4}.operation = 'update';
+mappings{4}.properties(1).name = 'intensity';
+mappings{4}.properties(1).valueType = 'spectrum';
+mappings{4}.properties(1).value = '300:0.01 800:0.01';
+
+mappings{5}.name = 'whiteShiny';
+mappings{5}.broadType = 'materials';
+mappings{5}.specificType = 'matte';
+mappings{5}.operation = 'update';
+mappings{5}.properties(1).name = 'diffuseReflectance';
+mappings{5}.properties(1).valueType = 'spectrum';
+mappings{5}.properties(1).value = 'mccBabel-14.spd';
+
+% save a JSON mappings file
+mappingsFile = fullfile(pathHere, 'rtbScratchMappings.json');
+savejson('', mappings, ...
+    'FileName', mappingsFile, ...
+    'ArrayIndent', 1, ...
+    'ArrayToStrut', 0);
+
+% make scene files
+nativeSceneFiles = MakeSceneFiles(scene, ...
+    'hints', hints, ...
+    'mappingsFile', mappingsFile);
 
 %% Render with Mitsuba.
 radianceDataFiles = BatchRender(nativeSceneFiles, 'hints', hints);
