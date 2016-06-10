@@ -56,7 +56,7 @@ if isempty(externalTransform)
 end
 
 % flip the x-axis for our convention
-externalTransform = mexximpScale([-1 1 1]) * externalTransform;
+%externalTransform = mexximpScale([-1 1 1]) * externalTransform;
 
 %% Build the mitsuba camera and associated transforms.
 mitsubaNode = MMitsubaElement(mitsubaId, 'sensor', cameraType);

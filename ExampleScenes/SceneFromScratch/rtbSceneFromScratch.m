@@ -31,7 +31,7 @@ hints.renderer = 'Mitsuba';
 hints.batchRenderStrategy = RtbVersion3Strategy(hints);
 
 %% Convert to Mitsuba scene file as-is.
-nativeSceneFiles = MakeSceneFiles(scene, ...
+nativeSceneFiles = MakeSceneFiles(colladaFile, ...
     'hints', hints);
 
 %% Use JSON mappings to specify light and reflectance spectra.
