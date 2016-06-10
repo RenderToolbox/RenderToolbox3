@@ -76,6 +76,8 @@ useMatlabPath = parser.Results.useMatlabPath;
 
 isLocated = false;
 
+disp(fileName)
+
 %% Collect files in the resourceFolder.
 resourceDir = dir(resourceFolder);
 isDir = [resourceDir.isdir];
