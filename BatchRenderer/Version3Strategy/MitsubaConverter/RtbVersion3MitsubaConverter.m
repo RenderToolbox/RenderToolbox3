@@ -126,7 +126,7 @@ classdef RtbVersion3MitsubaConverter < handle
             defaultMappings{mm}.properties(1).value = 0.1;
             defaultMappings{mm}.properties(2).name = 'farClip';
             defaultMappings{mm}.properties(2).valueType = 'float';
-            defaultMappings{mm}.properties(2).value = 100;
+            defaultMappings{mm}.properties(2).value = 1e6;
         end
         
         function nativeScene = startConversion(obj, parentScene, mappings, names, conditionValues, conditionNumber)
