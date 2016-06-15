@@ -18,7 +18,7 @@ if s
 else
     
     % Initialize the docker container (docker pull)
-    dHub = 'vistalab/pbrt';  % Docker container at dockerhub
+    dHub = 'vistalab/pbrt-v2-spectral';  % Docker container at dockerhub
     fprintf('Checking for most recent docker container\n');
     system(sprintf('docker pull %s',dHub));
    
@@ -33,7 +33,7 @@ else
     % the names of the "output" and "sceneCopy" inputs in RunPBRT.m
     
     workingFolder = GetWorkingFolder('', false, hints);
-    name = sprintf('docker run -t -i --rm -v %s:%s vistalab/pbrt pbrt',workingFolder,workingFolder);
+    name = sprintf('docker run -t -i --rm -v %s:%s vistalab/pbrt-v2-spectral pbrt',workingFolder,workingFolder);
     setpref('PBRT','executable',name);
     
     fprintf('\nPBRT executable set to docker container.\n\n')
