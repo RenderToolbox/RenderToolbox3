@@ -35,36 +35,53 @@ colladaPath = {id, ':instance_effect', '.url'};
 effectID = GetSceneValue(colladaIDMap, colladaPath);
 effectID = effectID(effectID ~= '#');
 
-% declare an uber material
-SetType(stubIDMap, id, 'Material', 'uber');
-
 % look for "phong" effect
-phongPath = {effectID, ':profile_COMMON', ':technique|.sid=common', ':phong'};
+phongPath = {effectID, ':profile_COMMON', ':technique', ':phong'};
 phong = SearchScene(colladaIDMap, phongPath);
 if isempty(phong)
-    % use default rgb values and refraction
+    % boring matte
+    SetType(stubIDMap, id, 'Material', 'matte');
     AddParameter(stubIDMap, id, 'Kd', 'rgb', '1 1 1');
-    AddParameter(stubIDMap, id, 'Ks', 'rgb', '0 0 0');
-    AddParameter(stubIDMap, id, 'index', 'float', '1');
+    AddParameter(stubIDMap, id, 'sigma', 'float', '0');
     
 else
     % diffuse (may be a texture)
-    [type, value] = extractPhongParameter(phong, 'diffuse', 'rgb', '1 1 1', []);
-    AddParameter(stubIDMap, id, 'Kd', type, value);
-    if strcmp('texture', type)
-        declareTexture(effectID, value, stubIDMap, colladaIDMap);
-    end
+    [diffuseType, diffuse] = extractPhongParameter(phong, 'diffuse', 'rgb', '1 1 1', []);
     
     % specular (may be a texture)
-    [type, value] = extractPhongParameter(phong, 'specular', 'rgb', '0 0 0', []);
-    AddParameter(stubIDMap, id, 'Ks', type, value);
-    if strcmp('texture', type)
-        declareTexture(effectID, value, stubIDMap, colladaIDMap);
-    end
+    [specularType, specular] = extractPhongParameter(phong, 'specular', 'rgb', '', []);
     
-    % index of refraction
-    [type, value] = extractPhongParameter(phong, 'index_of_refraction', 'float', '1', []);
-    AddParameter(stubIDMap, id, 'index', type, value);
+    if isempty(specular)
+        % custom matte
+        SetType(stubIDMap, id, 'Material', 'matte');
+        
+        AddParameter(stubIDMap, id, 'Kd', diffuseType, diffuse);
+        if strcmp('texture', diffuseType)
+            declareTexture(effectID, diffuse, stubIDMap, colladaIDMap);
+        end
+        
+        AddParameter(stubIDMap, id, 'sigma', 'float', '0');
+    else
+        % custom Ward
+        % would prefer uber with index of refraction, but it seems broken
+        SetType(stubIDMap, id, 'Material', 'anisoward');
+        
+        % index of refraction
+        %     [type, value] = extractPhongParameter(phong, 'index_of_refraction', 'float', '1', []);
+        %     AddParameter(stubIDMap, id, 'index', type, value);
+        
+        AddParameter(stubIDMap, id, 'Kd', diffuseType, diffuse);
+        if strcmp('texture', diffuseType)
+            declareTexture(effectID, diffuse, stubIDMap, colladaIDMap);
+        end
+        
+        AddParameter(stubIDMap, id, 'Ks', specularType, specular);
+        if strcmp('texture', specularType)
+            declareTexture(effectID, specular, stubIDMap, colladaIDMap);
+        end
+        AddParameter(stubIDMap, id, 'alphaU', 'float', '0.15');
+        AddParameter(stubIDMap, id, 'alphaV', 'float', '0.15');
+    end
 end
 
 % Extract parameter type and value from a phong

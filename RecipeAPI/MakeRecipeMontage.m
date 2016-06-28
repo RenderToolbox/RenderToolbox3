@@ -16,7 +16,7 @@
 %
 % @details
 % Usage:
-%   recipe = MakeRecipeMontage(recipe)
+%   recipe = MakeRecipeMontage(recipe, toneMapFactor, isScale)
 %
 % @ingroup RecipeAPI
 function recipe = MakeRecipeMontage(recipe, toneMapFactor, isScale)
