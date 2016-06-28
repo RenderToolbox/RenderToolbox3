@@ -188,12 +188,16 @@ class sceneManager:
     def removeObjectFromScene(self,  object):
         # Remove the object from the scene
         print('Removing object "{}", from old scene ("{}")'.format(object.name, bpy.context.scene.name));
-        bpy.data.objects.remove(object);
+        object.select = True;
+        bpy.ops.object.delete();
         
     # Method to remove all objects from the current scene
     def removeAllObjects(self):
         for object in bpy.data.objects:
-            self.removeObjectFromScene(object);  
+            if object != None:
+                self.removeObjectFromScene(object);
+            else:
+                print("Object {} does not exist".format(object.name))
          
     def unlinkObjectFromScene(self,  object):
         # Check to see if the object is in the scene, and if it is, unlink it from the scene
