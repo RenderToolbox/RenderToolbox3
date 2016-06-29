@@ -189,8 +189,9 @@ class sceneManager:
         # Remove the object from the scene
         print('Removing object "{}", from old scene ("{}")'.format(object.name, bpy.context.scene.name));
         object.select = True;
-        bpy.ops.object.delete();
-        
+        #bpy.ops.object.delete();
+        bpy.data.objects.remove(object);
+
     # Method to remove all objects from the current scene
     def removeAllObjects(self):
         for object in bpy.data.objects:
