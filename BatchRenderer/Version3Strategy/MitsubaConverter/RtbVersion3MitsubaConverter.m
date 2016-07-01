@@ -27,11 +27,7 @@ classdef RtbVersion3MitsubaConverter < handle
     
     methods (Static)
         function material = defaultMaterial()
-            material = MMitsubaElement('', 'bsdf', 'ward');
-            material.append(MMitsubaProperty.withValue('diffuseReflectance', 'spectrum', '300:0 800:0'));
-            material.append(MMitsubaProperty.withValue('specularReflectance', 'rgb', [0.5 0.5 0.5]));
-            material.append(MMitsubaProperty.withValue('alphaU', 'float', 0.15));
-            material.append(MMitsubaProperty.withValue('alphaV', 'float', 0.15));
+            material = MMitsubaElement('', 'bsdf', 'diffuse');
         end
     end
     

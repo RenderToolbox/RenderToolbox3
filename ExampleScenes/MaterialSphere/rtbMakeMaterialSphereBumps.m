@@ -10,8 +10,8 @@ conditionsFile = 'MaterialSphereConditions.txt';
 mappingsFile = 'MaterialSphereBumpsMappings.json';
 
 %% Choose batch renderer options.
-hints.imageWidth = 320;
-hints.imageHeight = 240;
+hints.imageWidth = 200;
+hints.imageHeight = 160;
 hints.fov = 49.13434 * pi() / 180;
 hints.recipeName = mfilename();
 
