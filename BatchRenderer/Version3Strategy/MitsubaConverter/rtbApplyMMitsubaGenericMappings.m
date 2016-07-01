@@ -48,7 +48,7 @@ for mm = 1:nGenericMappings
     end
     
     %% Create/find/delete a scene element.
-    element = applyMMitsubaMappingOperation(mitsubaScene, mapping, ...
+    element = rtbApplyMMitsubaMappingOperation(mitsubaScene, mapping, ...
         'type', type);
     if isempty(element)
         continue;
@@ -78,7 +78,7 @@ for mm = 1:nGenericMappings
             emitterId = [element.id '-emitter'];
             emitter = MMitsubaElement(emitterId, 'emitter', 'area');
             emitter.setProperty('radiance', 'spectrum', ...
-                getMappingProperty(mapping, 'intensity', '300:1 800:1'));
+                rtbGetMappingProperty(mapping, 'intensity', '300:1 800:1'));
             
             % nested in the original shape
             element.append(emitter);
@@ -134,7 +134,7 @@ for mm = 1:nGenericMappings
             element.id = innerMaterialId;
             
             % locate the original texture
-            textureName = getMappingProperty(mapping, 'texture', '');
+            textureName = rtbGetMappingProperty(mapping, 'texture', '');
             originalTexture = mitsubaScene.find(textureName, ...
                 'type', 'texture');
             
@@ -145,7 +145,7 @@ for mm = 1:nGenericMappings
                 'id', originalTexture.id, ...
                 'name', 'value'));
             scaleTexture.setProperty('scale', 'float', ...
-                getMappingProperty(mapping, 'scale', 1));
+                rtbGetMappingProperty(mapping, 'scale', 1));
             
             % wrap original material and scaled texture in a "bumpmap" material
             bumpmap = MMitsubaElement(originalMaterialId, 'bsdf', 'bumpmap');
@@ -175,27 +175,27 @@ for mm = 1:nGenericMappings
                 case 'matte'
                     element.pluginType = 'diffuse';
                     element.setProperty('reflectance', 'spectrum', ...
-                        getMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
                     
                 case 'anisoward'
                     element.pluginType = 'ward';
                     element.setProperty('diffuseReflectance', 'spectrum', ...
-                        getMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
                     element.setProperty('specularReflectance', 'spectrum', ...
-                        getMappingProperty(mapping, 'specularReflectance', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'specularReflectance', '300:0 800:0'));
                     element.setProperty('alphaU', 'float', ...
-                        getMappingProperty(mapping, 'alphaU', 0.15));
+                        rtbGetMappingProperty(mapping, 'alphaU', 0.15));
                     element.setProperty('alphaV', 'float', ...
-                        getMappingProperty(mapping, 'alphaV', 0.15));
+                        rtbGetMappingProperty(mapping, 'alphaV', 0.15));
                     
                 case 'metal'
                     element.pluginType = 'roughconductor';
                     element.setProperty('eta', 'spectrum', ...
-                        getMappingProperty(mapping, 'eta', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'eta', '300:0 800:0'));
                     element.setProperty('k', 'spectrum', ...
-                        getMappingProperty(mapping, 'k', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'k', '300:0 800:0'));
                     element.setProperty('alpha', 'float', ...
-                        getMappingProperty(mapping, 'roughness', .05));
+                        rtbGetMappingProperty(mapping, 'roughness', .05));
             end
             
         case 'lights'
@@ -203,12 +203,12 @@ for mm = 1:nGenericMappings
                 case {'point', 'spot'}
                     element.pluginType = mapping.specificType;
                     element.setProperty('intensity', 'spectrum', ...
-                        getMappingProperty(mapping, 'intensity', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'intensity', '300:0 800:0'));
                     
                 case 'directional'
                     element.pluginType = 'directional';
                     element.setProperty('irradiance', 'spectrum', ...
-                        getMappingProperty(mapping, 'intensity', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'intensity', '300:0 800:0'));
             end
             
         case {'floatTextures', 'spectrumTextures'}
@@ -217,39 +217,39 @@ for mm = 1:nGenericMappings
                 case 'bitmap'
                     element.pluginType = 'bitmap';
                     element.setProperty('filename', 'string', ...
-                        getMappingProperty(mapping, 'filename', ''));
+                        rtbGetMappingProperty(mapping, 'filename', ''));
                     element.setProperty('gamma', 'float', ...
-                        getMappingProperty(mapping, 'gamma', 1));
+                        rtbGetMappingProperty(mapping, 'gamma', 1));
                     element.setProperty('maxAnisotropy', 'float', ...
-                        getMappingProperty(mapping, 'maxAnisotropy', 8));
+                        rtbGetMappingProperty(mapping, 'maxAnisotropy', 8));
                     element.setProperty('uoffset', 'float', ...
-                        getMappingProperty(mapping, 'offsetU', 0));
+                        rtbGetMappingProperty(mapping, 'offsetU', 0));
                     element.setProperty('voffset', 'float', ...
-                        getMappingProperty(mapping, 'offsetV', 0));
+                        rtbGetMappingProperty(mapping, 'offsetV', 0));
                     element.setProperty('uscale', 'float', ...
-                        getMappingProperty(mapping, 'scaleU', 1));
+                        rtbGetMappingProperty(mapping, 'scaleU', 1));
                     element.setProperty('vscale', 'float', ...
-                        getMappingProperty(mapping, 'scaleV', 1));
+                        rtbGetMappingProperty(mapping, 'scaleV', 1));
                     element.setProperty('wrap', 'string', ...
-                        getMappingProperty(mapping, 'wrapMode', 'repeat'));
+                        rtbGetMappingProperty(mapping, 'wrapMode', 'repeat'));
                     element.setProperty('filterType', 'string', ...
-                        getMappingProperty(mapping, 'filterMode', 'trilinear'));
+                        rtbGetMappingProperty(mapping, 'filterMode', 'trilinear'));
                     
                 case 'checkerboard'
                     element.pluginType = 'checkerboard';
                     
                     element.setProperty('uoffset', 'float', ...
-                        getMappingProperty(mapping, 'offsetU', 0));
+                        rtbGetMappingProperty(mapping, 'offsetU', 0));
                     element.setProperty('voffset', 'float', ...
-                        getMappingProperty(mapping, 'offsetV', 0));
+                        rtbGetMappingProperty(mapping, 'offsetV', 0));
                     element.setProperty('uscale', 'float', ...
-                        getMappingProperty(mapping, 'checksPerU', 2) / 2);
+                        rtbGetMappingProperty(mapping, 'checksPerU', 2) / 2);
                     element.setProperty('vscale', 'float', ...
-                        getMappingProperty(mapping, 'checksPerV', 2) / 2);
+                        rtbGetMappingProperty(mapping, 'checksPerV', 2) / 2);
                     element.setProperty('color1', 'spectrum', ...
-                        getMappingProperty(mapping, 'oddColor', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'oddColor', '300:0 800:0'));
                     element.setProperty('color2', 'spectrum', ...
-                        getMappingProperty(mapping, 'evenColor', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'evenColor', '300:0 800:0'));
             end
     end
 end

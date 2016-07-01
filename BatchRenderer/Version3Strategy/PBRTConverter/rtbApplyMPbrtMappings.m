@@ -27,7 +27,7 @@ nPbrtMappings = numel(pbrtMappings);
 for mm = 1:nPbrtMappings
     %% Create/find/delete a scene element.
     mapping = pbrtMappings(mm);
-    element = applyMPbrtMappingOperation(pbrtScene, mapping);
+    element = rtbApplyMPbrtMappingOperation(pbrtScene, mapping);
     if isempty(element)
         continue;
     end
@@ -39,7 +39,7 @@ for mm = 1:nPbrtMappings
     for pp = 1:numel(mapping.properties)
         property = mapping.properties(pp);
         oldValue = element.getParameter(property.name);
-        newValue = applyPropertyOperation(property, oldValue);
+        newValue = rtbApplyPropertyOperation(property, oldValue);
         element.setParameter(property.name, property.valueType, newValue);
     end
 end

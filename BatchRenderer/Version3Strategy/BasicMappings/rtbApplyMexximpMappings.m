@@ -28,7 +28,7 @@ for mm = 1:nMexximpMappings
     mapping = mexximpMappings(mm);
     
     % find the element to update
-    element = findSceneElement(scene, ...
+    element = rtbFindSceneElement(scene, ...
         'name', mapping.name, ...
         'broadType', mapping.broadType, ...
         'index', mapping.index);
@@ -41,7 +41,7 @@ for mm = 1:nMexximpMappings
         property = mapping.properties(pp);
         propertyPath = cat(2, element.path, {property.name});
         oldValue = mPathGet(scene, propertyPath);
-        newValue = applyPropertyOperation(property, oldValue);
+        newValue = rtbApplyPropertyOperation(property, oldValue);
         scene = mPathSet(scene, propertyPath, newValue);
     end
 end

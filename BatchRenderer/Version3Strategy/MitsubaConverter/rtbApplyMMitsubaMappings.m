@@ -28,7 +28,7 @@ nMitsubaMappings = numel(mitsubaMappings);
 for mm = 1:nMitsubaMappings
     %% Create/find/delete a scene element.
     mapping = mitsubaMappings(mm);
-    element = applyMMitsubaMappingOperation(mitsubaScene, mapping);
+    element = rtbApplyMMitsubaMappingOperation(mitsubaScene, mapping);
     if isempty(element)
         continue;
     end
@@ -40,7 +40,7 @@ for mm = 1:nMitsubaMappings
     for pp = 1:numel(mapping.properties)
         property = mapping.properties(pp);
         oldValue = element.getProperty(property.name);
-        newValue = applyPropertyOperation(property, oldValue);
+        newValue = rtbApplyPropertyOperation(property, oldValue);
         element.setProperty(property.name, property.valueType, newValue);
     end
 end

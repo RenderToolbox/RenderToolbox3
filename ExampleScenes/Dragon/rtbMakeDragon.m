@@ -15,10 +15,6 @@ hints.fov = 49.13434 * pi() / 180;
 hints.recipeName = mfilename();
 ChangeToWorkingFolder(hints);
 
-toneMapFactor = 100;
-isScale = true;
-
-
 %% Render with Mitsuba and PBRT.
 toneMapFactor = 10;
 isScale = true;

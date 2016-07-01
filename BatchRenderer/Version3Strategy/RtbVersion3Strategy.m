@@ -208,7 +208,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         end
         
         function [scene, mappings] = applyBasicMappings(obj, scene, mappings, names, conditionValues, conditionNumber)
-            scene = applyMexximpMappings(scene, mappings);
+            scene = rtbApplyMexximpMappings(scene, mappings);
         end
         
         function [scene, mappings] = remodelPerConditionAfter(obj, scene, mappings, names, conditionValues, conditionNumber)

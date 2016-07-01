@@ -48,7 +48,7 @@ for mm = 1:nGenericMappings
     end
     
     %% Create/find/delete a scene element.
-    element = applyMPbrtMappingOperation(pbrtScene, mapping, ...
+    element = rtbApplyMPbrtMappingOperation(pbrtScene, mapping, ...
         'identifier', identifier);
     if isempty(element)
         continue;
@@ -99,7 +99,7 @@ for mm = 1:nGenericMappings
                 'name', element.name, ...
                 'type', 'diffuse');
             areaLight.setParameter('L', 'spectrum', ...
-                getMappingProperty(mapping, 'intensity', '300:1 800:1'));
+                rtbGetMappingProperty(mapping, 'intensity', '300:1 800:1'));
             areaLight.setParameter('nsamples', 'integer', 8);
             attribute.append(areaLight);
             
@@ -150,7 +150,7 @@ for mm = 1:nGenericMappings
             %    "texture bumpmap" "earthBumpMap-scaled"
             
             % locate the original texture
-            textureName = getMappingProperty(mapping, 'texture', '');
+            textureName = rtbGetMappingProperty(mapping, 'texture', '');
             originalTexture = pbrtScene.world.find('Texture', ...
                 'name', textureName);
             
@@ -159,7 +159,7 @@ for mm = 1:nGenericMappings
             scaleTexture = MPbrtElement.texture(scaledTextureName, 'float', 'scale');
             scaleTexture.setParameter('tex1', 'texture', originalTexture.name);
             scaleTexture.setParameter('tex2', 'float', ...
-                getMappingProperty(mapping, 'scale', 1));
+                rtbGetMappingProperty(mapping, 'scale', 1));
             pbrtScene.world.prepend(scaleTexture);
             
             % move textures to the front, in dependency order
@@ -177,27 +177,27 @@ for mm = 1:nGenericMappings
                 case 'matte'
                     element.type = 'matte';
                     element.setParameter('Kd', 'spectrum', ...
-                        getMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
                     
                 case 'anisoward'
                     element.type = 'anisoward';
                     element.setParameter('Kd', 'spectrum', ...
-                        getMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
                     element.setParameter('Ks', 'spectrum', ...
-                        getMappingProperty(mapping, 'specularReflectance', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'specularReflectance', '300:0 800:0'));
                     element.setParameter('alphaU', 'float', ...
-                        getMappingProperty(mapping, 'alphaU', 0.15));
+                        rtbGetMappingProperty(mapping, 'alphaU', 0.15));
                     element.setParameter('alphaV', 'float', ...
-                        getMappingProperty(mapping, 'alphaV', 0.15));
+                        rtbGetMappingProperty(mapping, 'alphaV', 0.15));
                     
                 case 'metal'
                     element.type = 'metal';
                     element.setParameter('eta', 'spectrum', ...
-                        getMappingProperty(mapping, 'eta', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'eta', '300:0 800:0'));
                     element.setParameter('k', 'spectrum', ...
-                        getMappingProperty(mapping, 'k', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'k', '300:0 800:0'));
                     element.setParameter('roughness', 'float', ...
-                        getMappingProperty(mapping, 'roughness', .05) / 5);
+                        rtbGetMappingProperty(mapping, 'roughness', .05) / 5);
             end
             
         case 'lights'
@@ -205,12 +205,12 @@ for mm = 1:nGenericMappings
                 case {'point', 'spot'}
                     element.type = mapping.specificType;
                     element.setParameter('I', 'spectrum', ...
-                        getMappingProperty(mapping, 'intensity', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'intensity', '300:0 800:0'));
                     
                 case 'directional'
                     element.type = 'distant';
                     element.setParameter('L', 'spectrum', ...
-                        getMappingProperty(mapping, 'intensity', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'intensity', '300:0 800:0'));
             end
             
         case {'floatTextures', 'spectrumTextures'}
@@ -226,27 +226,27 @@ for mm = 1:nGenericMappings
                 case 'bitmap'
                     element.type = 'imagemap';
                     element.setParameter('filename', 'string', ...
-                        getMappingProperty(mapping, 'filename', ''));
+                        rtbGetMappingProperty(mapping, 'filename', ''));
                     element.setParameter('gamma', 'float', ...
-                        getMappingProperty(mapping, 'gamma', 1));
+                        rtbGetMappingProperty(mapping, 'gamma', 1));
                     element.setParameter('maxanisotropy', 'float', ...
-                        getMappingProperty(mapping, 'maxAnisotropy', 20));
+                        rtbGetMappingProperty(mapping, 'maxAnisotropy', 20));
                     element.setParameter('udelta', 'float', ...
-                        getMappingProperty(mapping, 'offsetU', 0));
+                        rtbGetMappingProperty(mapping, 'offsetU', 0));
                     element.setParameter('vdelta', 'float', ...
-                        getMappingProperty(mapping, 'offsetV', 0));
+                        rtbGetMappingProperty(mapping, 'offsetV', 0));
                     element.setParameter('uscale', 'float', ...
-                        getMappingProperty(mapping, 'scaleU', 1));
+                        rtbGetMappingProperty(mapping, 'scaleU', 1));
                     element.setParameter('vscale', 'float', ...
-                        getMappingProperty(mapping, 'scaleV', 1));
+                        rtbGetMappingProperty(mapping, 'scaleV', 1));
                     
-                    wrap = getMappingProperty(mapping, 'wrapMode', 'repeat');
+                    wrap = rtbGetMappingProperty(mapping, 'wrapMode', 'repeat');
                     if strcmp('zero', wrap)
                         wrap = 'black';
                     end
                     element.setParameter('wrap', 'string', wrap);
                     
-                    filterMode = getMappingProperty(mapping, 'filterMode', '');
+                    filterMode = rtbGetMappingProperty(mapping, 'filterMode', '');
                     isTrilinear = strcmp('trilinear', filterMode);
                     element.setParameter('trilinear', 'bool', isTrilinear);
                     
@@ -254,17 +254,17 @@ for mm = 1:nGenericMappings
                     element.type = 'checkerboard';
                     
                     element.setParameter('udelta', 'float', ...
-                        getMappingProperty(mapping, 'offsetU', 0));
+                        rtbGetMappingProperty(mapping, 'offsetU', 0));
                     element.setParameter('vdelta', 'float', ...
-                        getMappingProperty(mapping, 'offsetV', 0));
+                        rtbGetMappingProperty(mapping, 'offsetV', 0));
                     element.setParameter('uscale', 'float', ...
-                        getMappingProperty(mapping, 'checksPerU', 2));
+                        rtbGetMappingProperty(mapping, 'checksPerU', 2));
                     element.setParameter('vscale', 'float', ...
-                        getMappingProperty(mapping, 'checksPerV', 2));
+                        rtbGetMappingProperty(mapping, 'checksPerV', 2));
                     element.setParameter('tex2', 'spectrum', ...
-                        getMappingProperty(mapping, 'oddColor', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'oddColor', '300:0 800:0'));
                     element.setParameter('tex1', 'spectrum', ...
-                        getMappingProperty(mapping, 'evenColor', '300:0 800:0'));
+                        rtbGetMappingProperty(mapping, 'evenColor', '300:0 800:0'));
                     element.setParameter('mapping', 'string', 'uv');
                     element.setParameter('dimension', 'integer', 2);
             end
