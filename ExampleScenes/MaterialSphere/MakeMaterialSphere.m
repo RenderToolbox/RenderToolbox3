@@ -1,4 +1,4 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 %
@@ -10,16 +10,10 @@ conditionsFile = 'MaterialSphereConditions.txt';
 mappingsFile = 'MaterialSphereMappings.txt';
 
 %% Choose batch renderer options.
-% which materials to use, [] means all
-hints.whichConditions = [];
-
-% pixel size of each rendering
-hints.imageWidth = 200;
-hints.imageHeight = 160;
-
-% put outputs in a subfolder named like this script
+hints.imageWidth = 320;
+hints.imageHeight = 240;
+hints.fov = 49.13434 * pi() / 180;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
 
 %% Choose some color matching functions to make sensor images.
 % choose several Pyschtoolbox matching functions
@@ -49,21 +43,32 @@ for renderer = {'Mitsuba', 'PBRT'}
     
     % choose one renderer
     hints.renderer = renderer{1};
+    hints.batchRenderStrategy = RtbVersion3Strategy(hints);
     
     % make 3 multi-spectral renderings, saved in .mat files
-    nativeSceneFiles = MakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
-    radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+    nativeSceneFiles = MakeSceneFiles(parentSceneFile, ...
+        'conditionsFile', conditionsFile, ...
+        'mappingsFile', mappingsFile, ...
+        'hints', hints);
+    radianceDataFiles = BatchRender(nativeSceneFiles, ...
+        'hints', hints);
     
     % condense multi-spectral renderings into one sRGB montage
     montageName = sprintf('MaterialSphere (%s)', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
+        MakeMontage(radianceDataFiles, ...
+        'outFile', montageFile, ...
+        'toneMapFactor', toneMapFactor, ...
+        'isScale', isScale, ...
+        'hints', hints);
     
     % display the sRGB montage
     ShowXYZAndSRGB([], SRGBMontage, montageName);
     
     % make some sensor images, in addition to the sRGB montage
-    sensorImages = MakeSensorImages( ...
-        radianceDataFiles, matchFuncs, matchSampling, matchNames, hints);
+    sensorImages = MakeSensorImages(radianceDataFiles, matchFuncs, ...
+        'matchingS', matchSampling, ...
+        'names', matchNames, ...
+        'hints', hints);
 end

@@ -7,19 +7,13 @@
 %% Choose example files, make sure they're on the Matlab path.
 parentSceneFile = 'MaterialSphere.dae';
 conditionsFile = 'MaterialSphereConditions.txt';
-mappingsFile = 'MaterialSphereBumpsMappings.txt';
+mappingsFile = 'MaterialSphereBumpsMappings.json';
 
 %% Choose batch renderer options.
-% which materials to use, [] means all
-hints.whichConditions = [];
-
-% pixel size of each rendering
-hints.imageWidth = 200;
-hints.imageHeight = 160;
-
-% put outputs in a subfolder named like this script
+hints.imageWidth = 320;
+hints.imageHeight = 240;
+hints.fov = 49.13434 * pi() / 180;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
 
 %% Choose some color matching functions to make sensor images.
 % choose several Pyschtoolbox matching functions
@@ -49,6 +43,7 @@ for renderer = {'Mitsuba', 'PBRT'}
     
     % choose one renderer
     hints.renderer = renderer{1};
+    hints.batchRenderStrategy = RtbVersion3Strategy(hints);
     
     % make 3 multi-spectral renderings, saved in .mat files
     nativeSceneFiles = MakeSceneFiles(parentSceneFile, ...

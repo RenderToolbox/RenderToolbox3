@@ -104,6 +104,16 @@ classdef RtbVersion3PBRTConverter < handle
             defaultMappings{mm}.properties(2).name = 'yresolution';
             defaultMappings{mm}.properties(2).valueType = 'integer';
             defaultMappings{mm}.properties(2).value = imageHeight;
+            
+            mm = mm + 1;
+            defaultMappings{mm}.name = 'Camera';
+            defaultMappings{mm}.broadType = 'nodes';
+            defaultMappings{mm}.operation = 'update';
+            defaultMappings{mm}.destination = 'mexximp';
+            defaultMappings{mm}.properties(1).name = 'transformation';
+            defaultMappings{mm}.properties(1).valueType = 'matrix';
+            defaultMappings{mm}.properties(1).value = mexximpScale([-1 1 1]);
+            defaultMappings{mm}.properties(1).operation = 'value * oldValue';
         end
         
         function nativeScene = startConversion(obj, parentScene, mappings, names, conditionValues, conditionNumber)
@@ -121,8 +131,9 @@ classdef RtbVersion3PBRTConverter < handle
             if isempty(groupName)
                 groupMappings = mappings;
             else
+                isAnyGroup = strcmp('', {mappings.group});
                 isInGroup = strcmp(groupName, {mappings.group});
-                groupMappings = mappings(isInGroup);
+                groupMappings = mappings(isAnyGroup | isInGroup);
             end
             nativeScene = rtbApplyMPbrtMappings(nativeScene, groupMappings);
             nativeScene = rtbApplyMPbrtGenericMappings(nativeScene, groupMappings);

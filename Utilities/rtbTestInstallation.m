@@ -1,16 +1,16 @@
-function [renderResults, comparison] = RenderToolbox3InstallationTest(varargin)
+function [renderResults, comparison] = rtbTestInstallation(varargin)
 % Make sure a new RenderToolbox3 installation is working.
 %
-% RenderToolbox3InstallationTest() Initializes RenderToolbox3 after
+% rtbTestInstallation() Initializes RenderToolbox3 after
 % installation and then put it through some basic tests.  If this function
 % runs properly, you're off to the races.
 %
-% RenderToolbox3InstallationTest( ... 'referenceRoot', referenceRoot)
+% rtbTestInstallation( ... 'referenceRoot', referenceRoot)
 % provide the path to a set of RenderToolbox3 reference data.  Rendering
 % produced locally will be compared to renderings in the reference data
 % set.
 %
-% RenderToolbox3InstallationTest( ... 'doAll', doAll) specify whether to to
+% rtbTestInstallation( ... 'doAll', doAll) specify whether to to
 % all available test renderings (true), or just a few (false). The default
 % is false, do just a few test renderings.
 %
@@ -18,9 +18,9 @@ function [renderResults, comparison] = RenderToolbox3InstallationTest(varargin)
 % referenceRoot is provided, also returns a struct of comparisons between
 % local renderings and reference renderings.
 %
-% [renderResults, comparison] = RenderToolbox3InstallationTest(varargin)
+% [renderResults, comparison] = rtbTestInstallation(varargin)
 %
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
@@ -115,10 +115,10 @@ if doAll
     
 else
     testScenes = { ...
-        'MakeCoordinatesTest.m', ...
-        'MakeDragon.m', ...
-        'MakeMaterialSphereBumps.m', ...
-        'MakeMaterialSphereRemodeled.m'};
+        'rtbMakeCoordinatesTest.m', ...
+        'rtbMakeDragon.m', ...
+        'rtbMakeMaterialSphereBumps.m'};
+    % 'MakeMaterialSphereRemodeled.m'};
     
     fprintf('\nTesting rendering with %d example scripts.\n', numel(testScenes));
     fprintf('You should see several figures with rendered images.\n\n');

@@ -93,16 +93,6 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
             
             mm = 1;
             defaultMappings{mm}.name = 'Camera';
-            defaultMappings{mm}.broadType = 'nodes';
-            defaultMappings{mm}.operation = 'update';
-            defaultMappings{mm}.destination = 'mexximp';
-            defaultMappings{mm}.properties(1).name = 'transformation';
-            defaultMappings{mm}.properties(1).valueType = 'matrix';
-            defaultMappings{mm}.properties(1).value = mexximpScale([-1 1 1]);
-            defaultMappings{mm}.properties(1).operation = 'value * oldValue';
-            
-            mm = mm + 1;
-            defaultMappings{mm}.name = 'Camera';
             defaultMappings{mm}.broadType = 'cameras';
             defaultMappings{mm}.operation = 'update';
             defaultMappings{mm}.destination = 'mexximp';
@@ -121,7 +111,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         end
         
         function isFileCandidate = mightBeFile(string)
-            isFileCandidate = ischar(string) && 1 == sum('.' == string);
+            isFileCandidate = ischar(string) && 1 <= sum('.' == string);
         end
     end
     
@@ -208,7 +198,15 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         end
         
         function [scene, mappings] = applyBasicMappings(obj, scene, mappings, names, conditionValues, conditionNumber)
-            scene = rtbApplyMexximpMappings(scene, mappings);
+            groupName = rtbGetNamedValue(names, conditionValues, 'groupName', '');
+            if isempty(groupName)
+                groupMappings = mappings;
+            else
+                isAnyGroup = strcmp('', {mappings.group});
+                isInGroup = strcmp(groupName, {mappings.group});
+                groupMappings = mappings(isAnyGroup | isInGroup);
+            end
+            scene = rtbApplyMexximpMappings(scene, groupMappings);
         end
         
         function [scene, mappings] = remodelPerConditionAfter(obj, scene, mappings, names, conditionValues, conditionNumber)

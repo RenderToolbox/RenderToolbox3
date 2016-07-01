@@ -126,7 +126,7 @@ classdef RtbVersion3MitsubaConverter < handle
             defaultMappings{mm}.properties(1).value = 0.1;
             defaultMappings{mm}.properties(2).name = 'farClip';
             defaultMappings{mm}.properties(2).valueType = 'float';
-            defaultMappings{mm}.properties(2).value = 1e6;
+            defaultMappings{mm}.properties(2).value = 1e6;            
         end
         
         function nativeScene = startConversion(obj, parentScene, mappings, names, conditionValues, conditionNumber)
@@ -144,8 +144,9 @@ classdef RtbVersion3MitsubaConverter < handle
             if isempty(groupName)
                 groupMappings = mappings;
             else
+                isAnyGroup = strcmp('', {mappings.group}); 
                 isInGroup = strcmp(groupName, {mappings.group});
-                groupMappings = mappings(isInGroup);
+                groupMappings = mappings(isAnyGroup | isInGroup);
             end
             nativeScene = rtbApplyMMitsubaMappings(nativeScene, groupMappings);
             nativeScene = rtbApplyMMitsubaGenericMappings(nativeScene, groupMappings);
