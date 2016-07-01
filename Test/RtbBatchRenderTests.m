@@ -12,10 +12,10 @@ classdef RtbBatchRenderTests < matlab.unittest.TestCase
         function testRenderSampleRenderer(testCase)
             hints.workingFolder = fullfile(tempdir(), 'RtbBatchRenderTests');
             hints.renderer = 'SampleRenderer';
-            hints = GetDefaultHints(hints);
+            hints = rtbDefaultHints(hints);
             
-            scene = RTB_ImportCollada_SampleRenderer('', '', 'sample', hints);
-            scenes = {scene, scene};
+            nativeScene.scene = RTB_ImportCollada_SampleRenderer('', '', 'sample', hints);
+            scenes = {nativeScene, nativeScene};
             outputFiles = BatchRender(scenes, 'hints', hints);
             testCase.assertNumElements(outputFiles, numel(scenes));
         end

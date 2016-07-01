@@ -5,7 +5,7 @@
 % Plot histograms for XYZ image components.
 %   @param XYZImage matrix of XYZ image data
 %   @param nEdges how many bin edges to use in histograms
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Plots histograms of X, Y, and Z components of the given @a XYZimage, in a
@@ -24,8 +24,7 @@
 %
 % @details
 % If @a hints is provided, it must be a struct of RenderToolbox3 options,
-% as returned from GetDefaultHints().  If hints.isPlot is false, returns
-% without plotting anything.
+% as returned from rtbDefaultHints().
 %
 % @details
 % Usage:
@@ -39,13 +38,9 @@ if nargin < 2 || isempty(nEdges)
 end
 
 if nargin < 3
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
-end
-
-if ~hints.isPlot
-    return;
+    hints = rtbDefaultHints(hints);
 end
 
 %% compute bin edges

@@ -27,7 +27,7 @@
 % results:
 %   - outputRoot, the given @a outputRoot or default workingFolder
 %   - makeFunctions, the given @a makeFunctions
-%   - hints, RenderToolbox3 options, as returned from GetDefaultHints()
+%   - hints, RenderToolbox3 options, as returned from rtbDefaultHints()
 %   - results, the returned struct of results about rendering scripts
 % .
 % @details
@@ -43,7 +43,7 @@
 function results = TestAllExampleScenes(outputRoot, makeFunctions)
 
 if nargin < 1  || isempty(outputRoot)
-    outputRoot = GetWorkingFolder();
+    outputRoot = rtbWorkingFolder();
 else
     setpref('RenderToolbox3', 'workingFolder', outputRoot);
 end
@@ -139,5 +139,5 @@ baseName = mfilename();
 dateTime = datestr(now(), 30);
 resultsBase = sprintf('%s-%s', baseName, dateTime);
 resultsFile = fullfile(outputRoot, resultsBase);
-hints = GetDefaultHints();
+hints = rtbDefaultHints();
 save(resultsFile, 'outputRoot', 'makeFunctions', 'results', 'hints');

@@ -10,13 +10,13 @@
 % @details
 % Creates a new zip archive named @a archiveName which contains the given
 % @a recipe (in a mat-file) along with its file dependencies from the
-% current working folder.  See GetWorkingFolder().
+% current working folder.  See rtbWorkingFolder().
 %
 % @details
 % By default, packs up all files in the recipe's working folder.  If @a
 % ignoreFolders is provided, it must be a cell array of named subfolders
 % not to pack up with the recipe.  For example, {'temp'}.  See
-% GetWorkingFolder() for more about named subfolders.
+% rtbWorkingFolder() for more about named subfolders.
 %
 % @details
 % Returns the name of the zip archive that was created, which may be the
@@ -45,7 +45,7 @@ end
 
 %% Set up a clean, temporary folder.
 hints.workingFolder = recipe.input.hints.workingFolder;
-workingFolder = GetWorkingFolder('', false, hints);
+workingFolder = rtbWorkingFolder('', false, hints);
 tempFolder = fullfile(workingFolder, mfilename(), archiveBase);
 if exist(tempFolder, 'dir')
     rmdir(tempFolder, 's');
@@ -60,12 +60,12 @@ save(recipeFileName, 'recipe');
 ignorePaths = cell(size(ignoreFolders));
 for ii = 1:numel(ignoreFolders)
     ignorePaths{ii} = ...
-        GetWorkingFolder(ignoreFolders{ii}, false, recipe.input.hints);
+        rtbWorkingFolder(ignoreFolders{ii}, false, recipe.input.hints);
 end
 
 %% Copy dependencies from the working folder to the temp folder.
-workingRoot = GetWorkingFolder('', false, recipe.input.hints);
-dependencies = FindFiles(workingRoot);
+workingRoot = rtbWorkingFolder('', false, recipe.input.hints);
+dependencies = FindFiles('root', workingRoot);
 for ii = 1:numel(dependencies)
     localPath = dependencies{ii};
     

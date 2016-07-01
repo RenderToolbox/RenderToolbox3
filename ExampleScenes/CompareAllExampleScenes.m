@@ -17,7 +17,7 @@
 %
 % @details
 % Data sets must use a particular folder structure, consistent with
-% GetWorkingFolder().  For each rendering data file, the expected path is:
+% rtbWorkingFolder().  For each rendering data file, the expected path is:
 % @code
 %   workingFolder/recipeName/rendererName/renderings/fileName.mat
 % @endcode
@@ -29,7 +29,7 @@
 %
 % @details
 % If @a workingFolderA or @a workingFolderB is omitted or empty, uses the
-% default working folder from GetWorkingFolder().
+% default working folder from rtbWorkingFolder().
 %
 % @details
 % By default, compares all renderings matched in @a workingFolderA, and @a
@@ -57,7 +57,7 @@
 % matched pair.  Each figure shows sRGB representations of multi-spectral
 % renderings and rendering differences: A, B, A-B, and B-A.  Also
 % saves each detail figure as a Matlab fig-file and a png-file image,
-% in the folder given by GetWorkingFolder('images').
+% in the folder given by rtbWorkingFolder('images').
 %
 % @details
 % This function is intended to help validate RenderToolbox3 installations
@@ -94,11 +94,11 @@
 function [matchInfo, unmatchedA, unmatchedB] = CompareAllExampleScenes(workingFolderA, workingFolderB, filterExpression, visualize)
 
 if nargin < 1 || isempty(workingFolderA)
-    workingFolderA = GetWorkingFolder();
+    workingFolderA = rtbWorkingFolder();
 end
 
 if nargin < 2 || isempty(workingFolderB)
-    workingFolderB = GetWorkingFolder();
+    workingFolderB = rtbWorkingFolder();
 end
 
 if nargin < 3 || isempty(filterExpression)
@@ -198,7 +198,7 @@ fprintf('\n')
 
 % compare matched images!
 hints.recipeName = mfilename();
-comparisonFolder = GetWorkingFolder('images', false, hints);
+comparisonFolder = rtbWorkingFolder('images', false, hints);
 for ii = 1:nMatches
     fprintf('%d of %d: %s\n', ii, nMatches, matchInfo(ii).relativeA);
     

@@ -5,7 +5,7 @@
 % Promote an RGB reflectance to a full spectrum, using a renderer.
 %   @param reflectance RGB reflectance to promote to spectrum
 %   @param illuminant illuminant spectrum to use in rendering
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Converts the given RGB @a reflectance to a full multi-spectral
@@ -52,7 +52,7 @@
 %
 % @details
 % @a hints may be a struct with options that affect the rendering process,
-% as returned from GetDefaultHints().  If @a hints is omitted, default
+% as returned from rtbDefaultHints().  If @a hints is omitted, default
 % options are used.  @a hints.renderer specifies which renderer to use.
 %
 % @details
@@ -75,9 +75,9 @@ if nargin < 2 || isempty(illuminant)
 end
 
 if nargin < 3
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 % choose scene files.

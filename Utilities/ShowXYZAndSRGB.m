@@ -6,7 +6,7 @@
 %   @param XYZImage image matrix with XYZ color data
 %   @param SRGBImage image matrix with sRGB color data
 %   @param name a name to give the images (optional)
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Quick plotter for XYZ and sRGB image representations.  The given @a
@@ -15,8 +15,7 @@
 %
 % @details
 % If @a hints is provided, it must be a struct of RenderToolbox3 options,
-% as returned from GetDefaultHints().  If hints.isPlot is false, returns
-% without plotting anything.
+% as returned from rtbDefaultHints().
 %
 % @details
 % Usage:
@@ -30,13 +29,9 @@ if nargin < 3 || isempty(name)
 end
 
 if nargin < 4
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
-end
-
-if ~hints.isPlot
-    return;
+    hints = rtbDefaultHints(hints);
 end
 
 if nargin > 0 && ~isempty(XYZImage)

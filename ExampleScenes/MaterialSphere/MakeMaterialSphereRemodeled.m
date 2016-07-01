@@ -28,7 +28,7 @@ hints.remodeler = 'MaterialSphere';
 
 % how to convert multi-spectral images to sRGB
 toneMapFactor = 100;
-isScaleGamma = true;
+isScale = true;
 
 % make a montage and sensor images with each renderer
 for renderer = {'Mitsuba', 'PBRT'}
@@ -37,14 +37,21 @@ for renderer = {'Mitsuba', 'PBRT'}
     hints.renderer = renderer{1};
     
     % make 3 multi-spectral renderings, saved in .mat files
-    nativeSceneFiles = MakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
-    radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+    nativeSceneFiles = MakeSceneFiles(parentSceneFile, ...
+        'conditionsFile', conditionsFile, ...
+        'mappingsFile', mappingsFile, ...
+        'hints', hints);
+    radianceDataFiles = BatchRender(nativeSceneFiles, ...
+        'hints', hints);
     
     % condense multi-spectral renderings into one sRGB montage
     montageName = sprintf('MaterialSphereRemodeled (%s)', hints.renderer);
     montageFile = [montageName '.png'];
-    [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
+    [SRGBMontage, XYZMontage] = MakeMontage(radianceDataFiles, ...
+        'outFile', montageFile, ...
+        'toneMapFactor', toneMapFactor, ...
+        'isScale', isScale, ...
+        'hints', hints);
     
     % display the sRGB montage
     ShowXYZAndSRGB([], SRGBMontage, montageName);

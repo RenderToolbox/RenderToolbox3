@@ -4,7 +4,7 @@
 %
 % Load a recipe and its file dependencies from an archive file.
 %   @param archiveName name of the archive file to unpack
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Creates a new recipe struct based on the given @a archiveName, as
@@ -28,14 +28,14 @@ end
 [archivePath, archiveBase] = fileparts(archiveName);
 
 if nargin < 2
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 %% Set up a clean, temporary folder.
 hints.recipeName = mfilename();
-tempFolder = GetWorkingFolder('', false, hints);
+tempFolder = rtbWorkingFolder('', false, hints);
 if exist(tempFolder, 'dir')
     rmdir(tempFolder, 's');
 end
@@ -45,7 +45,7 @@ ChangeToFolder(tempFolder);
 unzip(archiveName, tempFolder);
 
 % extract the recipe struct
-recipeFiles = FindFiles(tempFolder, 'recipe\.mat');
+recipeFiles = FindFiles('root', tempFolder, 'filter', 'recipe\.mat');
 if 1 == numel(recipeFiles)
     recipeFileName = recipeFiles{1};
 else
@@ -60,7 +60,7 @@ recipe.input.hints.workingFolder = hints.workingFolder;
 
 %% Copy dependencies from the temp folder to the local working folder.
 unpackedFolder = fullfile(tempFolder, archiveBase);
-dependencies = FindFiles(unpackedFolder);
+dependencies = FindFiles('root', unpackedFolder);
 for ii = 1:numel(dependencies)
     tempPath = dependencies{ii};
     if strfind(tempPath, 'recipe.mat')
@@ -68,7 +68,7 @@ for ii = 1:numel(dependencies)
     end
     
     [isPrefix, relativePath] = IsPathPrefix(unpackedFolder, tempPath);
-    localPath = GetWorkingAbsolutePath(relativePath, recipe.input.hints);
+    localPath = rtbWorkingAbsolutePath(relativePath, recipe.input.hints);
     
     localPrefix = fileparts(localPath);
     if ~exist(localPrefix, 'dir')

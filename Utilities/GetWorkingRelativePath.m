@@ -4,11 +4,11 @@
 %
 % Convert a local absoute path to a relative working path.
 %   @param originalPath string file name or absolute path to convert
-%   @param hints struct of RenderToolbox3 options, see GetDefaultHints()
+%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
 %
 % @details
 % Converts the given @a originalPath to a relative path, relative to the
-% working folder specified by the given @a hints.  See GetWorkingFolder().
+% working folder specified by the given @a hints.  See rtbWorkingFolder().
 %
 % @details
 % If @a originalPath can be found within the working folder specified by
@@ -23,14 +23,14 @@
 function relativePath = GetWorkingRelativePath(originalPath, hints)
 
 if nargin < 2
-    hints = GetDefaultHints();
+    hints = rtbDefaultHints();
 else
-    hints = GetDefaultHints(hints);
+    hints = rtbDefaultHints(hints);
 end
 
 relativePath = '';
 
-workingFolder = GetWorkingFolder('', false, hints);
+workingFolder = rtbWorkingFolder('', false, hints);
 info = ResolveFilePath(originalPath, workingFolder);
 if info.isRootFolderMatch
     relativePath = info.resolvedPath;

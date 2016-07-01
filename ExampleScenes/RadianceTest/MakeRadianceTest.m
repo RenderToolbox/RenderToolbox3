@@ -16,7 +16,7 @@
 %   MakeRadianceTest(renderer)
 function MakeRadianceTest(renderer)
 
-hints = GetDefaultHints();
+hints = rtbDefaultHints();
 if nargin > 0
     hints.renderer = renderer;
 else
@@ -36,7 +36,7 @@ hints.imageHeight = 100;
 hints.recipeName = mfilename();
 ChangeToWorkingFolder(hints);
 
-resources = GetWorkingFolder('resources', false, hints);
+resources = rtbWorkingFolder('resources', false, hints);
 
 %% Choose illuminant spectra.
 % uniform white spectrum sampled every 5mn

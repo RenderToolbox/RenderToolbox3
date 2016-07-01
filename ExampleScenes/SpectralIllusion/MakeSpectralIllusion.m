@@ -11,14 +11,14 @@ initialConditionsFile = 'SpectralIllusionConditionsInitial.txt';
 cleverConditionsFile = 'SpectralIllusionConditionsClever.txt';
 
 %% Choose batch renderer options.
-hints = GetDefaultHints();
+hints = rtbDefaultHints();
 hints.renderer = 'Mitsuba';
 hints.imageWidth = 640;
 hints.imageHeight = 480;
 hints.recipeName = mfilename();
 ChangeToWorkingFolder(hints);
 
-resources = GetWorkingFolder('resources', false, hints);
+resources = rtbWorkingFolder('resources', false, hints);
 
 toneMapFactor = 100;
 isScale = true;
@@ -59,19 +59,17 @@ destSpectrum = values{strcmp(names, 'destinationColor')};
 [targWls, targReflect] = ReadSpectrum(targSpectrum);
 [destWls, destReflect] = ReadSpectrum(destSpectrum);
 
-if hints.isPlot
-    f = figure('UserData', 'SpectralIllusion');
-    axReflect = subplot(5, 1, 3, 'Parent', f);
-    plot(axReflect, ...
-        targWls, targReflect, 'square', ...
-        destWls, destReflect, 'o');
-    xlim(axReflect, [350 750]);
-    ylabel(axReflect, 'reflectance');
-    legend(axReflect, 'target', 'destination', ...
-        'Location', 'northwest')
-    set(axReflect,  'UserData', 'reflectance', 'Box', 'off');
-    drawnow();
-end
+f = figure('UserData', 'SpectralIllusion');
+axReflect = subplot(5, 1, 3, 'Parent', f);
+plot(axReflect, ...
+    targWls, targReflect, 'square', ...
+    destWls, destReflect, 'o');
+xlim(axReflect, [350 750]);
+ylabel(axReflect, 'reflectance');
+legend(axReflect, 'target', 'destination', ...
+    'Location', 'northwest')
+set(axReflect,  'UserData', 'reflectance', 'Box', 'off');
+drawnow();
 
 %% Do the initial rendering.
 nativeSceneFiles = MakeSceneFiles(parentSceneFile, initialConditionsFile, mappingsFile, hints);
@@ -81,19 +79,12 @@ montageFile = [montageName '.png'];
 [SRGBMontage, XYZMontage] = ...
     MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
 
-% only makes sense to proceed with fresh renderings and scene files
-if hints.isReuseSceneFiles || hints.isDryRun
-    return;
-end
-
 %% Plot the initial rendering.
-if hints.isPlot
-    axInitial = subplot(5, 2, [1 3], 'Parent', f);
-    imshow(uint8(SRGBMontage), 'Parent', axInitial);
-    title('initial');
-    set(axInitial, 'UserData', 'initial');
-    drawnow();
-end
+axInitial = subplot(5, 2, [1 3], 'Parent', f);
+imshow(uint8(SRGBMontage), 'Parent', axInitial);
+title('initial');
+set(axInitial, 'UserData', 'initial');
+drawnow();
 
 %% Read the initial rendering and compute a clever destination spectrum.
 % locate the target and destination pixels in the rendering
@@ -117,37 +108,36 @@ destIllum = destPixelResampled ./ destReflect;
 
 %% Plot target and destination pixels and apparent illumination.
 % show target and destination pixel locations
-if hints.isPlot
-    line(targX, targY, ...
-        'Parent', axInitial, ...
-        'Marker', 'square', ...
-        'Color', [0 0 1]);
-    line(destX, destY, ...
-        'Parent', axInitial, ...
-        'Marker', 'o', ...
-        'Color', [0 1 0]);
-    
-    % show apparent illumination
-    axIllum = subplot(5, 1, 4, 'Parent', f);
-    plot(axIllum, ...
-        targWls, targIllum, 'square', ...
-        destWls, destIllum, 'o');
-    ylabel(axIllum, 'illumination');
-    xlim(axIllum, [350 750]);
-    set(axIllum, 'UserData', 'illumination', 'Box', 'off');
-    drawnow();
-    
-    % show rendered pixel spectra
-    wls = SToWls(rendering.S);
-    axPixel = subplot(5, 1, 5, 'Parent', f);
-    plot(axPixel, ...
-        wls, targPixel, 'square', ...
-        wls, destPixel, 'o');
-    ylabel(axPixel, 'pixel');
-    xlim(axPixel, [350 750]);
-    set(axPixel, 'UserData', 'reflected', 'Box', 'off');
-    drawnow();
-end
+line(targX, targY, ...
+    'Parent', axInitial, ...
+    'Marker', 'square', ...
+    'Color', [0 0 1]);
+line(destX, destY, ...
+    'Parent', axInitial, ...
+    'Marker', 'o', ...
+    'Color', [0 1 0]);
+
+% show apparent illumination
+axIllum = subplot(5, 1, 4, 'Parent', f);
+plot(axIllum, ...
+    targWls, targIllum, 'square', ...
+    destWls, destIllum, 'o');
+ylabel(axIllum, 'illumination');
+xlim(axIllum, [350 750]);
+set(axIllum, 'UserData', 'illumination', 'Box', 'off');
+drawnow();
+
+% show rendered pixel spectra
+wls = SToWls(rendering.S);
+axPixel = subplot(5, 1, 5, 'Parent', f);
+plot(axPixel, ...
+    wls, targPixel, 'square', ...
+    wls, destPixel, 'o');
+ylabel(axPixel, 'pixel');
+xlim(axPixel, [350 750]);
+set(axPixel, 'UserData', 'reflected', 'Box', 'off');
+drawnow();
+
 
 %% Compute a clever new destination spectrum and write it to file.
 destIllumNonzero = max(destIllum, 0.001);
@@ -156,15 +146,13 @@ destinationSpectrumFile = fullfile(resources, 'SpectralIllusionDestination.spd')
 WriteSpectrumFile(destWls, cleverReflect, destinationSpectrumFile);
 
 %% Plot the clever new reflectance
-if hints.isPlot
-    line(destWls, cleverReflect, ...
-        'Parent', axReflect, ...
-        'LineStyle', 'none', ...
-        'Marker', '*', ...
-        'Color', [1 0 0])
-    legend(axReflect, 'target', 'destination', 'illusion destination', ...
-        'Location', 'northwest')
-end
+line(destWls, cleverReflect, ...
+    'Parent', axReflect, ...
+    'LineStyle', 'none', ...
+    'Marker', '*', ...
+    'Color', [1 0 0])
+legend(axReflect, 'target', 'destination', 'illusion destination', ...
+    'Location', 'northwest')
 
 %% Render the illusion using the clever destination spectrum.
 nativeSceneFiles = MakeSceneFiles(parentSceneFile, cleverConditionsFile, mappingsFile, hints);
@@ -175,13 +163,12 @@ montageFile = [montageName '.png'];
     MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
 
 %% Plot the clever rendering.
-if hints.isPlot
-    axClever = subplot(5, 2, [2 4], 'Parent', f);
-    imshow(uint8(SRGBMontage), 'Parent', axClever);
-    title('illusion');
-    set(axClever,  'UserData', 'illusion');
-    drawnow();
-end
+axClever = subplot(5, 2, [2 4], 'Parent', f);
+imshow(uint8(SRGBMontage), 'Parent', axClever);
+title('illusion');
+set(axClever,  'UserData', 'illusion');
+drawnow();
+
 
 %% Read the destination pixel from the clever rendering.
 rendering = load(radianceDataFiles{1});
@@ -195,18 +182,17 @@ destIllum = destPixelResampled ./ cleverReflect;
 
 %% Plot clever destination pixel spectrum and apparent illumination.
 % apparent illumination
-if hints.isPlot
-    line(destWls, destIllum, ...
-        'Parent', axIllum, ...
-        'LineStyle', 'none', ...
-        'Marker', '*', ...
-        'Color', [1 0 0])
-    
-    % pixel spectrum
-    wls = SToWls(rendering.S);
-    line(wls, destPixel, ...
-        'Parent', axPixel, ...
-        'LineStyle', 'none', ...
-        'Marker', '*', ...
-        'Color', [1 0 0])
-end
+line(destWls, destIllum, ...
+    'Parent', axIllum, ...
+    'LineStyle', 'none', ...
+    'Marker', '*', ...
+    'Color', [1 0 0])
+
+% pixel spectrum
+wls = SToWls(rendering.S);
+line(wls, destPixel, ...
+    'Parent', axPixel, ...
+    'LineStyle', 'none', ...
+    'Marker', '*', ...
+    'Color', [1 0 0])
+

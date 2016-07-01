@@ -26,7 +26,7 @@
 %
 
 %% Start with RenderToolbox3 "fresh out of the box" configuration.
-InitializeRenderToolbox('force', true);
+rtbInitialize('force', true);
 
 %% Tell RenderToolbox3 where to save outputs.
 % choose Matlab's default "user folder"
@@ -46,7 +46,7 @@ end
 
 % choose the file with default adjustments
 adjustmentsFile = fullfile(RenderToolboxRoot(), ...
-    'RendererPlugins', 'Mitsuba', 'MitsubaDefaultAdjustments.xml');
+    'BatchRenderer', 'Version2Strategy', 'Deprecated', 'RendererPlugins', 'Mitsuba', 'MitsubaDefaultAdjustments.xml');
 
 % choose the default scale factor for radiance units
 radiometricScaleFactor = 0.0795827427;
@@ -104,7 +104,7 @@ end
 
 % choose the file with default adjustments
 adjustmentsFile = fullfile(RenderToolboxRoot(), ...
-    'RendererPlugins', 'PBRT', 'PBRTDefaultAdjustments.xml');
+    'BatchRenderer', 'Version2Strategy', 'Deprecated', 'RendererPlugins', 'PBRT', 'PBRTDefaultAdjustments.xml');
 
 % choose the default scale factor for radiance units
 radiometricScaleFactor = 0.0063831432;

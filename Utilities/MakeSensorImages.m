@@ -27,7 +27,7 @@ function outFiles = MakeSensorImages(inFiles, matchingFunctions, varargin)
 %
 % outFiles = MakeSensorImages( ... 'hints', hints)
 % Specifies RenderToolbox3 "hints" to control things like the working
-% folder where output should be written.  The default is GetDefaultHints().
+% folder where output should be written.  The default is rtbDefaultHints().
 %
 % Returns a cell array of sensor image data file names.  Rows of the
 % cell array will correspond to elements of inFiles.  Columns of the
@@ -51,13 +51,13 @@ parser.addRequired('inFiles', @iscell);
 parser.addRequired('matchingFunctions', @iscell);
 parser.addParameter('matchingS', {}, @iscell);
 parser.addParameter('names', {}, @iscell);
-parser.addParameter('hints', GetDefaultHints(), @isstruct);
+parser.addParameter('hints', rtbDefaultHints(), @isstruct);
 parser.parse(inFiles, matchingFunctions, varargin{:});
 inFiles = parser.Results.inFiles;
 matchingFunctions = parser.Results.matchingFunctions;
 matchingS = parser.Results.matchingS;
 names = parser.Results.names;
-hints = GetDefaultHints(parser.Results.hints);
+hints = rtbDefaultHints(parser.Results.hints);
 
 
 %% Resolve matching function matrices, spectral samplings, and names.
@@ -132,7 +132,7 @@ for ii = 1:nMatching
     % choose a name for the new data file of the form
     %   inputFileName_matchingFunctionName.mat
     outName = [inBase '_' matchNames{ii} '.mat'];
-    outFolder = GetWorkingFolder('images', true, hints);
+    outFolder = rtbWorkingFolder('images', true, hints);
     outFiles{ii} = fullfile(outFolder, outName);
     
     % save sensor image and some metadata

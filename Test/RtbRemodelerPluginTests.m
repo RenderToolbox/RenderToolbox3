@@ -3,7 +3,7 @@ classdef RtbRemodelerPluginTests < matlab.unittest.TestCase
     methods (Test)
         
         function testNonexistentRemodeler(testCase)
-            hints = GetDefaultHints();
+            hints = rtbDefaultHints();
             hints.remodeler = 'notARemodeler';
             try
                 [remodelerFunction, functionPath] = GetRemodelerAPIFunction('BeforeAll', hints);
@@ -16,7 +16,7 @@ classdef RtbRemodelerPluginTests < matlab.unittest.TestCase
         end
         
         function testNonexistentFunction(testCase)
-            hints = GetDefaultHints();
+            hints = rtbDefaultHints();
             hints.remodeler = 'SampleRemodeler';
             try
                 [remodelerFunction, functionPath] = GetRemodelerAPIFunction('notAFunction', hints);
@@ -29,7 +29,7 @@ classdef RtbRemodelerPluginTests < matlab.unittest.TestCase
         end
         
         function testSampleRemodeler(testCase)
-            hints = GetDefaultHints();
+            hints = rtbDefaultHints();
             hints.remodeler = 'SampleRemodeler';
             
             [remodelerFunction, functionPath] = GetRemodelerAPIFunction('BeforeAll', hints);

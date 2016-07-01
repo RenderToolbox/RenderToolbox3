@@ -53,13 +53,6 @@ try
         recipe.processing.images = {montageFile};
     end
     
-    if recipe.input.hints.isPlot
-        ShowXYZAndSRGB( ...
-            recipe.processing.xyzMontage, ...
-            recipe.processing.srgbMontage, ...
-            montageName, recipe.input.hints);
-    end
-    
 catch errorData
     % fills in placeholder above, log it below
 end
