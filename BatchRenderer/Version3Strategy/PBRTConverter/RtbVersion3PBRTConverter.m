@@ -27,11 +27,11 @@ classdef RtbVersion3PBRTConverter < handle
     
     methods (Static)
         function material = defaultMaterial()
-            material = MPbrtElement.makeNamedMaterial('', 'anisoward');
-            material.setParameter('Kd', 'spectrum', '300:0 800:0');
-            material.setParameter('Ks', 'rgb', [0.5 0.5 0.5]);
-            material.setParameter('alphaU', 'float', 0.15);
-            material.setParameter('alphaV', 'float', 0.15);
+            material = MPbrtElement.makeNamedMaterial('', 'matte');
+            %material.setParameter('Kd', 'spectrum', '300:0 800:0');
+            %material.setParameter('Ks', 'rgb', [0.5 0.5 0.5]);
+            %material.setParameter('alphaU', 'float', 0.15);
+            %material.setParameter('alphaV', 'float', 0.15);
         end
     end
     
