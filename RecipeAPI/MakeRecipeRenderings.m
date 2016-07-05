@@ -24,7 +24,7 @@ recipe = ChangeToRecipeFolder(recipe);
 recipe.rendering.radianceDataFiles = {};
 errorData = [];
 try
-    recipe.rendering.radianceDataFiles = BatchRender( ...
+    recipe.rendering.radianceDataFiles = rtbBatchRender( ...
         recipe.rendering.scenes, 'hints', recipe.input.hints);
     
 catch errorData

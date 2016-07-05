@@ -21,8 +21,8 @@ toneMapFactor = 0;
 isScale = true;
 for renderer = {'Mitsuba', 'PBRT'}
     hints.renderer = renderer{1};
-    nativeSceneFiles = MakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
-    radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
     
     montageName = sprintf('%s (%s)', 'SimpleSquare', hints.renderer);
     montageFile = [montageName '.png'];

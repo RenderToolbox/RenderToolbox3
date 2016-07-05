@@ -48,8 +48,8 @@ toneMapFactor = 10;
 isScale = true;
 for renderer = {'Mitsuba', 'PBRT'}
     hints.renderer = renderer{1};
-    nativeSceneFiles = MakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
-    radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
     
     % write each condition to a separate image file
     for ii = 1:numel(radianceDataFiles)

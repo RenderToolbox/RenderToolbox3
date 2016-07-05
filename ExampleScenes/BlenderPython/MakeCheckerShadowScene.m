@@ -20,8 +20,8 @@ toneMapFactor = 4;
 isScale = true;
 
 hints.renderer = 'Mitsuba';
-nativeSceneFiles  = MakeSceneFiles(parentSceneFile, '', mappingsFile, hints);
-radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+nativeSceneFiles  = rtbMakeSceneFiles(parentSceneFile, '', mappingsFile, hints);
+radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
 montageName = sprintf('CheckerShadowScene (%s)', hints.renderer);
 montageFile = [montageName '.png'];
 [SRGBMontage, XYZMontage] = ...

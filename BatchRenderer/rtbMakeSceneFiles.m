@@ -1,23 +1,23 @@
-function nativeScenes = MakeSceneFiles(parentScene, varargin)
+function nativeScenes = rtbMakeSceneFiles(parentScene, varargin)
 %% Make a family of renderer-native scenes based on a given parent scene.
 %
-% scenes = MakeSceneFiles(parentScene)
+% scenes = rtbMakeSceneFiles(parentScene)
 % Creates a family of renderer-native scenes, based on the given
 % parentScene.
 %
-% scenes = MakeSceneFiles(... 'conditionsFile', conditionsFile)
+% scenes = rtbMakeSceneFiles(... 'conditionsFile', conditionsFile)
 % Specify the conditionsFile which specifies how many scenes to generate
 % and parameters for each scene.  See the RenderToolbox3 wiki for more
 % about the conditions file format:
 %   https://github.com/RenderToolbox3/RenderToolbox3/wiki/Conditions-File-Format
 %
-% scenes = MakeSceneFiles(... 'mappingsFile', mappingsFile)
+% scenes = rtbMakeSceneFiles(... 'mappingsFile', mappingsFile)
 % Specify the mappingsFile which specifies how to map conditions file
 % variables and other constants to the parent scene.  See the
 % RenderToolbox3 wiki for more  about the mappings file format:
 %   https://github.com/RenderToolbox3/RenderToolbox3/wiki/Mappings-File-Format
 %
-% scenes = MakeSceneFiles(... 'hints', hints)
+% scenes = rtbMakeSceneFiles(... 'hints', hints)
 % Specify a struct of options that affect the process of generating
 % renderer-native scene files.  If hints is omitted, values are taken
 % from rtbDefaultHints().
@@ -31,7 +31,7 @@ function nativeScenes = MakeSceneFiles(parentScene, varargin)
 % conditionsFile contains an 'imageName' variable, each scene file be named
 % with the value of 'imageName'.
 %
-% scenes = MakeSceneFiles(parentScene, varargin)
+% scenes = rtbMakeSceneFiles(parentScene, varargin)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

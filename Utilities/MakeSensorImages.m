@@ -4,7 +4,7 @@ function outFiles = MakeSensorImages(inFiles, matchingFunctions, varargin)
 % outFiles = MakeSensorImages(inFiles, matchingFunctions)
 % Writes new mat-files that contain sensor images, one for each of the
 % multi-spectral data files given in inFiles.  inFiles must be a cell array
-% of multi-spectral mat-files, as produced by BatchRender().
+% of multi-spectral mat-files, as produced by rtbBatchRender().
 %
 % matchingFunctions and specifies the color matching functions used to
 % convert multi-spectral data to sensor imgaes.  matchingFunctions must be

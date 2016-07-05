@@ -29,8 +29,8 @@ isScale = true;
 for renderer = {'Mitsuba', 'PBRT'}
     hints.renderer = renderer{1};
     
-    nativeSceneFiles = MakeSceneFiles(parentSceneFile, '', '', hints);
-    radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, '', '', hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
     montageName = sprintf('ColladaTexture (%s)', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...

@@ -3,7 +3,7 @@ function mappingsFile = WriteDefaultMappingsFile(colladaFile, varargin)
 %
 % mappingsFile = WriteDefaultMappingsFile(colladaFile)
 % Traverses the Collada document in the given colladaFile and writes a
-% new mappingsFile suitable for use with BatchRender().  The
+% new mappingsFile suitable for use with rtbBatchRender().  The
 % mappingsFile will specify default values, including matte materials and
 % daylight light spectra.
 %

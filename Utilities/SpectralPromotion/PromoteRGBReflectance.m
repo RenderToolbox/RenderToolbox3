@@ -99,8 +99,8 @@ hints.imageWidth = nPixels;
 hints.imageHeight = nPixels;
 
 % render and read an output pixel from the middle
-sceneFiles = MakeSceneFiles(sceneFile, conditionsFile, mappingsFile, hints);
-outFiles = BatchRender(sceneFiles, hints);
+sceneFiles = rtbMakeSceneFiles(sceneFile, conditionsFile, mappingsFile, hints);
+outFiles = rtbBatchRender(sceneFiles, hints);
 dataFile = outFiles{1};
 outData = load(dataFile);
 S = outData.S;

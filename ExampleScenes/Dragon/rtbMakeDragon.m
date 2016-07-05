@@ -21,11 +21,11 @@ for renderer = {'Mitsuba', 'PBRT'}
     hints.renderer = renderer{1};
     hints.batchRenderStrategy = RtbVersion3Strategy(hints);
     
-    nativeSceneFiles = MakeSceneFiles(parentSceneFile, ...
+    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, ...
         'mappingsFile', mappingsFile, ...
         'hints', hints);
     
-    radianceDataFiles = BatchRender(nativeSceneFiles, 'hints', hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, 'hints', hints);
     
     montageName = sprintf('Dragon (%s)', hints.renderer);
     montageFile = [montageName '.png'];

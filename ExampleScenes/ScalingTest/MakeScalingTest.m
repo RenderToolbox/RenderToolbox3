@@ -28,8 +28,8 @@ for renderer = {'Mitsuba', 'PBRT'}
     setpref(hints.renderer, 'radiometricScaleFactor', 1);
     
     % make multi-spectral renderings, saved in .mat files
-    nativeSceneFiles = MakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
-    radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
     
     % restore radiometric unit scaling
     setpref(hints.renderer, 'radiometricScaleFactor', oldRadiometricScale);

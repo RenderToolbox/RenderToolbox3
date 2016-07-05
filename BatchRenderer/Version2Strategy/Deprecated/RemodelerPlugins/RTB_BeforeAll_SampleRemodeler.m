@@ -14,7 +14,7 @@
 % @details
 % By default, RenderToolbox3 does not invoke any remodeler.  If the name of
 % a remodeler is specified in the @b hints.remodeler argument passed to a
-% function like MakeSceneFiles(), then RenderToolbox3 will automatically
+% function like rtbMakeSceneFiles(), then RenderToolbox3 will automatically
 % invoke the named remodeler during scene file generation.
 %
 % @details

@@ -5,7 +5,7 @@ classdef RtbBatchRenderTests < matlab.unittest.TestCase
         function testRenderNoScenes(testCase)
             scenes = {};
             hints.workingFolder = fullfile(tempdir(), 'RtbBatchRenderTests');
-            outputFiles = BatchRender(scenes, 'hints', hints);
+            outputFiles = rtbBatchRender(scenes, 'hints', hints);
             testCase.assertEmpty(outputFiles);
         end
         
@@ -16,7 +16,7 @@ classdef RtbBatchRenderTests < matlab.unittest.TestCase
             
             nativeScene.scene = RTB_ImportCollada_SampleRenderer('', '', 'sample', hints);
             scenes = {nativeScene, nativeScene};
-            outputFiles = BatchRender(scenes, 'hints', hints);
+            outputFiles = rtbBatchRender(scenes, 'hints', hints);
             testCase.assertNumElements(outputFiles, numel(scenes));
         end
         

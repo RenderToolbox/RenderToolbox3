@@ -46,11 +46,11 @@ for renderer = {'Mitsuba', 'PBRT'}
     hints.batchRenderStrategy = RtbVersion3Strategy(hints);
     
     % make 3 multi-spectral renderings, saved in .mat files
-    nativeSceneFiles = MakeSceneFiles(parentSceneFile, ...
+    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, ...
         'mappingsFile', mappingsFile, ...
         'conditionsFile', conditionsFile, ...
         'hints', hints);
-    radianceDataFiles = BatchRender(nativeSceneFiles, 'hints', hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, 'hints', hints);
     
     % condense multi-spectral renderings into one sRGB montage
     montageName = sprintf('MaterialSphereBumps (%s)', hints.renderer);

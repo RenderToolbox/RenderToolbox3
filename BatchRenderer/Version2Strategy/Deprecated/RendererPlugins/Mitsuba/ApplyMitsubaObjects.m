@@ -13,7 +13,7 @@
 % GenericObjectsToMitsuba().
 %
 % @details
-% Used internally by MakeSceneFiles().
+% Used internally by rtbMakeSceneFiles().
 %
 % @details
 % Usage:

@@ -5,7 +5,7 @@ function [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, vararg
 % Condenses several multi-spectral renderings stored in mat-files into a
 % single sRGB montage.  inFiles must be a cell array of mat-file names,
 % each of which must contain multi-spectral renderer output, as returned
-% from BatchRender().
+% from rtbBatchRender().
 %
 % By default, tiles the input images so that the montage has roughly the
 % same aspect ratio as the input images.  If inFiles has size other than

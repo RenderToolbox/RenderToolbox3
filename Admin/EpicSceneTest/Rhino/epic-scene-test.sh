@@ -25,10 +25,10 @@ echo
 CMDS="\
 RenderToolbox3ConfigurationBrainard;\
 cd('epic-scene-test');\
-GenerateEpicSceneTestFiles;\
+rtbGenerateEpicSceneTestFiles;\
 exit;"
 matlab -nodesktop -nosplash -r "$CMDS"
 
 # invoke matlab on workder nodes to render the scene files
 cd /home2/brainard/render-toolbox-3/epic-scene-test
-parmgo RenderEpicSceneTestFiles 10
+parmgo rtbRenderEpicSceneTestFiles 10

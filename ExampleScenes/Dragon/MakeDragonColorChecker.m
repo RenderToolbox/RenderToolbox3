@@ -52,8 +52,8 @@ for renderer = {'Mitsuba', 'PBRT'}
     hints.renderer = renderer{1};
     
     % make 24 multi-spectral renderings, saved in .mat files
-    nativeSceneFiles = MakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
-    radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
     
     % condense multi-spectral renderings into one sRGB montage
     montageName = sprintf('%s (%s)', 'DragonColorChecker', hints.renderer);

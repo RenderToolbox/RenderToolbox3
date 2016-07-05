@@ -61,9 +61,9 @@ oldRadiometricScale = getpref(hints.renderer, 'radiometricScaleFactor');
 setpref(hints.renderer, 'radiometricScaleFactor', 1);
 
 % make multi-spectral renderings, saved in .mat files
-nativeScenes = MakeSceneFiles( ...
+nativeScenes = rtbMakeSceneFiles( ...
     parentSceneFile, conditionsFile, mappingsFile, hints);
-radianceDataFiles = BatchRender(nativeScenes, hints);
+radianceDataFiles = rtbBatchRender(nativeScenes, hints);
 
 % restore radiometric unit scaling
 setpref(hints.renderer, 'radiometricScaleFactor', oldRadiometricScale);

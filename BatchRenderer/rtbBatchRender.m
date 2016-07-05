@@ -1,13 +1,13 @@
-function outFiles = BatchRender(nativeScenes, varargin)
+function outFiles = rtbBatchRender(nativeScenes, varargin)
 % Render multiple nativeScenes at once.
 %
-% outFiles = BatchRender(nativeScenes)
+% outFiles = rtbBatchRender(nativeScenes)
 % Renders multiple renderer-native scene files in one batch.  scenes
 % must be a cell array of renderer-native scene descriptions or scene
-% files, such as those produced by MakeSceneFiles().  All renderer-native
+% files, such as those produced by rtbMakeSceneFiles().  All renderer-native
 % files should be intended for the same renderer.
 %
-% outFiles = BatchRender(... 'hints', hints)
+% outFiles = rtbBatchRender(... 'hints', hints)
 % Specify a hints struct with with options that affect the rendering
 % process, as returned from rtbDefaultHints().  If hints is omitted,
 % default options are used.  For example:
@@ -41,7 +41,7 @@ function outFiles = BatchRender(nativeScenes, varargin)
 % Returns a cell array of output mat-file names, with the same dimensions
 % as the given scenes.
 %
-% outFiles = BatchRender(scenes, varargin)
+% outFiles = rtbBatchRender(scenes, varargin)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

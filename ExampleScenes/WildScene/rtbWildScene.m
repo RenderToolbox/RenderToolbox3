@@ -72,8 +72,8 @@ hints.renderer = 'Mitsuba';
 hints.batchRenderStrategy = RtbVersion3Strategy(hints);
 
 %% Render with Mitsuba.
-nativeSceneFiles = MakeSceneFiles(scene, 'hints', hints);
-radianceDataFiles = BatchRender(nativeSceneFiles, 'hints', hints);
+nativeSceneFiles = rtbMakeSceneFiles(scene, 'hints', hints);
+radianceDataFiles = rtbBatchRender(nativeSceneFiles, 'hints', hints);
 
 % convert to sRGB for viewing
 toneMapFactor = 100;
@@ -95,8 +95,8 @@ scene = mexximpCentralizeCamera(scene, 'viewAxis', viewAxis ./ norm(viewAxis));
 scene = mexximpAddLanterns(scene);
 
 % render with Mitsuba
-nativeSceneFiles = MakeSceneFiles(scene, 'hints', hints);
-radianceDataFiles = BatchRender(nativeSceneFiles, 'hints', hints);
+nativeSceneFiles = rtbMakeSceneFiles(scene, 'hints', hints);
+radianceDataFiles = rtbBatchRender(nativeSceneFiles, 'hints', hints);
 
 % convert to sRGB for viewing
 toneMapFactor = 100;

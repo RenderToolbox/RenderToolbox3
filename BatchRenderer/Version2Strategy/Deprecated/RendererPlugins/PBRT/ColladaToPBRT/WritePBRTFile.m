@@ -13,7 +13,7 @@
 %
 % @details
 % @a PBRTXMLFile must be the name of a PBRT-XML file, as created with
-% ColladaToPBRT() or MakeSceneFiles().
+% ColladaToPBRT() or rtbMakeSceneFiles().
 %
 % @details
 % @a hints may be a struct of parameters to use in the conversion process.

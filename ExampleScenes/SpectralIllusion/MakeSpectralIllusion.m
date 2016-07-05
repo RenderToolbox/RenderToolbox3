@@ -72,8 +72,8 @@ set(axReflect,  'UserData', 'reflectance', 'Box', 'off');
 drawnow();
 
 %% Do the initial rendering.
-nativeSceneFiles = MakeSceneFiles(parentSceneFile, initialConditionsFile, mappingsFile, hints);
-radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, initialConditionsFile, mappingsFile, hints);
+radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
 montageName = sprintf('SpectralIllusionInitial (%s)', hints.renderer);
 montageFile = [montageName '.png'];
 [SRGBMontage, XYZMontage] = ...
@@ -155,8 +155,8 @@ legend(axReflect, 'target', 'destination', 'illusion destination', ...
     'Location', 'northwest')
 
 %% Render the illusion using the clever destination spectrum.
-nativeSceneFiles = MakeSceneFiles(parentSceneFile, cleverConditionsFile, mappingsFile, hints);
-radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, cleverConditionsFile, mappingsFile, hints);
+radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
 montageName = sprintf('SpectralIllusionClever (%s)', hints.renderer);
 montageFile = [montageName '.png'];
 [SRGBMontage, XYZMontage] = ...

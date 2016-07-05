@@ -26,9 +26,9 @@ toneMapFactor = 100;
 isScale = true;
 for renderer = {'PBRT', 'Mitsuba'}
     hints.renderer = renderer{1};
-    nativeSceneFiles = MakeSceneFiles(colladaFile, '', mappingsFile, hints);
+    nativeSceneFiles = rtbMakeSceneFiles(colladaFile, '', mappingsFile, hints);
     
-    radianceDataFiles = BatchRender(nativeSceneFiles, hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
     montageName = sprintf('%s (%s)', hints.recipeName, hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
