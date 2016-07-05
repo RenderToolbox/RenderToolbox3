@@ -28,6 +28,7 @@ classdef RtbVersion3MitsubaConverter < handle
     methods (Static)
         function material = defaultMaterial()
             material = MMitsubaElement('', 'bsdf', 'diffuse');
+            material.append(MMitsubaProperty.withValue('reflectance', 'spectrum', '300:1 800:1'));
         end
     end
     
@@ -36,7 +37,7 @@ classdef RtbVersion3MitsubaConverter < handle
         function obj = RtbVersion3MitsubaConverter(hints)
             obj.hints = rtbDefaultHints(hints);
             obj.material = RtbVersion3MitsubaConverter.defaultMaterial();
-            obj.diffuseParameter = 'diffuseReflectance';
+            obj.diffuseParameter = 'reflectance';
             obj.specularParameter = '';
             obj.outputFolder = rtbWorkingFolder('scenes', true, obj.hints);
             obj.meshSubfolder = 'mitsuba-geometry';
@@ -122,7 +123,7 @@ classdef RtbVersion3MitsubaConverter < handle
             defaultMappings{mm}.properties(1).value = 0.1;
             defaultMappings{mm}.properties(2).name = 'farClip';
             defaultMappings{mm}.properties(2).valueType = 'float';
-            defaultMappings{mm}.properties(2).value = 1e6;            
+            defaultMappings{mm}.properties(2).value = 1e6;
         end
         
         function nativeScene = startConversion(obj, parentScene, mappings, names, conditionValues, conditionNumber)
@@ -140,7 +141,7 @@ classdef RtbVersion3MitsubaConverter < handle
             if isempty(groupName)
                 groupMappings = mappings;
             else
-                isAnyGroup = strcmp('', {mappings.group}); 
+                isAnyGroup = strcmp('', {mappings.group});
                 isInGroup = strcmp(groupName, {mappings.group});
                 groupMappings = mappings(isAnyGroup | isInGroup);
             end
