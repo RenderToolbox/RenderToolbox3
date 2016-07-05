@@ -8,21 +8,30 @@ REPLACE=$3
 echo "Finding <$FIND> and replacing it with <$REPLACE>"
 
 # rename the file itself -- assume .m extension
-ORIGINAL=$(find $DIR -type f -name $FIND.m)
+ORIGINAL=$(find "$DIR" -type f -name "$FIND.m")
 if [ $ORIGINAL ]
 then
   ORIGINAL_NAME=$(basename $ORIGINAL)
   ORIGINAL_PATH=$(dirname $ORIGINAL)
   NEW=$ORIGINAL_PATH/$REPLACE.m
   echo "Renaming <$ORIGINAL> -> <$NEW>"
-  #mv $ORIGINAL $NEW
+  mv $ORIGINAL $NEW
 else
   echo "Not found."
   exit
 fi
 
 # find and change occurrences as whole words
-echo "Replacing <$ORIGINAL> -> <$NEW>"
-find ./ -type f -exec sed -i -e 's/\b$FIND\b/$REPLACE/g' {} \;
+OCCURRENCES=$(grep -rl --include="*.m" "\b$FIND\b" "$DIR")
+if [ -n "$OCCURRENCES" ]
+then
+  COUNT=$(echo "$OCCURRENCES" | wc -l )
+  echo "Replacing Occurrences in $COUNT files:"
+  echo "$OCCURRENCES"
+  echo "$OCCURRENCES" | xargs sed -i "s/\b$FIND\b/$REPLACE/g"
+else
+  echo "No occurrences."
+  exit
+fi
 
-
+echo "Done."
