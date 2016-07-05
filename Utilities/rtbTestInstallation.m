@@ -117,8 +117,8 @@ else
     testScenes = { ...
         'rtbMakeCoordinatesTest.m', ...
         'rtbMakeDragon.m', ...
-        'rtbMakeMaterialSphereBumps.m'};
-    % 'MakeMaterialSphereRemodeled.m'};
+        'rtbMakeMaterialSphereBumps.m', ...;
+        'rtbMakeMaterialSphereRemodeled.m'};
     
     fprintf('\nTesting rendering with %d example scripts.\n', numel(testScenes));
     fprintf('You should see several figures with rendered images.\n\n');

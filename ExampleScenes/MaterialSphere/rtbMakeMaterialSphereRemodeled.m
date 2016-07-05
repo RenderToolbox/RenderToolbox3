@@ -7,22 +7,16 @@
 %% Choose example files, make sure they're on the Matlab path.
 parentSceneFile = 'MaterialSphere.dae';
 conditionsFile = 'MaterialSphereConditions.txt';
-mappingsFile = 'MaterialSphereMappings.txt';
+mappingsFile = 'MaterialSphereMappings.json';
 
 %% Choose batch renderer options.
-% which materials to use, [] means all
-hints.whichConditions = [];
-
-% pixel size of each rendering
 hints.imageWidth = 200;
 hints.imageHeight = 160;
-
-% put outputs in a subfolder named like this script
+hints.fov = 49.13434 * pi() / 180;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
 
-% a set of remodeler functions to modify the Collada parent scene
-hints.remodeler = 'MaterialSphere';
+%% Choose a remodeler function to modify the mexximp parent scene.
+remodelerFunction = 'rtbJitterVertices';
 
 %% Render with Mitsuba and PBRT.
 
@@ -35,19 +29,23 @@ for renderer = {'Mitsuba', 'PBRT'}
     
     % choose one renderer
     hints.renderer = renderer{1};
+    hints.batchRenderStrategy = RtbVersion3Strategy(hints);
+    
+    % setup of the remodeler function
+    hints.batchRenderStrategy.remodelPerConditionBeforeFunction = remodelerFunction;
     
     % make 3 multi-spectral renderings, saved in .mat files
     nativeSceneFiles = MakeSceneFiles(parentSceneFile, ...
-        'conditionsFile', conditionsFile, ...
         'mappingsFile', mappingsFile, ...
+        'conditionsFile', conditionsFile, ...
         'hints', hints);
-    radianceDataFiles = BatchRender(nativeSceneFiles, ...
-        'hints', hints);
+    radianceDataFiles = BatchRender(nativeSceneFiles, 'hints', hints);
     
     % condense multi-spectral renderings into one sRGB montage
     montageName = sprintf('MaterialSphereRemodeled (%s)', hints.renderer);
     montageFile = [montageName '.png'];
-    [SRGBMontage, XYZMontage] = MakeMontage(radianceDataFiles, ...
+    [SRGBMontage, XYZMontage] = ...
+        MakeMontage(radianceDataFiles, ...
         'outFile', montageFile, ...
         'toneMapFactor', toneMapFactor, ...
         'isScale', isScale, ...

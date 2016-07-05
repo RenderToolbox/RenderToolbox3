@@ -13,7 +13,6 @@ hints.imageWidth = 320;
 hints.imageHeight = 240;
 hints.fov = 77.31962 * pi() / 180;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
 
 toneMapFactor = 100;
 isScale = true;
