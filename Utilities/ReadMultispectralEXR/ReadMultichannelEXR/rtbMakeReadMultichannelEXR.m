@@ -5,7 +5,7 @@
 %% Compile the rtbMakeReadMultichannelEXR Mex-function.
 %
 % @details
-% Compiles the ReadMultichannelEXR() mex function from source.  Assumes
+% Compiles the rtbReadMultichannelEXR() mex function from source.  Assumes
 % that the OpenEXR libraries have been installed on the system at
 % user/, user/local/, or opt/local/.  If the libraries are installed
 % somewhere else on your system, you should copy this file and edit the 
@@ -35,9 +35,9 @@
 function rtbMakeReadMultichannelEXR()
 
 %% Choose the source and function files
-cd(fullfile(RenderToolboxRoot(), 'Utilities', 'ReadMultispectralEXR', 'ReadMultichannelEXR'));
-source = 'ReadMultichannelEXR.cpp';
-output = '-output ReadMultichannelEXR';
+cd(fullfile(RenderToolboxRoot(), 'Utilities', 'ReadMultispectralEXR', 'rtbReadMultichannelEXR'));
+source = 'rtbReadMultichannelEXR.cpp';
+output = '-output rtbReadMultichannelEXR';
 
 %% Choose library files to include and link with.
 INC = '-I/usr/local/include/OpenEXR -I/usr/include/OpenEXR -I/opt/local/include/OpenEXR';
@@ -52,7 +52,7 @@ eval(mexCmd);
 %% Test the function with a sample EXR file.
 testFile = 'TestSphereMitsuba.exr';
 %testFile = 'TestSphereBlender.exr';
-[sliceInfo, data] = ReadMultichannelEXR(testFile);
+[sliceInfo, data] = rtbReadMultichannelEXR(testFile);
 
 fprintf('If you see a figure with several images, rtbMakeReadMultichannelEXR() is working.\n');
 

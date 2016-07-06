@@ -57,7 +57,7 @@ if nargin < 2 || isempty(namePattern)
 end
 
 % read all channels from the OpenEXR image
-[sliceInfo, imageData] = ReadMultichannelEXR(exrFile);
+[sliceInfo, imageData] = rtbReadMultichannelEXR(exrFile);
 
 % scan channel names for wavelength info
 sliceNames = {sliceInfo.name};

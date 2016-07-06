@@ -25,11 +25,11 @@
 % refers to the number of channels in the image.
 %
 % @details
-% ReadMultichannelEXR is a mex-function.  This means you need to build it
+% rtbReadMultichannelEXR is a mex-function.  This means you need to build it
 % locally for your machine.  Please see rtbMakeReadMultichannelEXR().
 %
 % @details
 % Usage:
-%   [channelInfo, imageData] = ReadMultichannelEXR(exrFile);
+%   [channelInfo, imageData] = rtbReadMultichannelEXR(exrFile);
 %
 % @ingroup Readers

@@ -3,8 +3,8 @@
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 %
 %% View each slice from a multi-spectral exr-file.
-%   @param sliceInfo struct array of slice data from ReadMultichannelEXR()
-%   @param data matrix of image data from ReadMultichannelEXR()
+%   @param sliceInfo struct array of slice data from rtbReadMultichannelEXR()
+%   @param data matrix of image data from rtbReadMultichannelEXR()
 %
 % @details
 % Plots each slice from the given @a data as a grayscale image, along with

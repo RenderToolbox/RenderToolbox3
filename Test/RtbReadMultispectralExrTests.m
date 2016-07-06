@@ -4,7 +4,7 @@ classdef RtbReadMultispectralExrTests < matlab.unittest.TestCase
         
         function testReadExrBadFileNoCrash(testCase)
             try
-                [channelInfo, imageData] = ReadMultichannelEXR('no-good.exr');
+                [channelInfo, imageData] = rtbReadMultichannelEXR('no-good.exr');
             catch
                 channelInfo = [];
                 imageData = [];
@@ -15,7 +15,7 @@ classdef RtbReadMultispectralExrTests < matlab.unittest.TestCase
         
         function testReadExr(testCase)
             exrFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'CoordinatesTest.exr');
-            [channelInfo, imageData] = ReadMultichannelEXR(exrFile);
+            [channelInfo, imageData] = rtbReadMultichannelEXR(exrFile);
             
             testCase.assertInstanceOf(channelInfo, 'struct');
             testCase.assertNumElements(channelInfo, 31);
