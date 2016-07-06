@@ -90,7 +90,7 @@ conditionsFile = 'SpectralPromotionConditions.txt';
 % create a conditions file with given reflectance and illuminant
 varNames = {'reflectanceRGB', 'illuminant'};
 varValues = {reflectance, illuminant};
-conditionsFile = WriteConditionsFile(conditionsFile, varNames, varValues);
+conditionsFile = rtbWriteConditionsFile(conditionsFile, varNames, varValues);
 
 % choose batch renderer options
 hints.whichConditions = [];

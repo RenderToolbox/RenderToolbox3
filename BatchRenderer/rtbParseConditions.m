@@ -1,7 +1,7 @@
-function [names, values] = ParseConditions(conditionsFile)
+function [names, values] = rtbParseConditions(conditionsFile)
 %% Read conditions data from a text file.
 %
-% [names, values] = ParseConditions(conditionsFile)
+% [names, values] = rtbParseConditions(conditionsFile)
 % Reads batch renderer condition variables from the given conditionsFile.
 % See the RenderToolbox3 wiki for more about conditions files:
 %   https://github.com/DavidBrainard/RenderToolbox3/wiki/Conditions-File-Format
@@ -10,7 +10,7 @@ function [names, values] = ParseConditions(conditionsFile)
 % of conditionsFile.  Also returns an m x n cell array
 % of varible values, with m values per variable, from subsequent lines.
 %
-% [names, values] = ParseConditions(conditionsFile)
+% [names, values] = rtbParseConditions(conditionsFile)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

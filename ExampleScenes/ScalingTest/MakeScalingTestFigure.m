@@ -11,7 +11,7 @@ MakeScalingTest;
 
 % look in the conditions file for image names
 conditionsFile = 'ScalingTestConditions.txt';
-[names, values] = ParseConditions(conditionsFile);
+[names, values] = rtbParseConditions(conditionsFile);
 imageNames = values(:, strcmp('imageName', names));
 nImages = numel(imageNames);
 

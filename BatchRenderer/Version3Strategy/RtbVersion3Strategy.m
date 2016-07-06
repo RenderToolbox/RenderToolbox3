@@ -140,7 +140,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         end
         
         function [names, allValues] = loadConditions(obj, conditionsFile)
-            [names, allValues] = ParseConditions(conditionsFile);
+            [names, allValues] = rtbParseConditions(conditionsFile);
         end
         
         function mappings = loadMappings(obj, mappingsFile)

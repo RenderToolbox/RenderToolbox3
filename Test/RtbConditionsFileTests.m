@@ -4,7 +4,7 @@ classdef RtbConditionsFileTests < matlab.unittest.TestCase
         
         function testRead(testCase)
             conditionsFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'DragonColorCheckerConditions.txt');
-            [names, values] = ParseConditions(conditionsFile);
+            [names, values] = rtbParseConditions(conditionsFile);
             testCase.assertEqual(names, {'imageName', 'dragonColor'});
             testCase.assertSize(values, [24, 2]);
             testCase.assertEqual(values(1,:), {'macbethDragon-1', 'mccBabel-1.spd'});
@@ -19,8 +19,8 @@ classdef RtbConditionsFileTests < matlab.unittest.TestCase
                 values{vv} = sprintf('%f', rand());
             end
             
-            WriteConditionsFile(conditionsFile, names, values);
-            [namesAgain, valuesAgain] = ParseConditions(conditionsFile);
+            rtbWriteConditionsFile(conditionsFile, names, values);
+            [namesAgain, valuesAgain] = rtbParseConditions(conditionsFile);
             
             testCase.assertEqual(namesAgain, names);
             testCase.assertEqual(valuesAgain, values);

@@ -33,7 +33,7 @@ wMax = 800;
 %   get the spectrum from a PBRT pixel of interest
 %   plot the light and pixel spectra
 conditionsFile = 'TableSphereConditions.txt';
-[names, values] = ParseConditions(conditionsFile);
+[names, values] = rtbParseConditions(conditionsFile);
 lightSpectrums = values(:, strcmp('lightColor', names));
 imageNames = values(:, strcmp('imageName', names));
 nImages = numel(imageNames);

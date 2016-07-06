@@ -24,7 +24,7 @@ poiInset = 12;
 
 % look in the conditions file for image names
 conditionsFile = 'SimpleSquareConditions.txt';
-[names, values] = ParseConditions(conditionsFile);
+[names, values] = rtbParseConditions(conditionsFile);
 squareSpectrums = values(:, strcmp('squareColor', names));
 nImages = numel(squareSpectrums);
 

@@ -12,7 +12,7 @@ MakeRadianceTest('Mitsuba');
 
 % look in the conditions file for image names
 conditionsFile = 'RadianceTestConditions.txt';
-[names, values] = ParseConditions(conditionsFile);
+[names, values] = rtbParseConditions(conditionsFile);
 imageNames = values(:, strcmp('imageName', names));
 nImages = numel(imageNames);
 

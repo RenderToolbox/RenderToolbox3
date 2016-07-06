@@ -1,7 +1,7 @@
-function conditionsFile = WriteConditionsFile(conditionsFile, names, values)
+function conditionsFile = rtbWriteConditionsFile(conditionsFile, names, values)
 %% Write conditions data to a text file.
 %
-% WriteConditionsFile(conditionsFile, names, values)
+% rtbWriteConditionsFile(conditionsFile, names, values)
 % Writes batch renderer condition variables with the given names and
 % values to a new text file with the given conditionsFile name.  See the
 % RenderToolbox3 wiki for more about conditions files:
@@ -16,7 +16,7 @@ function conditionsFile = WriteConditionsFile(conditionsFile, names, values)
 %
 % Returns the given conditionsFile file name, for convenience.
 %
-% conditionsFile = WriteConditionsFile(conditionsFile, names, values)
+% conditionsFile = rtbWriteConditionsFile(conditionsFile, names, values)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

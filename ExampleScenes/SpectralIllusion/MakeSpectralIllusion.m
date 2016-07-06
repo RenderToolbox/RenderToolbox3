@@ -53,7 +53,7 @@ WriteSpectrumFile(wls, srf, targetSpectrumFile);
 
 %% Plot the initial target and destination reflectances.
 % read target and destination reflectances from conditions file
-[names, values] = ParseConditions(initialConditionsFile);
+[names, values] = rtbParseConditions(initialConditionsFile);
 targSpectrum = values{strcmp(names, 'targetColor')};
 destSpectrum = values{strcmp(names, 'destinationColor')};
 [targWls, targReflect] = ReadSpectrum(targSpectrum);

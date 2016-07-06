@@ -44,7 +44,7 @@ MakeRadianceTest(renderer);
 
 %% Read known parameters from the RadianceTest "reference" condition.
 % distance from point light to reflector
-[names, values] = ParseConditions('RadianceTestConditions.txt');
+[names, values] = rtbParseConditions('RadianceTestConditions.txt');
 isName = strcmp('imageName', names);
 isReference = strcmp('reference', values(:, isName));
 isDistance = strcmp('lightDistance', names);

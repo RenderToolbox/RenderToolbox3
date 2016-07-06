@@ -11,7 +11,7 @@ MakeInterreflection;
 
 % look in the conditions file for image names
 conditionsFile = 'InterreflectionConditions.txt';
-[names, values] = ParseConditions(conditionsFile);
+[names, values] = rtbParseConditions(conditionsFile);
 imageNames = values(:, strcmp('imageName', names));
 nImages = numel(imageNames);
 

@@ -73,7 +73,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
                 
             else
                 % read variables and values for each condition
-                [names, allValues] = ParseConditions(conditionsFile);
+                [names, allValues] = rtbParseConditions(conditionsFile);
             end
         end
         

@@ -22,5 +22,5 @@ recipe.rendering.conditions = [];
 if IsStructFieldPresent(recipe.input, 'conditionsFile')
     [recipe.rendering.conditions.names, ...
         recipe.rendering.conditions.values] = ...
-        ParseConditions(recipe.input.conditionsFile);
+        rtbParseConditions(recipe.input.conditionsFile);
 end

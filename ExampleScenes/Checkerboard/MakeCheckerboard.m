@@ -29,7 +29,7 @@ values = {...
 
 conditionsFile = fullfile(rtbWorkingFolder('resources', false, hints), ...
     'CheckerboardConditions.txt');
-conditionsFile = WriteConditionsFile(conditionsFile, names, values);
+conditionsFile = rtbWriteConditionsFile(conditionsFile, names, values);
 
 %% Render with Mitsuba and PBRT.
 toneMapFactor = 10;
