@@ -45,7 +45,7 @@ parser.addParameter('conditionsFile', '', @ischar);
 parser.addParameter('mappingsFile', '', @ischar);
 parser.addParameter('hints', rtbDefaultHints(), @isstruct);
 parser.parse(parentScene, varargin{:});
-parentScene = parser.Results.parentScene;
+parentScene = which(parser.Results.parentScene);
 conditionsFile = parser.Results.conditionsFile;
 mappingsFile = parser.Results.mappingsFile;
 hints = rtbDefaultHints(parser.Results.hints);
