@@ -13,9 +13,9 @@
 %
 % @details
 % Usage:
-%   spd2 = IlluminantMetamerExample(whichSur)
+%   spd2 = rtbIlluminantMetamerExample(whichSur)
 %
-function spd2 = IlluminantMetamerExample(whichSur)
+function spd2 = rtbIlluminantMetamerExample(whichSur)
 
 %% Load in relevant data
 S = [400 10 31];

@@ -4,7 +4,7 @@
 %
 %% Save D65 metamers for 24 Macbeth ColorChecker reflectances.
 %
-% Using the IlluminantMetamerExample() demo function, loop through all 24
+% Using the rtbIlluminantMetamerExample() demo function, loop through all 24
 % MCC surface spectra and save the computed D65 Metamers.
 
 % allocate a matrix to hold many metamers
@@ -14,7 +14,7 @@ sur_mccD65Metamer = zeros(S_mccD65Metamer(3), nSurfaces);
 
 %% compute a D65 metamer for each mcc surface color
 for ii = 1:nSurfaces
-    sur_mccD65Metamer(:,ii) = IlluminantMetamerExample(ii);
+    sur_mccD65Metamer(:,ii) = rtbIlluminantMetamerExample(ii);
 end
 close all
 
