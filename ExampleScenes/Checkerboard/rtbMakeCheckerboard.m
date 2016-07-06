@@ -13,7 +13,7 @@ hints.imageWidth = 640;
 hints.imageHeight = 480;
 hints.outputSubfolder = mfilename();
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 %% Write scene parameters to a new conditions file.
 distance = 76.4;
@@ -41,6 +41,6 @@ for renderer = {'Mitsuba', 'PBRT'}
     montageName = sprintf('Checkerboard (%s)', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
-    ShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
+    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
 end

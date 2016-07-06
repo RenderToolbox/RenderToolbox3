@@ -46,7 +46,7 @@ force = parser.Results.force;
 %% Choose "out of the box" configuration.
 
 % default input and output location
-defaultConfig.workingFolder = fullfile(GetUserFolder(), 'render-toolbox');
+defaultConfig.workingFolder = fullfile(rtbGetUserFolder(), 'render-toolbox');
 defaultConfig.recipeName = '';
 
 % default scene file and rendering options

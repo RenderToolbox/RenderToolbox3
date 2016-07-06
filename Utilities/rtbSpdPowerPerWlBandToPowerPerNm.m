@@ -1,7 +1,7 @@
-function spdPerNm = SpdPowerPerWlBandToPowerPerNm(spdPerWlBand, S)
+function spdPerNm = rtbSpdPowerPerWlBandToPowerPerNm(spdPerWlBand, S)
 %% Convert spectral power-per-wavelength-band to power-per-nanometer.
 %
-% spdPerNm = SpdPowerPerWlBandToPowerPerNm(spdPerWlBand, S)
+% spdPerNm = rtbSpdPowerPerWlBandToPowerPerNm(spdPerWlBand, S)
 % Converts the given spdPerWlBand matrix, which should contain a
 % spectral power distribution with samples in units of
 % power-per-wavelength-band, to the equivalent distribution with in units
@@ -12,7 +12,7 @@ function spdPerNm = SpdPowerPerWlBandToPowerPerNm(spdPerWlBand, S)
 % Returns the given spdPerWlBand, divided by the spectral sampling band
 % width in the given S.
 %
-% spdPerNm = SpdPowerPerWlBandToPowerPerNm(spdPerWlBand, S)
+% spdPerNm = rtbSpdPowerPerWlBandToPowerPerNm(spdPerWlBand, S)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

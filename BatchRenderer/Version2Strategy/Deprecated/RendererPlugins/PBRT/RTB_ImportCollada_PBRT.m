@@ -28,10 +28,10 @@ pbrtXMLFile = fullfile(scenesFolder, [imageName 'pbrt.xml']);
 adjustmentsFile = fullfile(tempFolder, [imageName 'Adjustments.xml']);
 
 % report new files as relative paths
-scene.colladaFile = GetWorkingRelativePath(colladaFile, hints);
-scene.pbrtFile = GetWorkingRelativePath(pbrtFile, hints);
-scene.pbrtXMLFile = GetWorkingRelativePath(pbrtXMLFile, hints);
-scene.adjustmentsFile = GetWorkingRelativePath(adjustmentsFile, hints);
+scene.colladaFile = rtbGetWorkingRelativePath(colladaFile, hints);
+scene.pbrtFile = rtbGetWorkingRelativePath(pbrtFile, hints);
+scene.pbrtXMLFile = rtbGetWorkingRelativePath(pbrtXMLFile, hints);
+scene.adjustmentsFile = rtbGetWorkingRelativePath(adjustmentsFile, hints);
 
 % image is a safe default film for PBRT
 if isempty(hints.filmType)

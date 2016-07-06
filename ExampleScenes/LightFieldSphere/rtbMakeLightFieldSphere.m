@@ -38,7 +38,7 @@ hints.imageHeight = 240;
 
 % put outputs in a subfolder named like this script
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 %% Render with Mitsuba.
 
@@ -60,8 +60,8 @@ for renderer = {'Mitsuba'}
     montageName = sprintf('LightFieldSphere (%s)', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
+        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
     
     % display the sRGB montage
-    ShowXYZAndSRGB([], SRGBMontage, montageName);
+    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
 end

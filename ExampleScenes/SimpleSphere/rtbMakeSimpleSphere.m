@@ -12,7 +12,7 @@ mappingsFile = 'SimpleSphereMappings.txt';
 hints.imageWidth = 201;
 hints.imageHeight = 201;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 %% Render with Mitsuba and PBRT
 toneMapFactor = 10;
@@ -24,6 +24,6 @@ for renderer = {'Mitsuba', 'PBRT'}
     montageName = sprintf('%s (%s)', 'SimpleSphere', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
-    ShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
+    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
 end

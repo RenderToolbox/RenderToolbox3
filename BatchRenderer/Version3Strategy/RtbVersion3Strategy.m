@@ -126,7 +126,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
             % look carefully for the file
             scenePath = fileparts(sceneFile);
             if isempty(scenePath)
-                fileInfo = ResolveFilePath(sceneFile, rtbWorkingFolder('', false, obj.hints));
+                fileInfo = rtbResolveFilePath(sceneFile, rtbWorkingFolder('', false, obj.hints));
                 sceneFile = fileInfo.absolutePath;
             end
             scene = mexximpCleanImport(sceneFile, obj.importArgs{:});

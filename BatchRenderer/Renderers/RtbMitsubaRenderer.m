@@ -32,7 +32,7 @@ classdef RtbMitsubaRenderer < RtbRenderer
             % look carefully for the file
             scenePath = fileparts(nativeScene);
             if isempty(scenePath)
-                fileInfo = ResolveFilePath(nativeScene, rtbWorkingFolder('', false, obj.hints));
+                fileInfo = rtbResolveFilePath(nativeScene, rtbWorkingFolder('', false, obj.hints));
                 nativeScene = fileInfo.absolutePath;
             end
             

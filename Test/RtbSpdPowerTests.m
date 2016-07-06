@@ -6,10 +6,10 @@ classdef RtbSpdPowerTests < matlab.unittest.TestCase
             powerPerBand = 10:10:1000;
             S = [400 10 100];
             
-            powerPerNm = SpdPowerPerWlBandToPowerPerNm(powerPerBand, S);
+            powerPerNm = rtbSpdPowerPerWlBandToPowerPerNm(powerPerBand, S);
             testCase.assertEqual(powerPerNm, 1:100);
             
-            powerPerBandAgain = SpdPowerPerNmToPowerPerWlBand(powerPerNm, S);
+            powerPerBandAgain = rtbSpdPowerPerNmToPowerPerWlBand(powerPerNm, S);
             testCase.assertEqual(powerPerBandAgain, powerPerBand);
         end
         

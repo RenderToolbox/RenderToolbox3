@@ -11,7 +11,7 @@
 % @details
 % Returns a struct that contains information collected about each
 % component.
-function info = GetRenderToolbox3VersionInfo()
+function info = rtbGetRenderToolbox3VersionInfo()
 
 % Git info about RenderToolbox3
 try

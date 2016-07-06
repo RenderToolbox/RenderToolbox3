@@ -8,4 +8,4 @@
 % and Mitsuba
 [macbethPath, macbethName] = fileparts(mfilename('fullpath'));
 matFile = fullfile(macbethPath, 'sur_mccBabel.mat');
-outFiles = ImportPsychColorimetricMatFile(matFile);
+outFiles = rtbImportPsychColorimetricMatFile(matFile);

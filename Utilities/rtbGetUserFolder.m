@@ -20,10 +20,10 @@
 %
 % @details
 % Usage:
-%   userFolder = GetUserFolder()
+%   userFolder = rtbGetUserFolder()
 %
 % @ingroup Utilities
-function userFolder = GetUserFolder()
+function userFolder = rtbGetUserFolder()
 
 % get the user's folder from Matlab
 userFolder = userpath();

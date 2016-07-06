@@ -23,15 +23,15 @@
 %
 % @details
 % Usage:
-%   PrependLicenseNotice(isPreview)
-function PrependLicenseNotice(isCommit)
+%   rtbPrependLicenseNotice(isPreview)
+function rtbPrependLicenseNotice(isCommit)
 
 if nargin < 1
     isCommit = false;
 end
 
 % get all the m-files in the RenderToolbox3 source tree
-mFiles = FindFiles(RenderToolboxRoot(), '\.m$');
+mFiles = rtbFindFiles(RenderToolboxRoot(), '\.m$');
 
 % get the text to prepend
 noticeFile = fullfile(RenderToolboxRoot(), 'licenseNotice.m');

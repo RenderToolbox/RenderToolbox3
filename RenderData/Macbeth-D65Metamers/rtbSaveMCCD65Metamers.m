@@ -28,4 +28,4 @@ matFile = fullfile(outDir, [name '.mat']);
 save(matFile, 'sur_mccD65Metamer', 'S_mccD65Metamer');
 
 % generate .spd files
-ImportPsychColorimetricMatFile(matFile, [name '.spd']);
+rtbImportPsychColorimetricMatFile(matFile, [name '.spd']);

@@ -325,6 +325,6 @@ end
 
 % include the newly converted geometry
 % use relative path for portability
-includeName = GetWorkingRelativePath(meshFilePath, hints);
+includeName = rtbGetWorkingRelativePath(meshFilePath, hints);
 AddReference(stubIDMap, id, polyName, 'Include', includeName);
 

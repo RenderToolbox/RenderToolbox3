@@ -38,7 +38,7 @@ if nargin < 2
     hints = rtbDefaultHints();
 end
 
-if ~IsStructFieldPresent(hints, 'isCaptureCommandResults')
+if ~rtbIsStructFieldPresent(hints, 'isCaptureCommandResults')
     hints.isCaptureCommandResults = true;
 end
 

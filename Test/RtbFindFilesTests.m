@@ -5,21 +5,21 @@ classdef RtbFindFilesTests < matlab.unittest.TestCase
         function testFindThisFolder(testCase)
             thisFile = which('RtbFindFilesTests');
             pathHere = fileparts(thisFile);
-            fileList = FindFiles('root', pathHere, 'allowFolders', true);
+            fileList = rtbFindFiles('root', pathHere, 'allowFolders', true);
             testCase.assertTrue(any(strcmp(fileList, pathHere)));
         end
         
         function testFindThisFile(testCase)
             thisFile = which('RtbFindFilesTests');
             pathHere = fileparts(thisFile);
-            fileList = FindFiles('root', pathHere);
+            fileList = rtbFindFiles('root', pathHere);
             testCase.assertTrue(any(strcmp(fileList, thisFile)));
         end
         
         function testFindThisFileOnly(testCase)
             thisFile = which('RtbFindFilesTests');
             pathHere = fileparts(thisFile);
-            fileList = FindFiles('root', pathHere, ...
+            fileList = rtbFindFiles('root', pathHere, ...
                 'filter', thisFile, ...
                 'exactMatch', true);
             testCase.assertNumElements(fileList, 1);
@@ -28,7 +28,7 @@ classdef RtbFindFilesTests < matlab.unittest.TestCase
         
         function testFindTestFiles(testCase)
             toolboxRoot = RenderToolboxRoot();
-            fileList = FindFiles('root', toolboxRoot, ...
+            fileList = rtbFindFiles('root', toolboxRoot, ...
                 'filter', 'Tests.m$');
             testCase.assertNotEmpty(fileList);
             nFiles = numel(fileList);
@@ -39,13 +39,13 @@ classdef RtbFindFilesTests < matlab.unittest.TestCase
         end
         
         function testFindNotAFolder(testCase)
-            fileList = FindFiles('root', 'not-a-folder');
+            fileList = rtbFindFiles('root', 'not-a-folder');
             testCase.assertEmpty(fileList);
         end
         
         function testFindImpossibleFilter(testCase)
             toolboxRoot = RenderToolboxRoot();
-            fileList = FindFiles('root', toolboxRoot, 'filter', 'nononono');
+            fileList = rtbFindFiles('root', toolboxRoot, 'filter', 'nononono');
             testCase.assertEmpty(fileList);
         end
     end

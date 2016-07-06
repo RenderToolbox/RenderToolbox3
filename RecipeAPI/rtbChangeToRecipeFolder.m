@@ -19,7 +19,7 @@
 % @ingroup RecipeAPI
 function recipe = rtbChangeToRecipeFolder(recipe)
 
-if IsStructFieldPresent(recipe.input, 'hints')
+if rtbIsStructFieldPresent(recipe.input, 'hints')
     hints = recipe.input.hints;
 else
     return;
@@ -27,7 +27,7 @@ end
 
 errorData = [];
 try
-    wasCreated = ChangeToWorkingFolder(hints);
+    wasCreated = rtbChangeToWorkingFolder(hints);
     if wasCreated
         message = ['Created ' pwd()];
     else
@@ -41,4 +41,4 @@ end
 % put this execution in the log with any error data
 recipe = rtbAppendRecipeLog(recipe, ...
     [mfilename() ' ' message], ...
-    @ChangeToWorkingFolder, errorData, 0);
+    @rtbChangeToWorkingFolder, errorData, 0);

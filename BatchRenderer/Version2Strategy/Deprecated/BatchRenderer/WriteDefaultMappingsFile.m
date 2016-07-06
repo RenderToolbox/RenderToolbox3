@@ -65,7 +65,7 @@ end
 if isempty(reflectances)
     % find default Color Checker spectrum files
     macbethPath = fullfile(RenderToolboxRoot(), 'RenderData', 'Macbeth-ColorChecker');
-    spdPaths = FindFiles('root', macbethPath, 'filter', '\.spd$');
+    spdPaths = rtbFindFiles('root', macbethPath, 'filter', '\.spd$');
     reflectances = cell(size(spdPaths));
     
     % trim off the full path and sort by spectrum number

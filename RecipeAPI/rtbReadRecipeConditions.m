@@ -19,7 +19,7 @@ parser.parse(recipe);
 recipe = parser.Results.recipe;
 
 recipe.rendering.conditions = [];
-if IsStructFieldPresent(recipe.input, 'conditionsFile')
+if rtbIsStructFieldPresent(recipe.input, 'conditionsFile')
     [recipe.rendering.conditions.names, ...
         recipe.rendering.conditions.values] = ...
         rtbParseConditions(recipe.input.conditionsFile);

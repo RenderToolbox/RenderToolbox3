@@ -48,7 +48,7 @@ functionPath = '';
 standardName = ['RTB_' functionName '_' hints.renderer];
 
 % try to find the API function by name
-info = ResolveFilePath(standardName, hints.workingFolder);
+info = rtbResolveFilePath(standardName, hints.workingFolder);
 if isempty(info.resolvedPath)
     disp(['Expected Renderer API function is missing: ' standardName])
     return

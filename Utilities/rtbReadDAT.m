@@ -1,13 +1,13 @@
-function [imageData, imageSize, lens] = ReadDAT(filename, varargin)
+function [imageData, imageSize, lens] = rtbReadDAT(filename, varargin)
 %% Get multispectral image data out of a .dat file from Stanford.
 %
-% imageData = ReadDAT(filename)
+% imageData = rtbReadDAT(filename)
 % Reads multi-spectral .dat image data from the fiven filename.  The .dat
 % format is described by Andy Lin on the Stanford Vision and Imaging
 % Science and Technology wiki:
 %   http://white.stanford.edu/pdcwiki/index.php/PBRTFileFormat
 %
-% imageData = ReadDAT(filename, 'maxPlanes', maxPlanes)
+% imageData = rtbReadDAT(filename, 'maxPlanes', maxPlanes)
 % Reads image data from the given file, and limits the number of returned
 % spectral planse to maxPlanes.  Any additional planes are ignored.
 %
@@ -20,7 +20,7 @@ function [imageData, imageSize, lens] = ReadDAT(filename, varargin)
 % returns a struct of lens data with fields focalLength, fStop, and
 % fieldOfView.
 %
-% [imageData, imageSize, lens] = ReadDAT(filename, varargin)
+% [imageData, imageSize, lens] = rtbReadDAT(filename, varargin)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

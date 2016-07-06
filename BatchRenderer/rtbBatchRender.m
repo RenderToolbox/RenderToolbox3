@@ -69,7 +69,7 @@ fprintf('Using strategy %s\n\n', class(strategy));
 
 
 %% Record toolbox and renderer version info.
-versionInfo = GetRenderToolbox3VersionInfo();
+versionInfo = rtbGetRenderToolbox3VersionInfo();
 versionInfo.rendererVersionInfo = strategy.renderer.versionInfo();
 
 

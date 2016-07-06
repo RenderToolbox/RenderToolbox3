@@ -16,7 +16,7 @@ hints.renderer = 'Mitsuba';
 hints.imageWidth = 640;
 hints.imageHeight = 480;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 resources = rtbWorkingFolder('resources', false, hints);
 
@@ -32,7 +32,7 @@ temp = 4000;
 scale = 1;
 spd = scale * GenerateCIEDay(temp, B_cieday);
 wls = SToWls(S_cieday);
-WriteSpectrumFile(wls, spd, ...
+rtbWriteSpectrumFile(wls, spd, ...
     fullfile(resources, sprintf('CIE-daylight-%d.spd', temp)));
 
 % make the dimmer blue sky
@@ -40,24 +40,24 @@ temp = 10000;
 scale = 0.001;
 spd = scale * GenerateCIEDay(temp, B_cieday);
 wls = SToWls(S_cieday);
-WriteSpectrumFile(wls, spd, ...
+rtbWriteSpectrumFile(wls, spd, ...
     fullfile(resources, sprintf('CIE-daylight-%d.spd', temp)));
 
 % make a target reflectance that is not too bright
 originalSpectrum = 'mccBabel-11.spd';
-[wls, originalReflect] = ReadSpectrum(originalSpectrum);
+[wls, originalReflect] = rtbReadSpectrum(originalSpectrum);
 scale = 1;
 srf = scale * originalReflect;
 targetSpectrumFile = fullfile(resources, 'SpectralIllusionTarget.spd');
-WriteSpectrumFile(wls, srf, targetSpectrumFile);
+rtbWriteSpectrumFile(wls, srf, targetSpectrumFile);
 
 %% Plot the initial target and destination reflectances.
 % read target and destination reflectances from conditions file
 [names, values] = rtbParseConditions(initialConditionsFile);
 targSpectrum = values{strcmp(names, 'targetColor')};
 destSpectrum = values{strcmp(names, 'destinationColor')};
-[targWls, targReflect] = ReadSpectrum(targSpectrum);
-[destWls, destReflect] = ReadSpectrum(destSpectrum);
+[targWls, targReflect] = rtbReadSpectrum(targSpectrum);
+[destWls, destReflect] = rtbReadSpectrum(destSpectrum);
 
 f = figure('UserData', 'SpectralIllusion');
 axReflect = subplot(5, 1, 3, 'Parent', f);
@@ -77,7 +77,7 @@ radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
 montageName = sprintf('SpectralIllusionInitial (%s)', hints.renderer);
 montageFile = [montageName '.png'];
 [SRGBMontage, XYZMontage] = ...
-    MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
+    rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
 
 %% Plot the initial rendering.
 axInitial = subplot(5, 2, [1 3], 'Parent', f);
@@ -143,7 +143,7 @@ drawnow();
 destIllumNonzero = max(destIllum, 0.001);
 cleverReflect = targPixelResampled ./ destIllumNonzero;
 destinationSpectrumFile = fullfile(resources, 'SpectralIllusionDestination.spd');
-WriteSpectrumFile(destWls, cleverReflect, destinationSpectrumFile);
+rtbWriteSpectrumFile(destWls, cleverReflect, destinationSpectrumFile);
 
 %% Plot the clever new reflectance
 line(destWls, cleverReflect, ...
@@ -160,7 +160,7 @@ radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
 montageName = sprintf('SpectralIllusionClever (%s)', hints.renderer);
 montageFile = [montageName '.png'];
 [SRGBMontage, XYZMontage] = ...
-    MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
+    rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
 
 %% Plot the clever rendering.
 axClever = subplot(5, 2, [2 4], 'Parent', f);

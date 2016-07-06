@@ -11,7 +11,7 @@ parentSceneFile = 'sintel_lite_cycles_v2.dae';
 hints.imageWidth = 320;
 hints.imageHeight = 240;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 %% Render with Mitsuba and PBRT.
 toneMapFactor = 100;
@@ -23,6 +23,6 @@ for renderer = {'Mitsuba', 'PBRT'}
     montageName = sprintf('%s (%s)', 'Sintel', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
-    ShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
+    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
 end

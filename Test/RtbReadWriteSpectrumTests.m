@@ -3,14 +3,14 @@ classdef RtbReadWriteSpectrumTests < matlab.unittest.TestCase
     methods (Test)
         
         function testReadString(testCase)
-            [wavelengths, magnitudes] = ReadSpectrum('300:0 800:1');
+            [wavelengths, magnitudes] = rtbReadSpectrum('300:0 800:1');
             testCase.assertEqual(wavelengths, [300 800]');
             testCase.assertEqual(magnitudes, [0 1]');
         end
         
         function testReadFile(testCase)
             spdFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'D65.spd');
-            [wavelengths, magnitudes] = ReadSpectrum(spdFile);
+            [wavelengths, magnitudes] = rtbReadSpectrum(spdFile);
             testCase.assertEqual(wavelengths, [380:5:780]');
             testCase.assertEqual(min(magnitudes), 46.42, 'AbsTol', 1e-6);
             testCase.assertEqual(max(magnitudes), 117.81, 'AbsTol', 1e-6);
@@ -21,9 +21,9 @@ classdef RtbReadWriteSpectrumTests < matlab.unittest.TestCase
             wavelengths = (1:100)';
             magnitudes = rand(size(wavelengths));
             spdFile = fullfile(tempdir(), 'RtbReadWriteSpectrumTests', 'test-spectrum.spd');
-            WriteSpectrumFile(wavelengths, magnitudes, spdFile);
+            rtbWriteSpectrumFile(wavelengths, magnitudes, spdFile);
             
-            [wavelengthsAgain, magnitudesAgain] = ReadSpectrum(spdFile);
+            [wavelengthsAgain, magnitudesAgain] = rtbReadSpectrum(spdFile);
             testCase.assertEqual(wavelengths, wavelengthsAgain);
             testCase.assertEqual(magnitudes, magnitudesAgain, 'AbsTol', 1e-6);
         end

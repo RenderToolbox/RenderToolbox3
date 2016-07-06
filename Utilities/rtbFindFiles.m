@@ -1,31 +1,31 @@
-function fileList = FindFiles(varargin)
+function fileList = rtbFindFiles(varargin)
 % Locate files by recursively searching a folder and subfolders.
 %
-% fileList = FindFiles() searches the current folder (pwd()) for files and
+% fileList = rtbFindFiles() searches the current folder (pwd()) for files and
 % returns a cell array of files found.  Excludes files that start with '.',
 % or end with '~' or '.asv'.
 %
-% fileList = FindFiles( ... 'root',  root) searches the given rood folder
+% fileList = rtbFindFiles( ... 'root',  root) searches the given rood folder
 % instead of pwd().
 %
-% fileList = FindFiles( ... 'filter', filter) uses the given filter regular
+% fileList = rtbFindFiles( ... 'filter', filter) uses the given filter regular
 % expression to filter out files.  The regular expression is applied to the
 % full, absolute path of each file encountered.  Only files that match the
 % regular expression are returned.
 %
-% fileList = FindFiles( ... 'exactMatch', exactMatch) specify whether the
+% fileList = rtbFindFiles( ... 'exactMatch', exactMatch) specify whether the
 % given filter should be treated as an exact pattern to match with literal
 % string comparison (true), or treated as a regular expression (false).
 % The default is false, treat filder as a regular expression.
 %
-% fileList = FindFiles( ... 'allowFolders', allowFolders) specify whether
+% fileList = rtbFindFiles( ... 'allowFolders', allowFolders) specify whether
 % to return only file names (false), or to reutrn a mix of file and folder
 % names (true).  The default is false, only return file names.
 %
 % Returns a cell array of strings which are the full, absolute path names
 % of files that were found and matched.
 %
-% fileList = FindFiles(varargin)
+% fileList = rtbFindFiles(varargin)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
@@ -93,7 +93,7 @@ for ii = 1:numel(subfolders)
     if ~isempty(sf) && ~any(sf=='.')
         absSubfolder = fullfile(root, sf);
         fileList = cat(2, fileList, ...
-            FindFiles('root', absSubfolder, ...
+            rtbFindFiles('root', absSubfolder, ...
             'filter', filter, ...
             'allowFolders', allowFolders, ...
             'exactMatch', exactMatch));

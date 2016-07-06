@@ -32,10 +32,10 @@
 %
 % @details
 % Usage:
-%   radiometricScaleFactor = ComputeRadiometricScaleFactor(renderer)
+%   radiometricScaleFactor = rtbComputeRadiometricScaleFactor(renderer)
 %
 % @ingroup BatchRenderer
-function radiometricScaleFactor = ComputeRadiometricScaleFactor(renderer)
+function radiometricScaleFactor = rtbComputeRadiometricScaleFactor(renderer)
 
 %% Produce renderingings with known radiometric properties.
 % render the RadianceTest scene
@@ -54,7 +54,7 @@ distanceToPointSource = StringToVector(values{isReference, isDistance});
 %   arbitrarily, choose a spectrum sample near 500nm
 isSpectrum = strcmp('lightSpectrum', names);
 spectrumFile = values{isReference, isSpectrum};
-[wavelengths, magnitudes] = ReadSpectrum(spectrumFile);
+[wavelengths, magnitudes] = rtbReadSpectrum(spectrumFile);
 spectrumIndex = find(wavelengths >= 500, 1, 'first');
 pointSource_PowerPerUnitWavelength = magnitudes(spectrumIndex);
 
@@ -76,7 +76,7 @@ hints.recipeName = 'rtbMakeRadianceTest';
 dataFolder = rtbWorkingFolder('renderings', true, hints);
 
 % locate RadianceTest "reference" data file
-dataFile = FindFiles(dataFolder, [renderer '.+reference']);
+dataFile = rtbFindFiles(dataFolder, [renderer '.+reference']);
 data = load(dataFile{1});
 
 % get a pixel spectrum from the center of the multispectral rendering

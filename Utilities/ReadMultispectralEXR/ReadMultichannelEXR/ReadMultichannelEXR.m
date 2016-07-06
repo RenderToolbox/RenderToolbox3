@@ -26,7 +26,7 @@
 %
 % @details
 % ReadMultichannelEXR is a mex-function.  This means you need to build it
-% locally for your machine.  Please see MakeReadMultichannelEXR().
+% locally for your machine.  Please see rtbMakeReadMultichannelEXR().
 %
 % @details
 % Usage:

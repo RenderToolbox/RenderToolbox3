@@ -12,10 +12,10 @@
 %
 % @details
 % Usage:
-%   isPresent = IsStructFieldPresent(s, fieldName)
+%   isPresent = rtbIsStructFieldPresent(s, fieldName)
 %
 % @ingroup Utilities
-function isPresent = IsStructFieldPresent(s, fieldName)
+function isPresent = rtbIsStructFieldPresent(s, fieldName)
 isPresent = isstruct(s) ...
     && isfield(s, fieldName) ...
     && ~isempty(s.(fieldName));

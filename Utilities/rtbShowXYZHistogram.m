@@ -28,10 +28,10 @@
 %
 % @details
 % Usage:
-%   [nX, nY, nZ, edges] = ShowXYZHistogram(XYZImage, nEdges, hints)
+%   [nX, nY, nZ, edges] = rtbShowXYZHistogram(XYZImage, nEdges, hints)
 %
 % @ingroup Utilities
-function [nX, nY, nZ, edges] = ShowXYZHistogram(XYZImage, nEdges, hints)
+function [nX, nY, nZ, edges] = rtbShowXYZHistogram(XYZImage, nEdges, hints)
 
 if nargin < 2 || isempty(nEdges)
     nEdges = 100;

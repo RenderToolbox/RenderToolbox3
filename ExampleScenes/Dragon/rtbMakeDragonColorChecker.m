@@ -17,7 +17,7 @@ hints.whichConditions = [];
 hints.imageWidth = 150;
 hints.imageHeight = 120;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 % capture and save renderer output, or display it live in Command Window
 hints.isCaptureCommandResults = true;
@@ -59,8 +59,8 @@ for renderer = {'Mitsuba', 'PBRT'}
     montageName = sprintf('%s (%s)', 'DragonColorChecker', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
+        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
     
     % display the sRGB montage
-    ShowXYZAndSRGB([], SRGBMontage, montageName);
+    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
 end

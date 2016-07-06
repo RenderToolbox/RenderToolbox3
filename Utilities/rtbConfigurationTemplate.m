@@ -30,7 +30,7 @@ rtbInitialize('force', true);
 
 %% Tell RenderToolbox3 where to save outputs.
 % choose Matlab's default "user folder"
-myFolder = fullfile(GetUserFolder(), 'render-toolbox');
+myFolder = fullfile(rtbGetUserFolder(), 'render-toolbox');
 
 % or choose any folder that you want RenderToolbox3 to write to
 %myFolder = 'choose/your/output/folder';

@@ -45,7 +45,7 @@ rtbInitialize();
 %% Where to get/put the input/output
 % copy scene file to working folder
 % so that PBRT can resolve relative paths from there
-if IsStructFieldPresent(hints, 'workingFolder')
+if rtbIsStructFieldPresent(hints, 'workingFolder')
     copyDir = rtbWorkingFolder('', false, hints);
 else
     warning('RenderToolbox3:NoWorkingFolderGiven', ...

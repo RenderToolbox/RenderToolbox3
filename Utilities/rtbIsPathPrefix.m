@@ -1,7 +1,7 @@
-function [isPrefix, remainder] = IsPathPrefix(pathA, pathB)
+function [isPrefix, remainder] = rtbIsPathPrefix(pathA, pathB)
 %% Is the first path a prefix (i.e. parent) of the second?
 %
-% isPrefix = IsPathPrefix(pathA, pathB)
+% isPrefix = rtbIsPathPrefix(pathA, pathB)
 % Checks whether the given pathA is a parent of pathB, or if pathA
 % and pathB are equivalent.  If so, pathA can be treated as a prefix
 % of pathB.
@@ -12,12 +12,12 @@ function [isPrefix, remainder] = IsPathPrefix(pathA, pathB)
 %   % folder paths
 %   pathA = '/foo/bar/';
 %   pathB = '/foo/bar/baz';
-%   shouldBeTrue = IsPathPrefix(pathA, pathB);
+%   shouldBeTrue = rtbIsPathPrefix(pathA, pathB);
 %
 %   % full file paths
 %   pathA = '/foo/bar/fileA.txt';
 %   pathB = '/foo/bar/baz/fileB.png';
-%   alsoShouldBeTrue = IsPathPrefix(pathA, pathB);
+%   alsoShouldBeTrue = rtbIsPathPrefix(pathA, pathB);
 %
 % If pathA can be considered a prefix of pathB, returns true.  Otherwise
 % returns false.  Also returns the remainder of pathB that follows pathA,
@@ -25,13 +25,13 @@ function [isPrefix, remainder] = IsPathPrefix(pathA, pathB)
 %
 %   pathA = '/foo/bar/';
 %   pathB = '/foo/bar/baz/thing.txt';
-%   [isPrefix, remainder] = IsPathPrefix(pathA, pathB);
+%   [isPrefix, remainder] = rtbIsPathPrefix(pathA, pathB);
 %   % remainder == 'baz/thing.txt';
 %
 %   % reproduce pathB
 %   pathB = fullfile(pathA, remainder);
 %
-%   [isPrefix, remainder] = IsPathPrefix(pathA, pathB)
+%   [isPrefix, remainder] = rtbIsPathPrefix(pathA, pathB)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

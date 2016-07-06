@@ -17,7 +17,7 @@ earthImage = fullfile(mfilePath, 'earthbump1k-stretch-rgb.exr');
 hints.imageWidth = 320;
 hints.imageHeight = 240;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 %% Copy images to working folder where renders can find them
 copyfile(stoneWallImage, rtbWorkingFolder('', false, hints));
@@ -34,6 +34,6 @@ for renderer = {'Mitsuba', 'PBRT'}
     montageName = sprintf('ColladaTexture (%s)', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
-    ShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
+    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
 end

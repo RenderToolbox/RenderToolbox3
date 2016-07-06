@@ -12,7 +12,7 @@ parentSceneFile = 'interior.dae';
 hints.imageHeight = 480;
 hints.imageWidth = 640;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 %% Use the automatic, default mappings file.
 colors = { ...
@@ -35,6 +35,6 @@ for renderer = {'Mitsuba', 'PBRT'}
     montageName = sprintf('%s (%s)', 'ComplexScene', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
-    ShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
+    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
 end

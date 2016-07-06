@@ -1,7 +1,7 @@
-function [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, varargin)
+function [SRGBMontage, XYZMontage, luminanceScale] = rtbMakeMontage(inFiles, varargin)
 %% Combine several multi-spectral renderings into one sRGB montage.
 %
-% SRGBMontage = MakeMontage(inFiles)
+% SRGBMontage = rtbMakeMontage(inFiles)
 % Condenses several multi-spectral renderings stored in mat-files into a
 % single sRGB montage.  inFiles must be a cell array of mat-file names,
 % each of which must contain multi-spectral renderer output, as returned
@@ -14,7 +14,7 @@ function [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, vararg
 % Attempts to conserve system memory by loading only one multi-spectral
 % image at a time.
 %
-% SRGBMontage = MakeMontage( ... 'outFile', outFile) specify the file name
+% SRGBMontage = rtbMakeMontage( ... 'outFile', outFile) specify the file name
 % of the new montage.  The file extension determines the file format:
 %   - If the extension is '.mat', the montage XYZ and sRGB matrices
 %   will be saved to a .mat data file.
@@ -22,17 +22,17 @@ function [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, vararg
 %   '.png' (default), the sRGB image will be saved in that format, using
 %   Matlab's built-in imwrite().
 %
-% sRGBImage = MakeMontage( ... 'toneMapFactor', toneMapFactor)
+% sRGBImage = rtbMakeMontage( ... 'toneMapFactor', toneMapFactor)
 % specifies a simple tone mapping threshold.  Truncates lumininces above
 % this factor times the mean luminance.  The default is 0, don't truncate
 % luminances.
 %
-% sRGBImage = MakeMontage( ... 'isScale', isScale)
+% sRGBImage = rtbMakeMontage( ... 'isScale', isScale)
 % specifies whether to scale the gamma-corrected image to the display
 % maximum (true) or not (false).  The default is false, don't scale the
 % image.
 %
-% outFiles = MakeSensorImages( ... 'hints', hints)
+% outFiles = rtbMakeSensorImages( ... 'hints', hints)
 % Specifies RenderToolbox3 "hints" to control things like the working
 % folder where output should be written.  The default is rtbDefaultHints().
 %
@@ -41,7 +41,7 @@ function [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, vararg
 % size.  Also returns a scalar, the amount by which montage luminances were
 % scaled.
 %
-% [SRGBMontage, XYZMontage, luminanceScale] = MakeMontage(inFiles, varargin)
+% [SRGBMontage, XYZMontage, luminanceScale] = rtbMakeMontage(inFiles, varargin)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
@@ -93,7 +93,7 @@ for ii = 1:nIns
     S = inData.S;
     
     % convert down to XYZ representation
-    XYZImage = MultispectralToSensorImage(multiImage, S, 'T_xyz1931');
+    XYZImage = rtbMultispectralToSensorImage(multiImage, S, 'T_xyz1931');
     
     % first image, allocate a big XYZ montage
     if ii == 1
@@ -112,7 +112,7 @@ end
 
 %% Convert the whole big XYZ montage to SRGB.
 [SRGBMontage, ~, luminanceScale] = ...
-    XYZToSRGB(XYZMontage, toneMapFactor, 0, isScale);
+    rtbXYZToSRGB(XYZMontage, toneMapFactor, 0, isScale);
 
 %% Save to disk.
 if ~isempty(outPath) && 7 ~= exist(outPath, 'dir')

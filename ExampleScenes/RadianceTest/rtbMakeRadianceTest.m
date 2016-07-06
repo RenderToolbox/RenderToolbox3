@@ -34,7 +34,7 @@ hints.whichConditions = [];
 hints.imageWidth = 100;
 hints.imageHeight = 100;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 resources = rtbWorkingFolder('resources', false, hints);
 
@@ -42,13 +42,13 @@ resources = rtbWorkingFolder('resources', false, hints);
 % uniform white spectrum sampled every 5mn
 wls = 300:5:800;
 magnitudes = ones(size(wls));
-WriteSpectrumFile(wls, magnitudes, ...
+rtbWriteSpectrumFile(wls, magnitudes, ...
     fullfile(resources, 'uniformSpectrum5nm.spd'));
 
 % uniform white spectrum sampled every 10mn
 wls = 300:10:800;
 magnitudes = ones(size(wls));
-WriteSpectrumFile(wls, magnitudes, ...
+rtbWriteSpectrumFile(wls, magnitudes, ...
     fullfile(resources, 'uniformSpectrum10nm.spd'));
 
 %% Render with Mitsuba and PBRT.
@@ -72,7 +72,7 @@ setpref(hints.renderer, 'radiometricScaleFactor', oldRadiometricScale);
 montageName = sprintf('RadianceTest (%s)', hints.renderer);
 montageFile = [montageName '.png'];
 [SRGBMontage, XYZMontage] = ...
-    MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
+    rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
 
 % display the sRGB montage
-ShowXYZAndSRGB([], SRGBMontage, montageName);
+rtbShowXYZAndSRGB([], SRGBMontage, montageName);

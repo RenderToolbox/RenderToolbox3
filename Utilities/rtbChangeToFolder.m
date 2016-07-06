@@ -13,10 +13,10 @@
 %
 % @details
 % Usage:
-%   wasCreated = ChangeToFolder(folder)
+%   wasCreated = rtbChangeToFolder(folder)
 %
 % @ingroup Utilities
-function wasCreated = ChangeToFolder(folder)
+function wasCreated = rtbChangeToFolder(folder)
 wasCreated = false;
 
 if ~exist(folder, 'dir')

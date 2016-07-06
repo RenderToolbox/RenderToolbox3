@@ -31,10 +31,10 @@
 %
 % @details
 % Usage:
-%   [gammaImage, rawImage, scaleFactor] = XYZToSRGB(XYZImage, toneMapFactor, toneMapMax, isScale)
+%   [gammaImage, rawImage, scaleFactor] = rtbXYZToSRGB(XYZImage, toneMapFactor, toneMapMax, isScale)
 %
 % @ingroup Utilities
-function [gammaImage, rawImage, scaleFactor] = XYZToSRGB(XYZImage, toneMapFactor, toneMapMax, isScale)
+function [gammaImage, rawImage, scaleFactor] = rtbXYZToSRGB(XYZImage, toneMapFactor, toneMapMax, isScale)
 
 %% parameters
 if nargin < 2

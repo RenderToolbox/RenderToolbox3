@@ -31,7 +31,7 @@ end
 hints.recipeName = 'rtbMakeSimpleSphere';
 hints.renderer = 'SphereRenderer';
 renderings = rtbWorkingFolder('renderings', true, hints);
-ChangeToFolder(renderings);
+rtbChangeToFolder(renderings);
 
 %% Choose rendering and scene parameters.
 
@@ -52,13 +52,13 @@ params.viewPoint = [0 0 1000];
 params.radius = 100;
 
 % glossy Ward sphere with orange Color Checker color
-[sphereWls, sphereMags] = ReadSpectrum('mccBabel-2.spd');
+[sphereWls, sphereMags] = rtbReadSpectrum('mccBabel-2.spd');
 params.diffuseConst = SplineSrf(sphereWls, sphereMags, S)';
 params.specularConst = 0.07 * ones(1,S(3));
 params.specularBlurConst = 0.05 * ones(S(3),1);
 
 % distant point light with daylight spectrum
-[lightWls, lightMags] = ReadSpectrum('D65.spd');
+[lightWls, lightMags] = rtbReadSpectrum('D65.spd');
 params.lightIntensity = SplineSpd(lightWls, lightMags, S);
 params.ambientLightIntensity = zeros(size(params.lightIntensity));
 params.lightCoords = 1e3 * [1 1 1];

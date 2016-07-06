@@ -35,7 +35,7 @@ RenderToolbox3 = getpref('RenderToolbox3');
 hintNames = fieldnames(RenderToolbox3);
 for ii = 1:numel(hintNames)
     name = hintNames{ii};
-    if ~IsStructFieldPresent(hints, name)
+    if ~rtbIsStructFieldPresent(hints, name)
         % hint is missing, fill in the default
         hints.(name) = getpref('RenderToolbox3', name);
     end

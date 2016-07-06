@@ -1,7 +1,7 @@
-function outFiles = MakeSensorImages(inFiles, matchingFunctions, varargin)
+function outFiles = rtbMakeSensorImages(inFiles, matchingFunctions, varargin)
 %% Write sensor image data files based on multi-spectral data files.
 %
-% outFiles = MakeSensorImages(inFiles, matchingFunctions)
+% outFiles = rtbMakeSensorImages(inFiles, matchingFunctions)
 % Writes new mat-files that contain sensor images, one for each of the
 % multi-spectral data files given in inFiles.  inFiles must be a cell array
 % of multi-spectral mat-files, as produced by rtbBatchRender().
@@ -13,19 +13,19 @@ function outFiles = MakeSensorImages(inFiles, matchingFunctions, varargin)
 %   - a numeric matrix containing color mathing data
 %   - the string name of a Psychtoolbox colorimetric data file
 %
-% outFiles = MakeSensorImages( ... 'matchingS', matchingS)
+% outFiles = rtbMakeSensorImages( ... 'matchingS', matchingS)
 % Specifies the spectral sampling to use along with the given
 % matchingFunctions.  matchingS must be a cell array with the same size as
 % matchingFunctions, where each element is a Psychtoolbox "S" samplng
 % description (see MakeItS).  matchingS is only used when matchingFunctions
 % contains numeric matrices.
 %
-% outFiles = MakeSensorImages( ... 'names', names)
+% outFiles = rtbMakeSensorImages( ... 'names', names)
 % Specifies descriptive names to go with the sensor images.  names must be
 % a cell array of strings with the same size as matchingFunctions, where
 % each element.
 %
-% outFiles = MakeSensorImages( ... 'hints', hints)
+% outFiles = rtbMakeSensorImages( ... 'hints', hints)
 % Specifies RenderToolbox3 "hints" to control things like the working
 % folder where output should be written.  The default is rtbDefaultHints().
 %
@@ -40,7 +40,7 @@ function outFiles = MakeSensorImages(inFiles, matchingFunctions, varargin)
 %   - a numeric suffix
 %   .
 %
-% outFiles = MakeSensorImages(inFiles, matchingFunctions, varargin)
+% outFiles = rtbMakeSensorImages(inFiles, matchingFunctions, varargin)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
@@ -70,7 +70,7 @@ for ii = 1:nMatching
     if ischar(matchingFunctions{ii})
         % load Psychtoolbox colorimetric data and metadata
         [resolvedFunctions{ii}, resolvedS{ii}, ~, name] = ...
-            ParsePsychColorimetricMatFile(matchingFunctions{ii});
+            rtbParsePsychColorimetricMatFile(matchingFunctions{ii});
     else
         % take matching function and sampling directly, make up a name
         resolvedFunctions{ii} = matchingFunctions{ii};
@@ -126,7 +126,7 @@ for ii = 1:nMatching
     imageS = inData.S;
     matchingFunction = matchFuncs{ii};
     matchingS = matchS{ii};
-    sensorImage = MultispectralToSensorImage( ...
+    sensorImage = rtbMultispectralToSensorImage( ...
         multispectralImage, imageS, matchingFunction, matchingS);
     
     % choose a name for the new data file of the form

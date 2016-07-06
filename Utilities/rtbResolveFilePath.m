@@ -44,10 +44,10 @@
 %
 % @details
 % Usage:
-%   fileInfo = ResolveFilePath(fileName, rootFolder)
+%   fileInfo = rtbResolveFilePath(fileName, rootFolder)
 %
 % @ingroup Utilities
-function fileInfo = ResolveFilePath(fileName, rootFolder)
+function fileInfo = rtbResolveFilePath(fileName, rootFolder)
 
 blank = {[]};
 fileInfo = struct( ...
@@ -80,7 +80,7 @@ end
 
 % given a plain file within workingFolder?
 if 7 == exist(rootFolder, 'dir')
-    matches = FindFiles('root', rootFolder, ...
+    matches = rtbFindFiles('root', rootFolder, ...
         'filter', fileName, ...
         'exactMatch', true);
     if ~isempty(matches)
@@ -124,7 +124,7 @@ end
 
 %% Get relative path from rootFolder, if any.
 function [isPrefix, resolvedPath] = checkRootPath(path, rootFolder)
-[isPrefix, relativePath] = IsPathPrefix(rootFolder, path);
+[isPrefix, relativePath] = rtbIsPathPrefix(rootFolder, path);
 if isPrefix
     resolvedPath = relativePath;
 else

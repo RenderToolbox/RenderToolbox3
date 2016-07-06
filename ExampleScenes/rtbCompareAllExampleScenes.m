@@ -115,8 +115,8 @@ unmatchedB = {};
 
 % find .mat files for sets A and B
 fileFilter = [filterExpression '[^\.]*\.mat$'];
-filesA = FindFiles(workingFolderA, fileFilter);
-filesB = FindFiles(workingFolderB, fileFilter);
+filesA = rtbFindFiles(workingFolderA, fileFilter);
+filesB = rtbFindFiles(workingFolderB, fileFilter);
 
 if isempty(filesA)
     fprintf('Found no files for set A in: %s\n', workingFolderA);
@@ -409,10 +409,10 @@ function f = showDifferenceImage(info, A, B)
 [A, B, S] = truncatePlanes(A, B, info.samplingA, info.samplingB);
 isScale = true;
 toneMapFactor = 0;
-imageA = MultispectralToSRGB(A, S, toneMapFactor, isScale);
-imageB = MultispectralToSRGB(B, S, toneMapFactor, isScale);
-imageAB = MultispectralToSRGB(A-B, S, toneMapFactor, isScale);
-imageBA = MultispectralToSRGB(B-A, S, toneMapFactor, isScale);
+imageA = rtbMultispectralToSRGB(A, S, toneMapFactor, isScale);
+imageB = rtbMultispectralToSRGB(B, S, toneMapFactor, isScale);
+imageAB = rtbMultispectralToSRGB(A-B, S, toneMapFactor, isScale);
+imageBA = rtbMultispectralToSRGB(B-A, S, toneMapFactor, isScale);
 
 % show images in a new figure
 name = sprintf('sRGB scaled: %s', info.relativeA);

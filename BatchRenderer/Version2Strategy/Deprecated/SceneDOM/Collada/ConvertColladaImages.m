@@ -39,7 +39,7 @@ for ii = 1:nImages
     initFromFile = char(initFrom.getTextContent());
     
     % is there such a file within workignFolder?
-    fileInfo = ResolveFilePath(initFromFile, workingFolder);
+    fileInfo = rtbResolveFilePath(initFromFile, workingFolder);
     if fileInfo.isRootFolderMatch
         % update the file reference with path relative to workingFolder
         initFrom.setTextContent(fileInfo.resolvedPath);

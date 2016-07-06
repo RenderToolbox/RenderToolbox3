@@ -11,10 +11,10 @@
 %
 % @details
 % Usage:
-%   CleanMatlabPath()
+%   rtbCleanMatlabPath()
 %
 % @ingroup Utilities
-function CleanMatlabPath()
+function rtbCleanMatlabPath()
 
 % get the Matlab path
 pathString = path();

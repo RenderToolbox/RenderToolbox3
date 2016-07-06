@@ -77,7 +77,7 @@ logData.executiveIndex = executiveIndex;
 
 
 %% Append entry to the recipe log.
-if IsStructFieldPresent(recipe, 'log')
+if rtbIsStructFieldPresent(recipe, 'log')
     recipe.log(end+1) = logData;
 else
     recipe.log = logData;

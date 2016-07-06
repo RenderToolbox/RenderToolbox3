@@ -34,10 +34,10 @@
 %
 % @details
 % Usage:
-%   [wavelengths, magnitudes, sRGB] = GetPixelSpectrum(image, spectrum, x, y)
+%   [wavelengths, magnitudes, sRGB] = rtbGetPixelSpectrum(image, spectrum, x, y)
 %
 % @ingroup Utilities
-function [wavelengths, magnitudes, sRGB] = GetPixelSpectrum(image, spectrum, x, y)
+function [wavelengths, magnitudes, sRGB] = rtbGetPixelSpectrum(image, spectrum, x, y)
 
 % determine the wavelength of each spectrum band
 wavelengths = MakeItWls(spectrum);
@@ -46,5 +46,5 @@ wavelengths = MakeItWls(spectrum);
 magnitudes = squeeze(image(y, x, :));
 
 % make an sRGB approximation
-sRGB = squeeze(MultispectralToSRGB( ...
+sRGB = squeeze(rtbMultispectralToSRGB( ...
     reshape(magnitudes, 1, 1, []), wavelengths, 0, false));

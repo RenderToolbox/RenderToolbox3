@@ -42,7 +42,7 @@ recipe = rtbAppendRecipeLog(recipe, ...
 
 %% Locate input files, possibly from relative paths
 function resourcePath = locateWorkingResource(resourceName, workingFolder)
-resourceInfo = ResolveFilePath(resourceName, workingFolder);
+resourceInfo = rtbResolveFilePath(resourceName, workingFolder);
 if ~isempty(resourceInfo.absolutePath)
     resourcePath = resourceInfo.absolutePath;
     return;

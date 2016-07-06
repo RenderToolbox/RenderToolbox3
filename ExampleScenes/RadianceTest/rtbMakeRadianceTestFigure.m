@@ -32,7 +32,7 @@ for ii = 1:nImages
     % read PBRT data for this condition
     hints.renderer = 'PBRT';
     dataFolder = rtbWorkingFolder('renderings', true, hints);
-    file = FindFiles(dataFolder, [imageNames{ii} '.mat']);
+    file = rtbFindFiles(dataFolder, [imageNames{ii} '.mat']);
     data = load(file{1});
     pbrt(ii).imageSpectral = data.multispectralImage;
     pbrt(ii).maxSpectral = max(data.multispectralImage(:));
@@ -41,7 +41,7 @@ for ii = 1:nImages
     % read Mitsuba data for this condition
     hints.renderer = 'Mitsuba';
     dataFolder = rtbWorkingFolder('renderings', true, hints);
-    file = FindFiles(dataFolder, [imageNames{ii} '.mat']);
+    file = rtbFindFiles(dataFolder, [imageNames{ii} '.mat']);
     data = load(file{1});
     mitsuba(ii).imageSpectral = data.multispectralImage;
     mitsuba(ii).maxSpectral = max(data.multispectralImage(:));
@@ -54,13 +54,13 @@ maxSRGB = .95;
 
 % scale for PBRT
 tinyImage = pbrt(1).maxSpectral * ones(1, 1, pbrt(1).S(3));
-[sRGB, XYZ, rawRGB] = MultispectralToSRGB(tinyImage, pbrt(1).S, false);
+[sRGB, XYZ, rawRGB] = rtbMultispectralToSRGB(tinyImage, pbrt(1).S, false);
 scale = maxSRGB / max(rawRGB(:));
 [pbrt.scaleSRGB] = deal(scale);
 
 % scale for Mitsuba
 tinyImage = mitsuba(1).maxSpectral * ones(1, 1, mitsuba(1).S(3));
-[sRGB, XYZ, rawRGB] = MultispectralToSRGB(tinyImage, mitsuba(1).S, false);
+[sRGB, XYZ, rawRGB] = rtbMultispectralToSRGB(tinyImage, mitsuba(1).S, false);
 scale = maxSRGB / max(rawRGB(:));
 [mitsuba.scaleSRGB] = deal(scale);
 
@@ -68,11 +68,11 @@ scale = maxSRGB / max(rawRGB(:));
 for ii = 1:nImages
     % PBRT image
     imageSpectral = pbrt(ii).imageSpectral * pbrt(ii).scaleSRGB;
-    pbrt(ii).imageSRGB = MultispectralToSRGB(imageSpectral, pbrt(ii).S, false);
+    pbrt(ii).imageSRGB = rtbMultispectralToSRGB(imageSpectral, pbrt(ii).S, false);
     
     % Mitsuba image
     imageSpectral = mitsuba(ii).imageSpectral * mitsuba(ii).scaleSRGB;
-    mitsuba(ii).imageSRGB = MultispectralToSRGB(imageSpectral, mitsuba(ii).S, false);
+    mitsuba(ii).imageSRGB = rtbMultispectralToSRGB(imageSpectral, mitsuba(ii).S, false);
 end
 
 

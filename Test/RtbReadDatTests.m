@@ -4,7 +4,7 @@ classdef RtbReadDatTests < matlab.unittest.TestCase
         
         function testReadDatBadFileNoCrash(testCase)
             try
-                [imageData, imageSize, lens] = ReadDAT('no-good.dat');
+                [imageData, imageSize, lens] = rtbReadDAT('no-good.dat');
             catch
                 imageData = [];
                 imageSize = [];
@@ -17,7 +17,7 @@ classdef RtbReadDatTests < matlab.unittest.TestCase
         
         function testReadDat(testCase)
             datFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'CoordinatesTest.dat');
-            [imageData, imageSize] = ReadDAT(datFile);
+            [imageData, imageSize] = rtbReadDAT(datFile);
             
             testCase.assertSize(imageData, [240 320 32]);
             testCase.assertTrue(max(imageData(:)) > 0);
@@ -26,7 +26,7 @@ classdef RtbReadDatTests < matlab.unittest.TestCase
         
         function testReadDatMaxPlanes(testCase)
             datFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'CoordinatesTest.dat');
-            [imageData, imageSize] = ReadDAT(datFile, ...
+            [imageData, imageSize] = rtbReadDAT(datFile, ...
                 'maxPlanes', 11);
             
             testCase.assertSize(imageData, [240 320 11]);

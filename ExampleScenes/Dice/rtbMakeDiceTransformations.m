@@ -13,7 +13,7 @@ conditionsFile = 'DiceTransformationsConditions.txt';
 hints.imageWidth = 640;
 hints.imageHeight = 480;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 %% Render with Mitsuba and PBRT.
 toneMapFactor = 10;
@@ -27,8 +27,8 @@ for renderer = {'Mitsuba', 'PBRT'}
         [dataPath, imageName] = fileparts(radianceDataFiles{ii});
         montageName = sprintf('Dice - %s (%s)', imageName, hints.renderer);
         montageFile = [montageName '.png'];
-        [SRGBMontage, XYZMontage] = MakeMontage( ...
+        [SRGBMontage, XYZMontage] = rtbMakeMontage( ...
             radianceDataFiles(ii), montageFile, toneMapFactor, isScale, hints);
-        ShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbShowXYZAndSRGB([], SRGBMontage, montageName);
     end
 end

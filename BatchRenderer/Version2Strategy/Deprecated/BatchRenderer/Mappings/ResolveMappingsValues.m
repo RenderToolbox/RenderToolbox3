@@ -98,7 +98,7 @@ for mm = 1:numel(mappings)
     
     % find files within working folder or on Matlab path
     if ~isempty(regexp(map.right.value, '\.\S*$', 'once'))
-        fileInfo = ResolveFilePath(map.right.value, workingFolder);
+        fileInfo = rtbResolveFilePath(map.right.value, workingFolder);
         if ~isempty(fileInfo) && ~isempty(fileInfo.resolvedPath)
             map.right.value = fileInfo.resolvedPath;
             

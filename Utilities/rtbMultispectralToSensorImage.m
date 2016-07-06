@@ -43,19 +43,19 @@
 %
 % @details
 % Usage:
-%   sensorImage = MultispectralToSensorImage(multispectralData, imageS, matchingFunction, matchingS)
+%   sensorImage = rtbMultispectralToSensorImage(multispectralData, imageS, matchingFunction, matchingS)
 %
 % @ingroup Utilities
-function sensorImage = MultispectralToSensorImage(multispectralData, imageS, matchingFunction, matchingS)
+function sensorImage = rtbMultispectralToSensorImage(multispectralData, imageS, matchingFunction, matchingS)
 % load matchingFunction and matchingS from Psychtoolbox .mat file?
 if ischar(matchingFunction)
     [matchingFunction, matchingS] = ...
-        ParsePsychColorimetricMatFile(matchingFunction);
+        rtbParsePsychColorimetricMatFile(matchingFunction);
 end
 
 % "multiply in" to Psychtoolbox convention of Power per Wavelength Band
 multispectralData = ...
-    SpdPowerPerNmToPowerPerWlBand(multispectralData, imageS);
+    rtbSpdPowerPerNmToPowerPerWlBand(multispectralData, imageS);
 
 %% Convert image to arbitrary sensor representation by weighting.
 % resample mathing function to match the image spectral sampling

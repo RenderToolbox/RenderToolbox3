@@ -17,7 +17,7 @@ dataFilePattern = 'SimpleSphere[0-9\-]*\.mat';
 %   normalize it, scale it
 hints.renderer = 'SphereRenderer';
 dataFolder = rtbWorkingFolder('renderings', true, hints);
-matFile = FindFiles(dataFolder, dataFilePattern);
+matFile = rtbFindFiles(dataFolder, dataFilePattern);
 fprintf('Using Matlab Sphere Renderer output found here: \n  %s\n', ...
     matFile{1});
 refData = load(matFile{1});
@@ -28,7 +28,7 @@ refData.multispectralImage = refData.multispectralImage/refMax;
 %   normalize it, scale it
 hints.renderer = 'PBRT';
 dataFolder = rtbWorkingFolder('renderings', true, hints);
-matFile = FindFiles(dataFolder, dataFilePattern);
+matFile = rtbFindFiles(dataFolder, dataFilePattern);
 PBRTData = load(matFile{1});
 PBRTMax = max(PBRTData.multispectralImage(:));
 PBRTData.multispectralImage = PBRTData.multispectralImage/PBRTMax;
@@ -37,7 +37,7 @@ PBRTData.multispectralImage = PBRTData.multispectralImage/PBRTMax;
 %   normalize it, scale it
 hints.renderer = 'Mitsuba';
 dataFolder = rtbWorkingFolder('renderings', true, hints);
-matFile = FindFiles(dataFolder, dataFilePattern);
+matFile = rtbFindFiles(dataFolder, dataFilePattern);
 mitsubaData = load(matFile{1});
 mitsubaMax = max(mitsubaData.multispectralImage(:));
 mitsubaData.multispectralImage = mitsubaData.multispectralImage/mitsubaMax;
@@ -105,7 +105,7 @@ for ii = 1:nImages
     S = samplings{ii};
     
     % make sRGB image
-    [sRGB, XYZ] = MultispectralToSRGB(imageData, S, toneMapFactor, isGammaScale);
+    [sRGB, XYZ] = rtbMultispectralToSRGB(imageData, S, toneMapFactor, isGammaScale);
     ax = subplot(3, 3, ii, 'Parent', fig);
     imshow(uint8(sRGB), 'Parent', ax);
     title(ax, names{ii});

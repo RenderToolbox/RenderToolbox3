@@ -28,7 +28,7 @@ end
 
 errorData = [];
 
-if IsStructFieldPresent(recipe, 'log')
+if rtbIsStructFieldPresent(recipe, 'log')
     for ii = 1:numel(recipe.log)
         errorData = recipe.log(ii).errorData;
         if ~isempty(errorData)

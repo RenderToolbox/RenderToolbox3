@@ -17,10 +17,10 @@
 %
 % @details
 % Usage:
-%   relativePath = GetWorkingRelativePath(originalPath, hints)
+%   relativePath = rtbGetWorkingRelativePath(originalPath, hints)
 %
 % @ingroup Utilities
-function relativePath = GetWorkingRelativePath(originalPath, hints)
+function relativePath = rtbGetWorkingRelativePath(originalPath, hints)
 
 if nargin < 2
     hints = rtbDefaultHints();
@@ -31,7 +31,7 @@ end
 relativePath = '';
 
 workingFolder = rtbWorkingFolder('', false, hints);
-info = ResolveFilePath(originalPath, workingFolder);
+info = rtbResolveFilePath(originalPath, workingFolder);
 if info.isRootFolderMatch
     relativePath = info.resolvedPath;
 end

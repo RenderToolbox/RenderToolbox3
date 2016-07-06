@@ -65,7 +65,7 @@ end
 
 %% Copy dependencies from the working folder to the temp folder.
 workingRoot = rtbWorkingFolder('', false, recipe.input.hints);
-dependencies = FindFiles('root', workingRoot);
+dependencies = rtbFindFiles('root', workingRoot);
 for ii = 1:numel(dependencies)
     localPath = dependencies{ii};
     
@@ -74,7 +74,7 @@ for ii = 1:numel(dependencies)
         continue;
     end
     
-    relativePath = GetWorkingRelativePath(localPath, recipe.input.hints);
+    relativePath = rtbGetWorkingRelativePath(localPath, recipe.input.hints);
     tempPath = fullfile(tempFolder, relativePath);
     
     % don't try to copy a file to itself
@@ -109,7 +109,7 @@ rmdir(tempFolder, 's');
 function isIgnore = shouldBeIgnored(filePath, ignorePaths)
 isIgnore = false;
 for ii = 1:numel(ignorePaths)
-    isIgnore = IsPathPrefix(ignorePaths{ii}, filePath);
+    isIgnore = rtbIsPathPrefix(ignorePaths{ii}, filePath);
     if (isIgnore)
         return;
     end

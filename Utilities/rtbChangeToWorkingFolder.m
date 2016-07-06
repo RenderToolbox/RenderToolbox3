@@ -14,10 +14,10 @@
 %
 % @details
 % Usage:
-%   wasCreated = ChangeToWorkingFolder(hints)
+%   wasCreated = rtbChangeToWorkingFolder(hints)
 %
 % @ingroup Utilities
-function wasCreated = ChangeToWorkingFolder(hints)
+function wasCreated = rtbChangeToWorkingFolder(hints)
 
 if nargin < 1
     hints = rtbDefaultHints();
@@ -26,4 +26,4 @@ else
 end
 
 workingFolder = rtbWorkingFolder('', false, hints);
-wasCreated = ChangeToFolder(workingFolder);
+wasCreated = rtbChangeToFolder(workingFolder);

@@ -37,7 +37,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             % look carefully for the file
             [scenePath, sceneBase, sceneExt] = fileparts(sceneFile);
             if isempty(scenePath) && exist(sceneFile, 'file')
-                fileInfo = ResolveFilePath(sceneFile, rtbWorkingFolder('', false, obj.hints));
+                fileInfo = rtbResolveFilePath(sceneFile, rtbWorkingFolder('', false, obj.hints));
                 sceneFile = fileInfo.absolutePath;
             end
             
@@ -157,7 +157,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             % read original Collada document into memory
             [scenePath, sceneBase, sceneExt] = fileparts(colladaFile);
             if isempty(scenePath) && 2 == exist(colladaFile, 'file')
-                info = ResolveFilePath(colladaFile, rtbWorkingFolder('', false, obj.hints));
+                info = rtbResolveFilePath(colladaFile, rtbWorkingFolder('', false, obj.hints));
                 colladaFile = info.absolutePath;
             end
             colladaDoc = ReadSceneDOM(colladaFile);

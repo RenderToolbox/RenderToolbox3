@@ -12,7 +12,7 @@ mappingsFile = 'DragonMappings.txt';
 hints.imageWidth = 320;
 hints.imageHeight = 240;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 %% Render with Mitsuba and PBRT.
 toneMapFactor = 10;
@@ -26,10 +26,10 @@ for renderer = {'Mitsuba', 'PBRT'}
     montageName = sprintf('%s (%s)', 'Dragon', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, ...
+        rtbMakeMontage(radianceDataFiles, ...
         'outFile', montageFile, ...
         'toneMapFactor', toneMapFactor, ...
         'isScale', isScale, ...
         'hints', hints);
-    ShowXYZAndSRGB([], SRGBMontage, montageName);
+    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
 end

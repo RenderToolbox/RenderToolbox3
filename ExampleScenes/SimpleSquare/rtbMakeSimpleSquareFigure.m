@@ -16,7 +16,7 @@ for ii = 1:numel(mappings)
         lightSpectrum = mappings(ii).right.value;
     end
 end
-[lightWls, lightMags] = ReadSpectrum(lightSpectrum);
+[lightWls, lightMags] = rtbReadSpectrum(lightSpectrum);
 
 %% Get multi-spectral data for images and pixels of interest.
 % choose how far to inset the pixel of interest
@@ -53,21 +53,21 @@ for ii = 1:nImages
     % read PBRT square data from file
     hints.renderer = 'PBRT';
     dataFolder = rtbWorkingFolder('renderings', true, hints);
-    file = FindFiles(dataFolder, [imageNum '.mat']);
+    file = rtbFindFiles(dataFolder, [imageNum '.mat']);
     data = load(file{1});
     pbrt(ii).imageSpectral = data.multispectralImage;
     pbrt(ii).S = data.S;
-    [pbrt(ii).poiWls, pbrt(ii).poiSpd] = GetPixelSpectrum( ...
+    [pbrt(ii).poiWls, pbrt(ii).poiSpd] = rtbGetPixelSpectrum( ...
         data.multispectralImage, data.S, poiInset, poiInset);
     
     % read Mitsuba square data from file
     hints.renderer = 'Mitsuba';
     dataFolder = rtbWorkingFolder('renderings', true, hints);
-    file = FindFiles(dataFolder, [imageNum '.mat']);
+    file = rtbFindFiles(dataFolder, [imageNum '.mat']);
     data = load(file{1});
     mitsuba(ii).imageSpectral = data.multispectralImage;
     mitsuba(ii).S = data.S;
-    [mitsuba(ii).poiWls, mitsuba(ii).poiSpd] = GetPixelSpectrum( ...
+    [mitsuba(ii).poiWls, mitsuba(ii).poiSpd] = rtbGetPixelSpectrum( ...
         data.multispectralImage, data.S, poiInset, poiInset);
     
     % compute predicted pixel of interest
@@ -76,7 +76,7 @@ for ii = 1:nImages
     %   resample as needed
     predicted(ii).S = pbrt(ii).S;
     predicted(ii).poiWls = MakeItWls(predicted(ii).S);
-    [squareWls, squareSrf] = ReadSpectrum(squareSpectrums{ii});
+    [squareWls, squareSrf] = rtbReadSpectrum(squareSpectrums{ii});
     squareSrfResampled = SplineSrf(squareWls, squareSrf, lightWls);
     predictedSpectrum = lightMags .* squareSrfResampled;
     predicted(ii).poiSpd = SplineSpd(lightWls, predictedSpectrum, predicted(ii).S);
@@ -93,20 +93,20 @@ predictedDump = [predicted.poiSpd];
 
 %% Determine scaling to convert multi-spectral data to nice sRGB.
 tinyImage = reshape(predicted(4).poiSpd, 1, 1, []);
-[sRGB, XYZ, rawRGB] = MultispectralToSRGB(tinyImage, predicted(4).S, false);
+[sRGB, XYZ, rawRGB] = rtbMultispectralToSRGB(tinyImage, predicted(4).S, false);
 maxSRGB = .95;
 scaleSRGB = maxSRGB / max(rawRGB(:));
 
 %% Convert images and pixels of interest to XYZ, sRGB, and CIE LAB.
 % use the predicted white pixel of interest as the LAB "standard white"
 whiteSpd = predicted(4).poiSpd * predicted(ii).scaleSpectral * scaleSRGB;
-[whiteSRGB, whiteXYZ] = MultispectralToSRGB( ...
+[whiteSRGB, whiteXYZ] = rtbMultispectralToSRGB( ...
     reshape(whiteSpd, 1, 1, []), predicted(4).S, false);
 whiteXYZ = squeeze(whiteXYZ);
 for ii = 1:nImages
     % predicted pixel of interest
     spd = predicted(ii).poiSpd * predicted(ii).scaleSpectral * scaleSRGB;
-    [sRGB, XYZ, rawRGB] = MultispectralToSRGB( ...
+    [sRGB, XYZ, rawRGB] = rtbMultispectralToSRGB( ...
         reshape(spd, 1, 1, []), predicted(ii).S, false);
     predicted(ii).poiSRGB = squeeze(sRGB);
     predicted(ii).poiXYZ = squeeze(XYZ);
@@ -115,9 +115,9 @@ for ii = 1:nImages
     
     % PBRT image and pixel of interest
     imageSpectral = pbrt(ii).imageSpectral * pbrt(ii).scaleSpectral * scaleSRGB;
-    pbrt(ii).imageSRGB = MultispectralToSRGB(imageSpectral, pbrt(ii).S, false);
+    pbrt(ii).imageSRGB = rtbMultispectralToSRGB(imageSpectral, pbrt(ii).S, false);
     spd = pbrt(ii).poiSpd * pbrt(ii).scaleSpectral * scaleSRGB;
-    [sRGB, XYZ, rawRGB] = MultispectralToSRGB( ...
+    [sRGB, XYZ, rawRGB] = rtbMultispectralToSRGB( ...
         reshape(spd, 1, 1, []), pbrt(ii).S, false);
     pbrt(ii).poiSRGB = squeeze(sRGB);
     pbrt(ii).poiXYZ = squeeze(XYZ);
@@ -126,9 +126,9 @@ for ii = 1:nImages
     
     % Mitsuba image and pixel of interest
     imageSpectral = mitsuba(ii).imageSpectral * mitsuba(ii).scaleSpectral * scaleSRGB;
-    mitsuba(ii).imageSRGB = MultispectralToSRGB(imageSpectral, mitsuba(ii).S, false);
+    mitsuba(ii).imageSRGB = rtbMultispectralToSRGB(imageSpectral, mitsuba(ii).S, false);
     spd = mitsuba(ii).poiSpd * mitsuba(ii).scaleSpectral * scaleSRGB;
-    [sRGB, XYZ, rawRGB] = MultispectralToSRGB( ...
+    [sRGB, XYZ, rawRGB] = rtbMultispectralToSRGB( ...
         reshape(spd, 1, 1, []), mitsuba(ii).S, false);
     mitsuba(ii).poiSRGB = squeeze(sRGB);
     mitsuba(ii).poiXYZ = squeeze(XYZ);

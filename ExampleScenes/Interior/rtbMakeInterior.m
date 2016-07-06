@@ -13,7 +13,7 @@ mappingsFile = 'InteriorMappings.txt';
 %% Choose batch renderer options.
 hints.whichConditions = [];
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 resources = rtbWorkingFolder('resources', false, hints);
 
@@ -25,7 +25,7 @@ temp = 4000;
 scale = 3;
 spd = scale * GenerateCIEDay(temp, B_cieday);
 wls = SToWls(S_cieday);
-WriteSpectrumFile(wls, spd, ...
+rtbWriteSpectrumFile(wls, spd, ...
     fullfile(resources, sprintf('YellowLight.spd', temp)));
 
 % make strong yellow for the hanging spot light
@@ -33,14 +33,14 @@ temp = 5000;
 scale = 30;
 spd = scale * GenerateCIEDay(temp, B_cieday);
 wls = SToWls(S_cieday);
-WriteSpectrumFile(wls, spd, ...
+rtbWriteSpectrumFile(wls, spd, ...
     fullfile(resources, sprintf('HangingLight.spd', temp)));
 
 % make daylight for the windows behind the camera
-[wavelengths, magnitudes] = ReadSpectrum('D65.spd');
+[wavelengths, magnitudes] = rtbReadSpectrum('D65.spd');
 scale = 1;
 magnitudes = scale * magnitudes;
-WriteSpectrumFile(wavelengths, magnitudes, ...
+rtbWriteSpectrumFile(wavelengths, magnitudes, ...
     fullfile(resources, 'WindowLight.spd'));
 
 %% Render with Mitsuba and PBRT
@@ -56,8 +56,8 @@ for renderer = {'Mitsuba', 'PBRT'}
         [outPath, outBase, outExt] = fileparts(radianceDataFiles{ii});
         montageName = sprintf('%s (%s)', outBase, hints.renderer);
         montageFile = [montageName '.png'];
-        [SRGBMontage, XYZMontage] = MakeMontage( ...
+        [SRGBMontage, XYZMontage] = rtbMakeMontage( ...
             radianceDataFiles(ii), montageFile, toneMapFactor, isScale, hints);
-        ShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbShowXYZAndSRGB([], SRGBMontage, montageName);
     end
 end

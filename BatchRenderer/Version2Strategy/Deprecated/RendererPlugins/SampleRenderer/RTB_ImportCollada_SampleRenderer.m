@@ -54,7 +54,7 @@
 % The names of all new files should appear in the returned scene
 % description struct, or appear within other files whose names appear in
 % turn in the scene description struct.  These file names must be converted
-% to relative paths using GetWorkingRelativePath(), in order to make scenes 
+% to relative paths using rtbGetWorkingRelativePath(), in order to make scenes 
 % portable across machines and users.
 %
 % @details

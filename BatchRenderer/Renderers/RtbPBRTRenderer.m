@@ -35,7 +35,7 @@ classdef RtbPBRTRenderer < RtbRenderer
             % look carefully for the file
             [scenePath, sceneBase, sceneExt] = fileparts(nativeScene);
             if isempty(scenePath)
-                fileInfo = ResolveFilePath(nativeScene, obj.workingFolder);
+                fileInfo = rtbResolveFilePath(nativeScene, obj.workingFolder);
                 nativeScene = fileInfo.absolutePath;
             end
             
@@ -57,7 +57,7 @@ classdef RtbPBRTRenderer < RtbRenderer
             end
             
             sampling = obj.pbrt.S;
-            image = ReadDAT(outFile, 'maxPlanes', sampling(3));
+            image = rtbReadDAT(outFile, 'maxPlanes', sampling(3));
         end
         
         function [radianceImage, scaleFactor] = toRadiance(obj, image, sampling, nativeScene)

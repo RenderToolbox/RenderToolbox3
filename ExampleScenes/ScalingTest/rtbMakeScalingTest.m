@@ -12,7 +12,7 @@ mappingsFile = 'ScalingTestMappings.txt';
 %% Choose batch renderer options.
 hints.whichConditions = [];
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 %% Render with Mitsuba and PBRT.
 % make an sRGB montage with each renderer
@@ -38,8 +38,8 @@ for renderer = {'Mitsuba', 'PBRT'}
     montageName = sprintf('%s (%s)', 'ScalingTest', hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
+        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
     
     % display the sRGB montage
-    ShowXYZAndSRGB([], SRGBMontage, montageName);
+    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
 end

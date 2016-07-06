@@ -39,13 +39,13 @@ tempFolder = rtbWorkingFolder('', false, hints);
 if exist(tempFolder, 'dir')
     rmdir(tempFolder, 's');
 end
-ChangeToFolder(tempFolder);
+rtbChangeToFolder(tempFolder);
 
 %% Unpack the archive to the temporary folder.
 unzip(archiveName, tempFolder);
 
 % extract the recipe struct
-recipeFiles = FindFiles('root', tempFolder, 'filter', 'recipe\.mat');
+recipeFiles = rtbFindFiles('root', tempFolder, 'filter', 'recipe\.mat');
 if 1 == numel(recipeFiles)
     recipeFileName = recipeFiles{1};
 else
@@ -60,14 +60,14 @@ recipe.input.hints.workingFolder = hints.workingFolder;
 
 %% Copy dependencies from the temp folder to the local working folder.
 unpackedFolder = fullfile(tempFolder, archiveBase);
-dependencies = FindFiles('root', unpackedFolder);
+dependencies = rtbFindFiles('root', unpackedFolder);
 for ii = 1:numel(dependencies)
     tempPath = dependencies{ii};
     if strfind(tempPath, 'recipe.mat')
         continue;
     end
     
-    [isPrefix, relativePath] = IsPathPrefix(unpackedFolder, tempPath);
+    [isPrefix, relativePath] = rtbIsPathPrefix(unpackedFolder, tempPath);
     localPath = rtbWorkingAbsolutePath(relativePath, recipe.input.hints);
     
     localPrefix = fileparts(localPath);

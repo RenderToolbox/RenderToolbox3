@@ -13,7 +13,7 @@ hints.whichConditions = [];
 hints.imageWidth = 1000;
 hints.imageHeight = 750;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 %% Render the scene.
 toneMapFactor = 4;
@@ -25,5 +25,5 @@ radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
 montageName = sprintf('CheckerShadowScene (%s)', hints.renderer);
 montageFile = [montageName '.png'];
 [SRGBMontage, XYZMontage] = ...
-    MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
-ShowXYZAndSRGB([], SRGBMontage, montageName);
+    rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
+rtbShowXYZAndSRGB([], SRGBMontage, montageName);

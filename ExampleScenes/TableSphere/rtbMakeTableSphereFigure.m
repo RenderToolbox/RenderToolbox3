@@ -43,21 +43,21 @@ for ii = 1:nImages
     % make a PBRT sRGB image and read the pixel of interest
     hints.renderer = 'PBRT';
     dataFolder = rtbWorkingFolder('renderings', true, hints);
-    file = FindFiles(dataFolder, [imageNames{ii} '.mat']);
+    file = rtbFindFiles(dataFolder, [imageNames{ii} '.mat']);
     PBRTData = load(file{1});
-    PBRTSRGB = MultispectralToSRGB(PBRTData.multispectralImage, ...
+    PBRTSRGB = rtbMultispectralToSRGB(PBRTData.multispectralImage, ...
         PBRTData.S, toneMapFactor, isScale);
-    [PBRTPixWls, PBRTPixMags] = GetPixelSpectrum( ...
+    [PBRTPixWls, PBRTPixMags] = rtbGetPixelSpectrum( ...
         PBRTData.multispectralImage, PBRTData.S, pixX, pixY);
     
     % make a Mitsuba sRGB image and read the pixel of interest
     hints.renderer = 'Mitsuba';
     dataFolder = rtbWorkingFolder('renderings', true, hints);
-    file = FindFiles(dataFolder, [imageNames{ii} '.mat']);
+    file = rtbFindFiles(dataFolder, [imageNames{ii} '.mat']);
     mitsubaData = load(file{1});
-    mitsubaSRGB = MultispectralToSRGB(mitsubaData.multispectralImage, ...
+    mitsubaSRGB = rtbMultispectralToSRGB(mitsubaData.multispectralImage, ...
         mitsubaData.S, toneMapFactor, isScale);
-    [mitsubaPixWls, mitsubaPixMags] = GetPixelSpectrum( ...
+    [mitsubaPixWls, mitsubaPixMags] = rtbGetPixelSpectrum( ...
         mitsubaData.multispectralImage, mitsubaData.S, pixX, pixY);
     
     % show sRGB images
@@ -68,7 +68,7 @@ for ii = 1:nImages
     imshow(uint8(mitsubaSRGB), 'Parent', axMitsuba);
     
     % read the input light spectrum
-    [lightWls, lightMags] = ReadSpectrum(lightSpectrums{ii});
+    [lightWls, lightMags] = rtbReadSpectrum(lightSpectrums{ii});
     
     % show input and output spectra
     axSpectra = subplot(3, nImages, 2*nImages+ii, ...

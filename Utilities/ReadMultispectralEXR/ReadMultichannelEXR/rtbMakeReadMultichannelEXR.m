@@ -2,7 +2,7 @@
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 %
-%% Compile the MakeReadMultichannelEXR Mex-function.
+%% Compile the rtbMakeReadMultichannelEXR Mex-function.
 %
 % @details
 % Compiles the ReadMultichannelEXR() mex function from source.  Assumes
@@ -20,7 +20,7 @@
 % @endcode
 %
 % @details
-% Should produce a new MakeReadMultichannelEXR() function with a
+% Should produce a new rtbMakeReadMultichannelEXR() function with a
 % platform-specific Mex-function extension.  See Matlab's mexext().
 %
 % @details
@@ -29,10 +29,10 @@
 %
 % @details
 % Usage:
-%   MakeReadMultichannelEXR()
+%   rtbMakeReadMultichannelEXR()
 %
 % @ingroup Mex
-function MakeReadMultichannelEXR()
+function rtbMakeReadMultichannelEXR()
 
 %% Choose the source and function files
 cd(fullfile(RenderToolboxRoot(), 'Utilities', 'ReadMultispectralEXR', 'ReadMultichannelEXR'));
@@ -54,7 +54,7 @@ testFile = 'TestSphereMitsuba.exr';
 %testFile = 'TestSphereBlender.exr';
 [sliceInfo, data] = ReadMultichannelEXR(testFile);
 
-fprintf('If you see a figure with several images, MakeReadMultichannelEXR() is working.\n');
+fprintf('If you see a figure with several images, rtbMakeReadMultichannelEXR() is working.\n');
 
 % show each image layer
 close all;

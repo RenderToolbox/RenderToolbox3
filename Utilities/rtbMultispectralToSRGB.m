@@ -1,7 +1,7 @@
-function [sRGBImage, XYZImage, rawRGBImage] = MultispectralToSRGB(multispectralImage, S, varargin)
+function [sRGBImage, XYZImage, rawRGBImage] = rtbMultispectralToSRGB(multispectralImage, S, varargin)
 % Convert multi-spectral image data to XYZ and sRGB.
 %
-% sRGBImage = MultispectralToSRGB(multispectralImage, S)
+% sRGBImage = rtbMultispectralToSRGB(multispectralImage, S)
 % Convert the given multispectralImage of size [height width n] to an
 % sRGB image of size [height width 3], for viewing on a standard monitor,
 % using the CIE 1931 standard weighting functions.  The given S must
@@ -9,12 +9,12 @@ function [sRGBImage, XYZImage, rawRGBImage] = MultispectralToSRGB(multispectralI
 % the form [start delta n], where start and delta are wavelengths in
 % nanometers, and n is the number of spectral planes.
 %
-% sRGBImage = MultispectralToSRGB( ... 'toneMapFactor', toneMapFactor)
+% sRGBImage = rtbMultispectralToSRGB( ... 'toneMapFactor', toneMapFactor)
 % specifies a simple tone mapping threshold.  Truncates lumininces above
 % this factor times the mean luminance.  The default is 0, don't truncate
 % luminances.
 %
-% sRGBImage = MultispectralToSRGB( ... 'isScale', isScale)
+% sRGBImage = rtbMultispectralToSRGB( ... 'isScale', isScale)
 % specifies whether to scale the gamma-corrected image to the display
 % maximum (true) or not (false).  The default is false, don't scale the
 % image.
@@ -23,7 +23,7 @@ function [sRGBImage, XYZImage, rawRGBImage] = MultispectralToSRGB(multispectralI
 % returns the intermediate XYZ image and the uncorrected RGB image, which
 % have the same size.
 %
-% [sRGBImage, XYZImage, rawRGBImage] = MultispectralToSRGB(multispectralImage, S, varargin)
+% [sRGBImage, XYZImage, rawRGBImage] = rtbMultispectralToSRGB(multispectralImage, S, varargin)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
@@ -47,9 +47,9 @@ wattsToLumens = 683;
 matchingData = load('T_xyz1931');
 matchingFunction = wattsToLumens*matchingData.T_xyz1931;
 matchingS = matchingData.S_xyz1931;
-XYZImage = MultispectralToSensorImage(multispectralImage, S, ...
+XYZImage = rtbMultispectralToSensorImage(multispectralImage, S, ...
     matchingFunction, matchingS);
 
 % convert to sRGB with a very simple tone mapping algorithm that truncates
 % luminance above a factor times the mean luminance
-[sRGBImage, rawRGBImage] = XYZToSRGB(XYZImage, toneMapFactor, 0, isScale);
+[sRGBImage, rawRGBImage] = rtbXYZToSRGB(XYZImage, toneMapFactor, 0, isScale);

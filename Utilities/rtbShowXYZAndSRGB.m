@@ -19,10 +19,10 @@
 %
 % @details
 % Usage:
-%   ShowXYZAndSRGB(XYZImage, SRGBImage, name, hints)
+%   rtbShowXYZAndSRGB(XYZImage, SRGBImage, name, hints)
 %
 % @ingroup Utilities
-function ShowXYZAndSRGB(XYZImage, SRGBImage, name, hints)
+function rtbShowXYZAndSRGB(XYZImage, SRGBImage, name, hints)
 
 if nargin < 3 || isempty(name)
     name = '';

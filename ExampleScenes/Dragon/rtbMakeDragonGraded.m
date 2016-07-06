@@ -15,16 +15,16 @@ hints.whichConditions = 1:nSteps;
 hints.imageWidth = 320;
 hints.imageHeight = 240;
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 resources = rtbWorkingFolder('resources', false, hints);
 
 %% Write graded spectrum files.
 % choose two spectrums to grade between
 spectrumA = 'mccBabel-6.spd';
-[wlsA, srfA] = ReadSpectrum(spectrumA);
+[wlsA, srfA] = rtbReadSpectrum(spectrumA);
 spectrumB = 'mccBabel-9.spd';
-[wlsB, srfB] = ReadSpectrum(spectrumB);
+[wlsB, srfB] = rtbReadSpectrum(spectrumB);
 
 % grade linearly from a to b
 alpha = linspace(0, 1, nSteps);
@@ -34,7 +34,7 @@ for ii = 1:nSteps
     srf = alpha(ii)*srfA + (1-alpha(ii))*srfB;
     imageNames{ii} = sprintf('GradedDragon-%d', ii);
     fileNames{ii} = sprintf('GradedSpectrum-%d.spd', ii);
-    WriteSpectrumFile(wlsA, srf, ...
+    rtbWriteSpectrumFile(wlsA, srf, ...
         fullfile(resources, fileNames{ii}));
 end
 
@@ -54,8 +54,8 @@ for renderer = {'Mitsuba'}
     for ii = 1:nSteps
         montageName = sprintf('DragonGraded-%d (%s)', ii, hints.renderer);
         montageFile = [montageName '.png'];
-        [SRGBMontage, XYZMontage] = MakeMontage( ...
+        [SRGBMontage, XYZMontage] = rtbMakeMontage( ...
             radianceDataFiles(ii), montageFile, toneMapFactor, isScaleGamma, hints);
-        ShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbShowXYZAndSRGB([], SRGBMontage, montageName);
     end
 end

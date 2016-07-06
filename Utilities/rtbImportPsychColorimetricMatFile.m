@@ -57,10 +57,10 @@
 %
 % @details
 % Usage:
-%   outFiles = ImportPsychColorimetricMatFile(inFile, outFile, isDivideBands)
+%   outFiles = rtbImportPsychColorimetricMatFile(inFile, outFile, isDivideBands)
 %
 % @ingroup Utilities
-function outFiles = ImportPsychColorimetricMatFile(inFile, outFile, isDivideBands)
+function outFiles = rtbImportPsychColorimetricMatFile(inFile, outFile, isDivideBands)
 
 [inPath, inBase, inExt] = fileparts(inFile);
 if nargin < 2 || isempty(outFile)
@@ -79,7 +79,7 @@ end
 %% Read and interpret the Psychtoolbox data.
 % determine the format of spectral data from Psychtoolbox conventions
 [psychData, psychS, psychPrefix, psychName] = ...
-    ParsePsychColorimetricMatFile(inFile);
+    rtbParsePsychColorimetricMatFile(inFile);
 psychWavelengths = SToWls(psychS);
 
 % reformat specrtal data respecting Psychtoolbox conventions
@@ -111,7 +111,7 @@ end
 
 % "divide out" of Psychtoolbox convention of Power per Wavelength Band
 if isDivideBands
-    psychData = SpdPowerPerWlBandToPowerPerNm(psychData, psychS);
+    psychData = rtbSpdPowerPerWlBandToPowerPerNm(psychData, psychS);
 end
 
 %% Write data to new text .spd files.

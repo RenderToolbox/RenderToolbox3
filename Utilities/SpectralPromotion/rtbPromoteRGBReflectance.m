@@ -48,7 +48,7 @@
 % By default, uses a "white" illuminant spectrum with unit untensity at all
 % wavelengths.  If @a illuminant is provided, it must be a formatted
 % string or name of a formatted text file that contains spectrum data. See
-% ReadSpectrum() for string and text file formats.
+% rtbReadSpectrum() for string and text file formats.
 %
 % @details
 % @a hints may be a struct with options that affect the rendering process,
@@ -65,10 +65,10 @@
 %
 % @details
 % Usage:
-%   [promoted, S, RGB, dataFile] = PromoteRGBReflectance(reflectance, illuminant, hints)
+%   [promoted, S, RGB, dataFile] = rtbPromoteRGBReflectance(reflectance, illuminant, hints)
 %
 % @ingroup Utilities
-function [promoted, S, RGB, dataFile] = PromoteRGBReflectance(reflectance, illuminant, hints)
+function [promoted, S, RGB, dataFile] = rtbPromoteRGBReflectance(reflectance, illuminant, hints)
 
 if nargin < 2 || isempty(illuminant)
     illuminant = '300:1 800:1';
@@ -114,13 +114,13 @@ outPixel = outPixel ./ calibrationData.geometryScale;
 
 % divide out the illuminant
 %   SplineRaw(), not SplineSpd(): renderers already assume power/wavelength
-[illumWls, illumPower] = ReadSpectrum(illuminant);
+[illumWls, illumPower] = rtbReadSpectrum(illuminant);
 illumResampled = SplineRaw(illumWls, illumPower, outData.S);
 promoted = outPixel ./ illumResampled;
 
 % convert to sRGB
 tinyImage = reshape(promoted, 1, 1, []);
-[sRGB, XYZ, rawRGB] = MultispectralToSRGB(tinyImage, outData.S, 0, false);
+[sRGB, XYZ, rawRGB] = rtbMultispectralToSRGB(tinyImage, outData.S, 0, false);
 RGB = squeeze(rawRGB);
 
 % scale so unit-valued reflectance comes out with unit-valued RGB

@@ -7,7 +7,7 @@
 %% Move to temp folder before creating new files.
 hints = rtbDefaultHints();
 hints.recipeName = mfilename();
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 resources = rtbWorkingFolder('resources', false, hints);
 
@@ -17,14 +17,14 @@ load B_cieday
 temp = 4000;
 spd = GenerateCIEDay(temp, B_cieday);
 wls = SToWls(S_cieday);
-yellowDay = WriteSpectrumFile(wls, spd, ...
+yellowDay = rtbWriteSpectrumFile(wls, spd, ...
     fullfile(resources, sprintf('CIE-day-%d.spd', temp)));
 
 % blue daylight
 temp = 10000;
 spd = GenerateCIEDay(temp, B_cieday);
 wls = SToWls(S_cieday);
-blueDay = WriteSpectrumFile(wls, spd, ...
+blueDay = rtbWriteSpectrumFile(wls, spd, ...
     fullfile(resources, sprintf('CIE-day-%d.spd', temp)));
 
 illuminants = {yellowDay, blueDay};
@@ -57,7 +57,7 @@ for rend = 1:nRenderers
                 dataFile = '';
             else
                 [promoted, S, RGB, dataFile] = ...
-                    PromoteRGBReflectance(RGBs{rgb}, illuminants{illum}, hints);
+                    rtbPromoteRGBReflectance(RGBs{rgb}, illuminants{illum}, hints);
             end
             promotions{rend, illum, rgb} = promoted;
             SOuts{rend, illum, rgb} = S;

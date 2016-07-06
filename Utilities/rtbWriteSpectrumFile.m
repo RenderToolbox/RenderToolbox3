@@ -1,7 +1,7 @@
-function filename = WriteSpectrumFile(wavelengths, magnitudes, filename)
+function filename = rtbWriteSpectrumFile(wavelengths, magnitudes, filename)
 %% Write a given spectral power distribution to a text file.
 %
-% filename = WriteSpectrumFile(wavelengths, magnitudes, filename)
+% filename = rtbWriteSpectrumFile(wavelengths, magnitudes, filename)
 % Writes the given wavelengths and magnitudes to a spectrum data text
 % file, with the given filename.
 %
@@ -16,7 +16,7 @@ function filename = WriteSpectrumFile(wavelengths, magnitudes, filename)
 %
 % Returns the given filename, for convenience.
 %
-% filename = WriteSpectrumFile(wavelengths, magnitudes, filename)
+% filename = rtbWriteSpectrumFile(wavelengths, magnitudes, filename)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

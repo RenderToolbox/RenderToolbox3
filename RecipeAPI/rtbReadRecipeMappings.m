@@ -19,7 +19,7 @@ parser.parse(recipe);
 recipe = parser.Results.recipe;
 
 recipe.rendering.mappings = [];
-if IsStructFieldPresent(recipe.input, 'mappingsFile')
+if rtbIsStructFieldPresent(recipe.input, 'mappingsFile')
     recipe.rendering.mappings = ...
         ParseMappings(recipe.input.mappingsFile);
 end

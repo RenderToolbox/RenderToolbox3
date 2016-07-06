@@ -18,10 +18,10 @@
 %
 % @details
 % Usage:
-%   [numbers, nNums] = ReadStringNumbers(string, nGrouping)
+%   [numbers, nNums] = rtbReadStringNumbers(string, nGrouping)
 %
 % @ingroup Utilities
-function [numbers, nNums] = ReadStringNumbers(string, nGrouping)
+function [numbers, nNums] = rtbReadStringNumbers(string, nGrouping)
 
 if nargin < 2
     nGrouping = 1;

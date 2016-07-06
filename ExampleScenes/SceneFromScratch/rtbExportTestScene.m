@@ -15,7 +15,7 @@ status = mexximpExport(scene, format, colladaFile, []);
 hints.imageWidth = 320;
 hints.imageHeight = 240;
 hints.recipeName = 'mexximpExportTest';
-ChangeToWorkingFolder(hints);
+rtbChangeToWorkingFolder(hints);
 
 setpref('Mitsuba', 'adjustments', which('scratch-mitsuba-adjustments.xml'));
 setpref('PBRT', 'adjustments', which('scratch-pbrt-adjustments.xml'));
@@ -32,6 +32,6 @@ for renderer = {'PBRT', 'Mitsuba'}
     montageName = sprintf('%s (%s)', hints.recipeName, hints.renderer);
     montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        MakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
-    ShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
+    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
 end
