@@ -15,7 +15,7 @@ function info = rtbGetRenderToolbox3VersionInfo()
 
 % Git info about RenderToolbox3
 try
-    info.RenderToolbox3GitInfo = GetGITInfo(RenderToolboxRoot());
+    info.RenderToolbox3GitInfo = GetGITInfo(rtbRoot());
 catch err
     info.RenderToolbox3GitInfo = err;
 end

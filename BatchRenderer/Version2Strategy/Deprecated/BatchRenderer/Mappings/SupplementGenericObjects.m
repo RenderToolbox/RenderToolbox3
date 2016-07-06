@@ -37,7 +37,7 @@ for ii = 1:numel(objects)
                     obj = FillInObjectProperty(obj, 'alphaU', 'float', '0.1');
                     obj = FillInObjectProperty(obj, 'alphaV', 'float', '0.1');
                 case 'metal'
-                    dataPath = fullfile(RenderToolboxRoot(), 'RenderData', 'PBRTMetals');
+                    dataPath = fullfile(rtbRoot(), 'RenderData', 'PBRTMetals');
                     eta = fullfile(dataPath, 'Cu.eta.spd');
                     k = fullfile(dataPath, 'Cu.k.spd');
                     obj = FillInObjectProperty(obj, 'eta', 'spectrum', eta);

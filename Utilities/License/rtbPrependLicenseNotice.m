@@ -31,10 +31,10 @@ if nargin < 1
 end
 
 % get all the m-files in the RenderToolbox3 source tree
-mFiles = rtbFindFiles(RenderToolboxRoot(), '\.m$');
+mFiles = rtbFindFiles(rtbRoot(), '\.m$');
 
 % get the text to prepend
-noticeFile = fullfile(RenderToolboxRoot(), 'licenseNotice.m');
+noticeFile = fullfile(rtbRoot(), 'licenseNotice.m');
 fid = fopen(noticeFile, 'r');
 headerText = char(fread(fid))';
 fclose(fid);

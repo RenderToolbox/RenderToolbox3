@@ -6,9 +6,9 @@ classdef RtbRecipeTests < matlab.unittest.TestCase
             % build a recipe
             configureScript = '';
             executive = {@rtbMakeRecipeSceneFiles, @rtbMakeRecipeRenderings, @rtbMakeRecipeMontage};
-            parentSceneFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'CoordinatesTest.dae');
-            conditionsFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'SimpleConditions.txt');
-            mappingsFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'DragonColorCheckerMappings.txt');
+            parentSceneFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'CoordinatesTest.dae');
+            conditionsFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'SimpleConditions.txt');
+            mappingsFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'DragonColorCheckerMappings.txt');
             hints.workingFolder = fullfile(tempdir(), 'RtbRecipeTests');
             hints.renderer = 'SampleRenderer';
             hints.remodeler = 'SampleRemodeler';

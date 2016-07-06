@@ -19,7 +19,7 @@ end
 close all
 
 %% save results to standard Colorimetric .mat file
-outDir = fullfile(RenderToolboxRoot(), 'RenderData', 'Macbeth-D65Metamers');
+outDir = fullfile(rtbRoot(), 'RenderData', 'Macbeth-D65Metamers');
 if ~exist(outDir, 'dir')
     mkdir(outDir);
 end

@@ -35,7 +35,7 @@
 function rtbMakeReadMultichannelEXR()
 
 %% Choose the source and function files
-cd(fullfile(RenderToolboxRoot(), 'Utilities', 'ReadMultispectralEXR', 'rtbReadMultichannelEXR'));
+cd(fullfile(rtbRoot(), 'Utilities', 'ReadMultispectralEXR', 'rtbReadMultichannelEXR'));
 source = 'rtbReadMultichannelEXR.cpp';
 output = '-output rtbReadMultichannelEXR';
 

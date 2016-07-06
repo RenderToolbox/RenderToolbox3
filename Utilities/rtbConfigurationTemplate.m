@@ -45,7 +45,7 @@ if ispref('Mitsuba')
 end
 
 % choose the file with default adjustments
-adjustmentsFile = fullfile(RenderToolboxRoot(), ...
+adjustmentsFile = fullfile(rtbRoot(), ...
     'BatchRenderer', 'Version2Strategy', 'Deprecated', 'RendererPlugins', 'Mitsuba', 'MitsubaDefaultAdjustments.xml');
 
 % choose the default scale factor for radiance units
@@ -103,7 +103,7 @@ if ispref('PBRT')
 end
 
 % choose the file with default adjustments
-adjustmentsFile = fullfile(RenderToolboxRoot(), ...
+adjustmentsFile = fullfile(rtbRoot(), ...
     'BatchRenderer', 'Version2Strategy', 'Deprecated', 'RendererPlugins', 'PBRT', 'PBRTDefaultAdjustments.xml');
 
 % choose the default scale factor for radiance units

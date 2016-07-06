@@ -6,14 +6,14 @@
 %
 % @details
 % Returns the absolute path to RenderToolbox3, based on the location of
-% this file, RenderToolboxRoot.m.
+% this file, rtbRoot.m.
 %
 % @details
 % Usage:
-%   rootPath = RenderToolboxRoot()
+%   rootPath = rtbRoot()
 %
 % @ingroup Utilities
-function rootPath = RenderToolboxRoot()
+function rootPath = rtbRoot()
 filePath = mfilename('fullpath');
 lastSeps = find(filesep() == filePath, 2, 'last');
 rootPath = filePath(1:(lastSeps(1) - 1));

@@ -29,7 +29,7 @@ if nargin < 1
     whichSur = 1;
 end
 
-dataFile = fullfile(RenderToolboxRoot(), 'RenderData', ...
+dataFile = fullfile(rtbRoot(), 'RenderData', ...
     'Macbeth-ColorChecker', 'sur_mccBabel.mat');
 load(dataFile);
 sur_mcc = SplineSrf(S_mccBabel,sur_mccBabel,S);

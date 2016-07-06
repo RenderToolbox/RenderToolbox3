@@ -27,7 +27,7 @@ classdef RtbFindFilesTests < matlab.unittest.TestCase
         end
         
         function testFindTestFiles(testCase)
-            toolboxRoot = RenderToolboxRoot();
+            toolboxRoot = rtbRoot();
             fileList = rtbFindFiles('root', toolboxRoot, ...
                 'filter', 'Tests.m$');
             testCase.assertNotEmpty(fileList);
@@ -44,7 +44,7 @@ classdef RtbFindFilesTests < matlab.unittest.TestCase
         end
         
         function testFindImpossibleFilter(testCase)
-            toolboxRoot = RenderToolboxRoot();
+            toolboxRoot = rtbRoot();
             fileList = rtbFindFiles('root', toolboxRoot, 'filter', 'nononono');
             testCase.assertEmpty(fileList);
         end

@@ -52,7 +52,7 @@ lightSpectra = parser.Results.lightSpectra;
 excludePattern = parser.Results.excludePattern;
 
 if isempty(includeFile)
-    includeFile = fullfile(RenderToolboxRoot(), ...
+    includeFile = fullfile(rtbRoot(), ...
         'BatchRenderer', 'Version2Strategy', 'Deprecated', 'RenderData', ...
         'DefaultMappings.txt');
 end
@@ -64,7 +64,7 @@ end
 
 if isempty(reflectances)
     % find default Color Checker spectrum files
-    macbethPath = fullfile(RenderToolboxRoot(), 'RenderData', 'Macbeth-ColorChecker');
+    macbethPath = fullfile(rtbRoot(), 'RenderData', 'Macbeth-ColorChecker');
     spdPaths = rtbFindFiles('root', macbethPath, 'filter', '\.spd$');
     reflectances = cell(size(spdPaths));
     

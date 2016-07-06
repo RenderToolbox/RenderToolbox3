@@ -81,7 +81,7 @@ else
 end
 
 % choose scene files.
-scenePath = fullfile(RenderToolboxRoot(), 'Utilities', 'SpectralPromotion');
+scenePath = fullfile(rtbRoot(), 'Utilities', 'SpectralPromotion');
 sceneFile = fullfile(scenePath, 'SpectralPromotion.dae');
 mappingsFile = fullfile(scenePath, 'SpectralPromotionMappings.txt');
 calibrationFile = fullfile(scenePath, 'SpectralPromotionCalibration.mat');

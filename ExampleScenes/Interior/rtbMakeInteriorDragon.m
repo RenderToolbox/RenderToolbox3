@@ -5,7 +5,7 @@
 %% Render a furnished interior scene from Nextwave Multimedia, plus dragon.
 
 %% Choose example files, make sure they're on the Matlab path.
-scenePath = fullfile(RenderToolboxRoot(), 'ExampleScenes', 'Interior');
+scenePath = fullfile(rtbRoot(), 'ExampleScenes', 'Interior');
 parentSceneFile = fullfile(scenePath, 'interior/source/interio-dragon.dae');
 mappingsFile = 'InteriorDragonMappings.txt';
 

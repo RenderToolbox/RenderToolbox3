@@ -51,7 +51,7 @@ end
 if nargin < 2 || isempty(makeFunctions)
     % find all the m-functions named "Make*", in ExampleScenes/
     makePattern = 'Make\w+\.m';
-    exampleRoot = fullfile(RenderToolboxRoot(), 'ExampleScenes');
+    exampleRoot = fullfile(rtbRoot(), 'ExampleScenes');
     makeFunctions = rtbFindFiles(exampleRoot, makePattern);
     
     % exclude functions that don't work yet
