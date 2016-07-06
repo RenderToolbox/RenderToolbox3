@@ -5,7 +5,7 @@ classdef RtbRecipeTests < matlab.unittest.TestCase
         function testLifecycle(testCase)
             % build a recipe
             configureScript = '';
-            executive = {@MakeRecipeSceneFiles, @MakeRecipeRenderings, @MakeRecipeMontage};
+            executive = {@rtbMakeRecipeSceneFiles, @rtbMakeRecipeRenderings, @rtbMakeRecipeMontage};
             parentSceneFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'CoordinatesTest.dae');
             conditionsFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'SimpleConditions.txt');
             mappingsFile = fullfile(RenderToolboxRoot(), 'Test', 'Fixture', 'DragonColorCheckerMappings.txt');
@@ -13,7 +13,7 @@ classdef RtbRecipeTests < matlab.unittest.TestCase
             hints.renderer = 'SampleRenderer';
             hints.remodeler = 'SampleRemodeler';
             
-            recipe = NewRecipe( ...
+            recipe = rtbNewRecipe( ...
                 'configureScript', configureScript, ...
                 'executive', executive, ...
                 'parentSceneFile', parentSceneFile, ...
@@ -25,7 +25,7 @@ classdef RtbRecipeTests < matlab.unittest.TestCase
             testCase.assertNumElements(recipe, 1);
             
             % execute the recipe
-            recipe = ExecuteRecipe(recipe, 'throwException', false);
+            recipe = rtbExecuteRecipe(recipe, 'throwException', false);
             testCase.assertInstanceOf(recipe.log, 'struct');
             testCase.assertNumElements(recipe.log, 11);
             allErrorData = [recipe.log.errorData];

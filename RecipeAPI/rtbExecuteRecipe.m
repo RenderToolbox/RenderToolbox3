@@ -1,21 +1,21 @@
-function recipe = ExecuteRecipe(recipe, varargin)
+function recipe = rtbExecuteRecipe(recipe, varargin)
 %% Execute the given recipe and make long entries.
 %
-% recipe = ExecuteRecipe(recipe) First calls ConfigureForRecipe(), then
+% recipe = rtbExecuteRecipe(recipe) First calls rtbConfigureForRecipe(), then
 % executes each of the scripts or functions in the given
 % recipe.input.executive, and makes a log entry for each.  If a
 % corresponding log entry already exists, skips that script or funciton and
 % moves on to the next.
 %
 % To make sure that no executive scripts or functions are skipped, first
-% call CleanRecipe() or supply whichExecutives explicitly.
+% call rtbCleanRecipe() or supply whichExecutives explicitly.
 %
-% recipe = ExecuteRecipe( ... 'whichExecutives', whichExecutives) specify
+% recipe = rtbExecuteRecipe( ... 'whichExecutives', whichExecutives) specify
 % an array of indices used to select specific scripts or functions from
 % recipe.input.executive.  All and only these will be executed, regardless
 % of whether corresponding log entries exist.
 %
-% recipe = ExecuteRecipe( ... 'throwException', throwException) specify
+% recipe = rtbExecuteRecipe( ... 'throwException', throwException) specify
 % what to do if an error is encountered during execution.  If
 % throwException is true, exceptions will be caught and logged, and then
 % re-thrown to the caller.  This is the default.  If throwException is
@@ -23,7 +23,7 @@ function recipe = ExecuteRecipe(recipe, varargin)
 %
 % Returns the given recipe, with recipe.log filled in.
 %
-% recipe = ExecuteRecipe(recipe, varargin)
+% recipe = rtbExecuteRecipe(recipe, varargin)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
@@ -46,7 +46,7 @@ else
 end
 
 %% Run the execvutive functions/scripts in order.
-recipe = ConfigureForRecipe(recipe);
+recipe = rtbConfigureForRecipe(recipe);
 
 for ii = whichExecutives
     errorData = [];
@@ -64,9 +64,9 @@ for ii = whichExecutives
         if isa(executive, 'function_handle')
             recipe = feval(executive, recipe);
         elseif ischar(executive)
-            CurrentRecipe(recipe);
+            rtbCurrentRecipe(recipe);
             run(executive);
-            recipe = CurrentRecipe();
+            recipe = rtbCurrentRecipe();
         end
         
     catch errorData
@@ -74,11 +74,11 @@ for ii = whichExecutives
     end
     
     % put this execution in the log with any error data
-    recipe = AppendRecipeLog(recipe, ...
+    recipe = rtbAppendRecipeLog(recipe, ...
         ['run automatically by ' mfilename()], ...
         executive, errorData, ii);
     
-    errorData = GetFirstRecipeError(recipe, throwException);
+    errorData = rtbGetFirstRecipeError(recipe, throwException);
     if ~isempty(errorData)
         break;
     end

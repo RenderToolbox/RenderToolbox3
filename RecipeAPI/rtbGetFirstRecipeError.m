@@ -17,10 +17,10 @@
 %
 % @details
 % Usage:
-%   errorData = GetFirstRecipeError(recipe)
+%   errorData = rtbGetFirstRecipeError(recipe)
 %
 % @ingroup RecipeAPI
-function errorData = GetFirstRecipeError(recipe, throwException)
+function errorData = rtbGetFirstRecipeError(recipe, throwException)
 
 if nargin < 2 || isempty(throwException)
     throwException = true;

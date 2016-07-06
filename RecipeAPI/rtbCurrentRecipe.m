@@ -6,7 +6,7 @@
 %   @param recipe a recipe struct to become current
 %
 % @details
-% CurrentRecipe() controls acceses to a Matlab persistent variable that
+% rtbCurrentRecipe() controls acceses to a Matlab persistent variable that
 % holds the RenderToolbox3 "current recipe".  There can be only one current
 % recipe at a time.  The current recipe is a central point of contact
 % allowing various scripts that make up a recipe to interact.
@@ -21,10 +21,10 @@
 %
 % @details
 % Usage:
-%   recipe = CurrentRecipe(recipe)
+%   recipe = rtbCurrentRecipe(recipe)
 %
 % @ingroup RecipeAPI
-function recipe = CurrentRecipe(recipe)
+function recipe = rtbCurrentRecipe(recipe)
 
 persistent CURRENT_RECIPE
 

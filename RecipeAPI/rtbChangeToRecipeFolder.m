@@ -14,10 +14,10 @@
 %
 % @details
 % Usage:
-%   recipe = ChangeToRecipeFolder(recipe)
+%   recipe = rtbChangeToRecipeFolder(recipe)
 %
 % @ingroup RecipeAPI
-function recipe = ChangeToRecipeFolder(recipe)
+function recipe = rtbChangeToRecipeFolder(recipe)
 
 if IsStructFieldPresent(recipe.input, 'hints')
     hints = recipe.input.hints;
@@ -39,6 +39,6 @@ catch errorData
 end
 
 % put this execution in the log with any error data
-recipe = AppendRecipeLog(recipe, ...
+recipe = rtbAppendRecipeLog(recipe, ...
     [mfilename() ' ' message], ...
     @ChangeToWorkingFolder, errorData, 0);

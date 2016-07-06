@@ -1,14 +1,14 @@
-function recipe = MakeRecipeSceneFiles(recipe)
+function recipe = rtbMakeRecipeSceneFiles(recipe)
 %% Generate native scene files for the given recipe.
 %
-% recipe = MakeRecipeSceneFiles(recipe) Uses the given recipe's parent
+% recipe = rtbMakeRecipeSceneFiles(recipe) Uses the given recipe's parent
 % scene file, conditions file, and mappings file to generate
 % renderer-native scene files for the renderer
 % specified in recipe.input.hints.renderer.
 %
 % Returns the given @a recipe, with @a recipe.rendering.scenes filled in.
 %
-% recipe = MakeRecipeSceneFiles(recipe)
+% recipe = rtbMakeRecipeSceneFiles(recipe)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
@@ -19,7 +19,7 @@ parser.addRequired('recipe', @isstruct);
 parser.parse(recipe);
 recipe = parser.Results.recipe;
 
-recipe = ChangeToRecipeFolder(recipe);
+recipe = rtbChangeToRecipeFolder(recipe);
 workingFolder = pwd();
 
 recipe.rendering.scenes = {};
@@ -36,7 +36,7 @@ catch errorData
 end
 
 % put this execution in the log with any error data
-recipe = AppendRecipeLog(recipe, ...
+recipe = rtbAppendRecipeLog(recipe, ...
     ['run automatically by ' mfilename()], ...
     @MakeSceneFiles, errorData, 0);
 

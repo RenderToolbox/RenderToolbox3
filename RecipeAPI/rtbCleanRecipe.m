@@ -13,10 +13,10 @@
 %
 % @details
 % Usage:
-%   recipe = CleanRecipe(recipe)
+%   recipe = rtbCleanRecipe(recipe)
 %
 % @ingroup RecipeAPI
-function recipe = CleanRecipe(recipe)
+function recipe = rtbCleanRecipe(recipe)
 
 % Clear all derived data fields
 recipe.rendering = [];

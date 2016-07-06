@@ -12,10 +12,10 @@
 %
 % @details
 % Usage:
-%   PrintRecipeLog(recipe, fileName)
+%   rtbPrintRecipeLog(recipe, fileName)
 %
 % @ingroup RecipeAPI
-function WriteRecipeLog(recipe, fileName)
+function rtbWriteRecipeLog(recipe, fileName)
 
 if nargin < 1 || ~isstruct(recipe)
     error('You must suplpy a recipe struct');
@@ -26,7 +26,7 @@ if nargin < 2 || isempty(fileName)
 end
 
 %% Get the verbose log summary.
-summary = PrintRecipeLog(recipe, true);
+summary = rtbPrintRecipeLog(recipe, true);
 
 %% Write it out to disk.
 fid = fopen(fileName, 'w');

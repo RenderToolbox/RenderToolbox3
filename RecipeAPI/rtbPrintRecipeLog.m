@@ -17,10 +17,10 @@
 %
 % @details
 % Usage:
-%   summary = PrintRecipeLog(recipe, verbose)
+%   summary = rtbPrintRecipeLog(recipe, verbose)
 %
 % @ingroup RecipeAPI
-function summary = PrintRecipeLog(recipe, verbose)
+function summary = rtbPrintRecipeLog(recipe, verbose)
 
 if nargin < 1 || ~isstruct(recipe)
     error('You must suplpy a recipe struct');

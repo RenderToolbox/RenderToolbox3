@@ -11,7 +11,7 @@
 %
 % @details
 % Sets the "current recipe" so that @a recipe.input.configureScript may
-% access and modify the given @a recipe using CurrentRecipe();
+% access and modify the given @a recipe using rtbCurrentRecipe();
 %
 % @details
 % Returns the given @a recipe, possibly updated by @a
@@ -19,17 +19,17 @@
 %
 % @details
 % Usage:
-%   recipe = ConfigureForRecipe(recipe)
+%   recipe = rtbConfigureForRecipe(recipe)
 %
 % @ingroup RecipeAPI
-function recipe = ConfigureForRecipe(recipe)
+function recipe = rtbConfigureForRecipe(recipe)
 
-recipe = ChangeToRecipeFolder(recipe);
+recipe = rtbChangeToRecipeFolder(recipe);
 
 errorData = [];
 try
     % set the current recipe so that configureScript can access it
-    CurrentRecipe(recipe);
+    rtbCurrentRecipe(recipe);
     run(recipe.input.configureScript);
     
 catch errorData
@@ -37,9 +37,9 @@ catch errorData
 end
 
 % get the current recipe in case configureScript modified it
-recipe = CurrentRecipe();
+recipe = rtbCurrentRecipe();
 
 % put this execution in the log with any error data
-recipe = AppendRecipeLog(recipe, ...
+recipe = rtbAppendRecipeLog(recipe, ...
     ['run automatically by ' mfilename()], ...
     recipe.input.configureScript, errorData, 0);

@@ -16,9 +16,9 @@ mappingsFile = 'MaterialSphereBumpsMappings.txt';
 
 % choose the order of operations for rendering the recipe
 executive = { ...
-    @MakeRecipeSceneFiles, ...
-    @MakeRecipeRenderings, ...
-    @MakeRecipeMontage, ...
+    @rtbMakeRecipeSceneFiles, ...
+    @rtbMakeRecipeRenderings, ...
+    @rtbMakeRecipeMontage, ...
     };
 
 %% Choose RenderToolbox3 options.
@@ -41,11 +41,11 @@ hints.renderer = 'PBRT';
 
 
 %% Make a new recipe that contains all of the above choices.
-recipe = NewRecipe([], executive, parentSceneFile, ...
+recipe = rtbNewRecipe([], executive, parentSceneFile, ...
     conditionsFile, mappingsFile, hints);
 
 % add a log message about creating this new recipe
-recipe = AppendRecipeLog(recipe, 'Portable recipe for Material Sphere');
+recipe = rtbAppendRecipeLog(recipe, 'Portable recipe for Material Sphere');
 
 %% Move resource files inside the workingFolder, so they can be detected.
 resourceFiles = { ...
@@ -62,12 +62,12 @@ end
 
 %% Generate scene files and pack up the recipe.
 % generate all the scene files for the recipe
-recipe = ExecuteRecipe(recipe, 1);
+recipe = rtbExecuteRecipe(recipe, 1);
 
 % pack up the recipe with resources and pre-generated scene files
 %   don't pack up boring temp files
 archiveName = fullfile(rtbWorkingFolder(), 'MaterialSpherePortable.zip');
-PackUpRecipe(recipe, archiveName, {'temp'});
+rtbPackUpRecipe(recipe, archiveName, {'temp'});
 
 % boldly delete the working folder, now that the recie is packed up
 rmdir(workingPortable, 's');
@@ -82,7 +82,7 @@ archiveName = fullfile(rtbWorkingFolder(), 'MaterialSpherePortable.zip');
 
 % un-pack the recipe into the new folder
 hints = rtbDefaultHints();
-recipe = UnpackRecipe(archiveName, hints);
+recipe = rtbUnpackRecipe(archiveName, hints);
 
 % render the recipe from pre-generated scene files
-recipe = ExecuteRecipe(recipe);
+recipe = rtbExecuteRecipe(recipe);

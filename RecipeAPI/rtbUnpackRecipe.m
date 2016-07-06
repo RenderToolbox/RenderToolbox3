@@ -8,7 +8,7 @@
 %
 % @details
 % Creates a new recipe struct based on the given @a archiveName, as
-% produced by PackUpRecipe().  Also unpacks recipe file dependencies that
+% produced by rtbPackUpRecipe().  Also unpacks recipe file dependencies that
 % were saved in the archive, to the current working folder.
 %
 % @details
@@ -17,10 +17,10 @@
 %
 % @details
 % Usage:
-%   recipe = UnpackRecipe(archiveName, hints)
+%   recipe = rtbUnpackRecipe(archiveName, hints)
 %
 % @ingroup RecipeAPI
-function recipe = UnpackRecipe(archiveName, hints)
+function recipe = rtbUnpackRecipe(archiveName, hints)
 
 if nargin < 1 || ~exist(archiveName, 'file')
     error('You must suplpy the name of an archive file');

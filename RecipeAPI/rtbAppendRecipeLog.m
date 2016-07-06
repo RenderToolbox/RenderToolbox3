@@ -40,10 +40,10 @@
 %
 % @details
 % Usage:
-%   recipe = AppendRecipeLog(recipe, comment, executed, errorData, executiveIndex)
+%   recipe = rtbAppendRecipeLog(recipe, comment, executed, errorData, executiveIndex)
 %
 % @ingroup RecipeAPI
-function recipe = AppendRecipeLog(recipe, comment, executed, errorData, executiveIndex)
+function recipe = rtbAppendRecipeLog(recipe, comment, executed, errorData, executiveIndex)
 
 if nargin < 1 || ~isstruct(recipe)
     error('You must suplpy a recipe struct');

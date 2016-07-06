@@ -1,13 +1,13 @@
-function recipe = ReadRecipeMappings(recipe)
+function recipe = rtbReadRecipeMappings(recipe)
 %% Parse mappings from file and save in recipe struct
 %
-% recipe = ReadRecipeMappings(recipe) reads RenderToolbox3 mappings from
+% recipe = rtbReadRecipeMappings(recipe) reads RenderToolbox3 mappings from
 % recipe.input.mappingsFile and saves the results in
 % recipe.rendering.mappings.
 %
 % Returns the given recipe, with parsed mappings.
 %
-% recipe = ReadRecipeMappings(recipe)
+% recipe = rtbReadRecipeMappings(recipe)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

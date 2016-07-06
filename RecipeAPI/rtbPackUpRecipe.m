@@ -24,10 +24,10 @@
 %
 % @details
 % Usage:
-%   archiveName = PackUpRecipe(recipe, archiveName, ignoreFolders)
+%   archiveName = rtbPackUpRecipe(recipe, archiveName, ignoreFolders)
 %
 % @ingroup RecipeAPI
-function archiveName = PackUpRecipe(recipe, archiveName, ignoreFolders)
+function archiveName = rtbPackUpRecipe(recipe, archiveName, ignoreFolders)
 
 if nargin < 1 || ~isstruct(recipe)
     error('You must suplpy a recipe struct');
