@@ -42,7 +42,7 @@
 % renderings that came from the CoordinatesTest and Checherboard example
 % scenes:
 % @code
-% CompareAllExampleScenes(workingFolderA, workingFolderB, 'CoordinatesTest|Checkerboard', 2);
+% rtbCompareAllExampleScenes(workingFolderA, workingFolderB, 'CoordinatesTest|Checkerboard', 2);
 % @endcode
 %
 % @details
@@ -66,7 +66,7 @@
 % GitHub.  For example:
 % @code
 %   % produce renderings locally
-%   TestAllExampleScenes('my/local/renderings');
+%   rtbTestAllExampleScenes('my/local/renderings');
 %
 %   % download archived renderings to 'my/local/archive'
 %
@@ -74,7 +74,7 @@
 %   workingFolderA = 'my/local/renderings/data';
 %   workingFolderA = 'my/local/archive/data';
 %   visualize = 1;
-%   matchInfo = CompareAllExampleScenes(workingFolderA, workingFolderB, '', visualize);
+%   matchInfo = rtbCompareAllExampleScenes(workingFolderA, workingFolderB, '', visualize);
 % @endcode
 %
 % @details
@@ -88,10 +88,10 @@
 %
 % @details
 % Usage:
-%   [matchInfo, unmatchedA, unmatchedB] = CompareAllExampleScenes(workingFolderA, workingFolderB, filterExpression, visualize)
+%   [matchInfo, unmatchedA, unmatchedB] = rtbCompareAllExampleScenes(workingFolderA, workingFolderB, filterExpression, visualize)
 %
 % @ingroup ExampleScenes
-function [matchInfo, unmatchedA, unmatchedB] = CompareAllExampleScenes(workingFolderA, workingFolderB, filterExpression, visualize)
+function [matchInfo, unmatchedA, unmatchedB] = rtbCompareAllExampleScenes(workingFolderA, workingFolderB, filterExpression, visualize)
 
 if nargin < 1 || isempty(workingFolderA)
     workingFolderA = rtbWorkingFolder();

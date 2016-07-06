@@ -5,7 +5,7 @@
 %% Make a figure comparing TableSphere renderings.
 
 %% Render the scene.
-MakeTableSphere();
+rtbMakeTableSphere();
 
 %% Make a figure with renderings and a plot of spectra.
 fig = figure();
@@ -38,7 +38,7 @@ lightSpectrums = values(:, strcmp('lightColor', names));
 imageNames = values(:, strcmp('imageName', names));
 nImages = numel(imageNames);
 
-hints.recipeName = 'MakeTableSphere';
+hints.recipeName = 'rtbMakeTableSphere';
 for ii = 1:nImages
     % make a PBRT sRGB image and read the pixel of interest
     hints.renderer = 'PBRT';

@@ -13,8 +13,8 @@
 %
 % @details
 % Usage:
-%   MakeRadianceTest(renderer)
-function MakeRadianceTest(renderer)
+%   rtbMakeRadianceTest(renderer)
+function rtbMakeRadianceTest(renderer)
 
 hints = rtbDefaultHints();
 if nargin > 0

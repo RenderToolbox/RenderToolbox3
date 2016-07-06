@@ -37,10 +37,10 @@
 %
 % @details
 % Usage:
-%   results = TestAllExampleScenes(outputRoot, makeFunctions)
+%   results = rtbTestAllExampleScenes(outputRoot, makeFunctions)
 %
 % @ingroup ExampleScenes
-function results = TestAllExampleScenes(outputRoot, makeFunctions)
+function results = rtbTestAllExampleScenes(outputRoot, makeFunctions)
 
 if nargin < 1  || isempty(outputRoot)
     outputRoot = rtbWorkingFolder();

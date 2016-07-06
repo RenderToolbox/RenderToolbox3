@@ -5,7 +5,7 @@
 %% Make a figure with data about light reflecting between surfaces.
 
 %% Render the scene.
-MakeInterreflection;
+rtbMakeInterreflection;
 
 %% Get multi-spectral data from each interreflection rendering.
 
@@ -26,7 +26,7 @@ pbrt = struct( ...
 mitsuba = pbrt;
 
 % fill in multi-spectral data for each condition
-hints.recipeName = 'MakeInterreflection';
+hints.recipeName = 'rtbMakeInterreflection';
 for ii = 1:nImages
     % read PBRT data for this condition
     hints.renderer = 'PBRT';

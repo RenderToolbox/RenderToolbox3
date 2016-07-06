@@ -40,7 +40,7 @@ function radiometricScaleFactor = ComputeRadiometricScaleFactor(renderer)
 %% Produce renderingings with known radiometric properties.
 % render the RadianceTest scene
 %   assume outputs go to the deafult outputDataFolder
-MakeRadianceTest(renderer);
+rtbMakeRadianceTest(renderer);
 
 %% Read known parameters from the RadianceTest "reference" condition.
 % distance from point light to reflector
@@ -72,7 +72,7 @@ irradiance_PowerPerUnitAreaUnitWl = ...
 radiance_PowerPerAreaSrUnitWl = irradiance_PowerPerUnitAreaUnitWl/(pi);
 
 %% Compute a radiometric unit scale factor the given render.
-hints.recipeName = 'MakeRadianceTest';
+hints.recipeName = 'rtbMakeRadianceTest';
 dataFolder = rtbWorkingFolder('renderings', true, hints);
 
 % locate RadianceTest "reference" data file

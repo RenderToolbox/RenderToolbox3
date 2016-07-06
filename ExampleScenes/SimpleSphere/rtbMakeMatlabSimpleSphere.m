@@ -28,7 +28,7 @@ else
 end
 
 %% Create new files in a subfolder next to renderer outputs.
-hints.recipeName = 'MakeSimpleSphere';
+hints.recipeName = 'rtbMakeSimpleSphere';
 hints.renderer = 'SphereRenderer';
 renderings = rtbWorkingFolder('renderings', true, hints);
 ChangeToFolder(renderings);

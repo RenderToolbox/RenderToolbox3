@@ -34,7 +34,7 @@ workingPortable = fullfile(rtbWorkingFolder(), 'portable');
 hints.workingFolder = workingPortable;
 
 % put output files in a subfolder named like this script
-hints.recipeName = 'MakeMaterialSpherePortable';
+hints.recipeName = 'rtbMakeMaterialSpherePortable';
 
 % choose the renderer
 hints.renderer = 'PBRT';

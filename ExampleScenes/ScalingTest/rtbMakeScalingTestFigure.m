@@ -5,7 +5,7 @@
 %% Make a figure with data about renderer output absolute magnitudes.
 
 %% Render the scene.
-MakeScalingTest;
+rtbMakeScalingTest;
 
 %% Get multi-spectral data each sphere rendering.
 
@@ -26,7 +26,7 @@ pbrt = struct( ...
 mitsuba = pbrt;
 
 % fill in multi-spectral data for each condition
-hints.recipeName = 'MakeScalingTest';
+hints.recipeName = 'rtbMakeScalingTest';
 for ii = 1:nImages
     % read PBRT data for this condition
     hints.renderer = 'PBRT';

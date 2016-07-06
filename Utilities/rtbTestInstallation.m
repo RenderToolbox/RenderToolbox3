@@ -111,7 +111,7 @@ end
 if doAll
     fprintf('\nTesting rendering with all example scripts.\n');
     fprintf('This might take a while.\n');
-    renderResults = TestAllExampleScenes([], []);
+    renderResults = rtbTestAllExampleScenes([], []);
     
 else
     testScenes = { ...
@@ -122,7 +122,7 @@ else
     
     fprintf('\nTesting rendering with %d example scripts.\n', numel(testScenes));
     fprintf('You should see several figures with rendered images.\n\n');
-    renderResults = TestAllExampleScenes([], testScenes);
+    renderResults = rtbTestAllExampleScenes([], testScenes);
     
 end
 
@@ -136,7 +136,7 @@ if ~isempty(referenceRoot)
     fprintf('\nComparing local renderings\n  %s\n', localRoot);
     fprintf('with reference renderings\n  %s\n', referenceRoot);
     fprintf('You should see several more figures.\n\n');
-    comparison = CompareAllExampleScenes(localRoot, referenceRoot, '', 2);
+    comparison = rtbCompareAllExampleScenes(localRoot, referenceRoot, '', 2);
 else
     fprintf('\nNo referenceRoot provided.  Local renderings\n');
     fprintf('will not be compared with reference renderings.\n');

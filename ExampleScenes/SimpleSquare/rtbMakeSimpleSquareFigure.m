@@ -5,7 +5,7 @@
 %% Make figure comparing rendered colors with expected colors.
 
 %% Render the scene.
-MakeSimpleSquare();
+rtbMakeSimpleSquare();
 
 %% Get the scene illuminant spectrum.
 %   used for predicted pixel data
@@ -45,7 +45,7 @@ mitsuba = pbrt;
 predicted = pbrt;
 
 % fill in multi-spectral data for each Color Checker condition.
-hints.recipeName = 'MakeSimpleSquare';
+hints.recipeName = 'rtbMakeSimpleSquare';
 for ii = 1:nImages
     % seatch for data files by condition number
     imageNum = sprintf('SimpleSquare.+%03d', ii);

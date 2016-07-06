@@ -5,8 +5,8 @@
 %% Make a figure with data about renderer film units.
 
 %% Render the scene.
-MakeRadianceTest('PBRT');
-MakeRadianceTest('Mitsuba');
+rtbMakeRadianceTest('PBRT');
+rtbMakeRadianceTest('Mitsuba');
 
 %% Get multi-spectral data each sphere rendering.
 
@@ -27,7 +27,7 @@ pbrt = struct( ...
 mitsuba = pbrt;
 
 % fill in multi-spectral data for each condition
-hints.recipeName = 'MakeRadianceTest';
+hints.recipeName = 'rtbMakeRadianceTest';
 for ii = 1:nImages
     % read PBRT data for this condition
     hints.renderer = 'PBRT';

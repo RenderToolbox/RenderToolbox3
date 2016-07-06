@@ -21,8 +21,8 @@
 % After you run this script, you can run RenderToolbox3InstallationTest()
 % to verify that your configuration is good.
 %
-% You can also run TestAllExampleScenes(), followed by
-% CompareAllExampleScenes() to check example renderings for correctness.
+% You can also run rtbTestAllExampleScenes(), followed by
+% rtbCompareAllExampleScenes() to check example renderings for correctness.
 %
 
 %% Start with RenderToolbox3 "fresh out of the box" configuration.

@@ -5,12 +5,12 @@
 %% Make a figure with data about rendered and expected Ward spheres.
 
 %% Render the scene.
-MakeMatlabSimpleSphere();
-MakeSimpleSphere();
+rtbMakeMatlabSimpleSphere();
+rtbMakeSimpleSphere();
 
 %% Load sphere renderings.
 
-hints.recipeName = 'MakeSimpleSphere';
+hints.recipeName = 'rtbMakeSimpleSphere';
 dataFilePattern = 'SimpleSphere[0-9\-]*\.mat';
 
 % get output from the Render Toolbox reference renderer
