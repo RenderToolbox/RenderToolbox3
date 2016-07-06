@@ -4,8 +4,7 @@
 # replace what with what?
 DIR=$1
 FIND=$2
-#REPLACE=$3
-REPLACE=rtb$FIND
+REPLACE=$3
 echo "Finding <$FIND> and replacing it with <$REPLACE>"
 
 # rename the file itself -- assume .m extension

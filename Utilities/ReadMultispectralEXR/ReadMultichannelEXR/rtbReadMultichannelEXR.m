@@ -1,35 +1,23 @@
-%%% RenderToolbox3 Copyright (c) 2012-2015 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
+function [channelInfo, imageData] = rtbReadMultichannelEXR(exrFile)
 % Read an OpenEXR image with multiple channels.
-%   @param exrFile file name or path of an OpenEXR file
 %
-% @details
-% Reads an OpenEXR image with an arbitrary number of channels, aka "image
-% planes", aka "slices".
+% [channelInfo, imageData] = rtbReadMultichannelEXR(exrFile) reads the
+% given OpenEXR image with an arbitrary number of channels, aka "image
+% planes", aka "slices'.
 %
-% @details
-% The given @a exrFile should be an OpenEXR image file.  It may have any
-% number of channels.
-%
-% @details
 % Returns a struct array n elements, one for each image channel.  Each
-% element describes the channel, including its @b name, @b pixelType, @a
-% xSampling, @a ySampling, and @b isLinear.  You probably only care about
-% the @b name!
+% element describes the channel, including its name, pixelType, xSampling,
+% ySampling, and isLinear.  You might only care about the channel name!
 %
-% @details
 % Also returns a double array with size [height width n] containing the
 % full image.  height and width refer to image spatial dimenstions.  n
 % refers to the number of channels in the image.
 %
-% @details
-% rtbReadMultichannelEXR is a mex-function.  This means you need to build it
-% locally for your machine.  Please see rtbMakeReadMultichannelEXR().
+% [channelInfo, imageData] = rtbReadMultichannelEXR(exrFile)
 %
-% @details
-% Usage:
-%   [channelInfo, imageData] = rtbReadMultichannelEXR(exrFile);
-%
-% @ingroup Readers
+%%% RenderToolbox3 Copyright (c) 2012-2015 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+
+% delegate to the mex-function with a slightly different name
+[channelInfo, imageData] = ReadMultichannelEXR(exrFile);
