@@ -1,29 +1,17 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function userFolder = rtbGetUserFolder()
+%% Locate the user's writable "MATLAB" folder.
 %
-% Locate the user's "MATLAB" documents folder.
-%
-% @details
-% Use the built-in userpath() function to return the path to the user's
-% "MATLAB" documents folder.  This folder is usually located in a
+% userFolder = rtbGetUserFolder() Uses the built-in userpath() to find the
+% user's "MATLAB" folder.  This folder is usually located in a
 % "Documents" folder inside a user's home folder.  This is usually a
 % location where Matlab will have permission to write files.
 %
-% @details
 % Users can change their path configuration using userpath().  If for some
 % reason userpath() does not return a valid location, returns ''.
 %
-% @details
-% Returns the full absolute path to a user's "MATLAB" documents folder, or
-% '' if the documents path could not be found.
-%
-% @details
-% Usage:
-%   userFolder = rtbGetUserFolder()
-%
-% @ingroup Utilities
-function userFolder = rtbGetUserFolder()
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
 % get the user's folder from Matlab
 userFolder = userpath();
@@ -42,7 +30,7 @@ if isempty(userFolder)
 end
 
 % can we write into this folder?
-[status, info] = fileattrib(userFolder);
+[~, info] = fileattrib(userFolder);
 if ~info.UserWrite
     warning('User does not have write permission for %s.', userFolder);
     userFolder = '';

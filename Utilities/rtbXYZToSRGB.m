@@ -1,53 +1,44 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function [gammaImage, rawImage, scaleFactor] = rtbXYZToSRGB(image, varargin)
+%% Convert an image in XYZ space to sRGB color space.
 %
-% Convert an image in XYZ space to sRGB color space.
-%   @param XYZImage matrix of XYZ image data
-%   @param toneMapFactor relative luminance truncation (optional)
-%   @param toneMapMax absolute luminance truncation (optional)
-%   @param isScale whether or how to scale in gamma correction (optional)
+% [gammaImage, rawImage, scaleFactor] = rtbXYZToSRGB(XYZImage) converts an
+% image in XYZ colors to sRGB colors, using a few Psychtoolbox functions.
+% The given XYZ image must be a matrix of size [height width 3] containing
+% XYZ color data.
 %
-% @details
-% Converts an image in XYZ colors to sRGB colors, using a few Psychtoolbox
-% functions.  The given @a XYZ image should be a matrix of size [height
-% width n] with XYZ color data.
+% rtbXYZToSRGB( ... 'toneMapFactor', toneMapFactor) specifies a threshold
+% for simple tone mapping -- luminance will be trncated above this factor
+% times the mean luminance.  The default is 0, don't do this tone mapping.
 %
-% If @A toneMapFactor is greater than 0, truncates luminance above this
-% factor times the mean luminance.
+% rtbXYZToSRGB( ... 'toneMapMax', toneMapMax) specifies a threshold for an
+% even simpler tone mapping -- truncate luminance above this value.  The
+% default is 0, don't do this tone mapping.
 %
-% If @a toneMapMax is greater than 0, truncates luminance above this fixed
-% value.
-%
-% If @a isScale is logical and true, the gamma-corrected image will be
-% scaled to use the gamma-corrected maximum.  If @a isScale is a numeric
-% scalar, the gamma-corrected image will be scaled by this amount.
+% rtbXYZToSRGB( ... 'isScale', isScale) specifies whether to scale the
+% gamma-corrected image.  If isScale is logical and true, the image will be
+% scaled by its maximum.  If isScale is a number, the image will be scaled
+% by this number.  The default is false, don't do any scaling.
 %
 % Returns a matrix of size [height width n] with gamma corrected sRGB color
 % data.  Also returns a matrix of the same size with uncorrected sRGB color
 % data.  Also returns a scalar, the amount by which the gamma-corrected
 % image was scaled.  This may have been calculated or it may be equal to
-% the given @a isScale.
+% the given isScale.
 %
-% @details
-% Usage:
-%   [gammaImage, rawImage, scaleFactor] = rtbXYZToSRGB(XYZImage, toneMapFactor, toneMapMax, isScale)
-%
-% @ingroup Utilities
-function [gammaImage, rawImage, scaleFactor] = rtbXYZToSRGB(XYZImage, toneMapFactor, toneMapMax, isScale)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-%% parameters
-if nargin < 2
-    toneMapFactor = 0;
-end
-
-if nargin < 3
-    toneMapMax = 0;
-end
-
-if nargin < 4
-    isScale = false;
-end
+parser = inputParser();
+parser.addRequired('image', @isnumeric);
+parser.addParameter('toneMapFactor', 0, @isnumeric);
+parser.addParameter('toneMapMax', 0, @isnumeric);
+parser.addParameter('isScale', false);
+parser.parse(image, varargin{:});
+image = parser.Results.image;
+toneMapFactor = parser.Results.toneMapFactor;
+toneMapMax = parser.Results.toneMapMax;
+isScale = parser.Results.isScale;
 
 %% Convert XYZ to sRGB
 %
@@ -59,7 +50,7 @@ end
 % the start of the sequence, and the back converstion at the end.
 
 % Convert to calibration format.
-[XYZCalFormat,m,n] = ImageToCalFormat(XYZImage);
+[XYZCalFormat,m,n] = ImageToCalFormat(image);
 
 % Tone map.  This is a very simple algorithm that truncates
 % luminance above a factor times the mean luminance.

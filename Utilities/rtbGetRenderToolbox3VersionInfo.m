@@ -1,17 +1,16 @@
+function info = rtbGetRenderToolbox3VersionInfo()
+%% Collect revision information about RenderToolbox3 and dependencies.
+%
+% info = rtbGetRenderToolbox3VersionInfo() Gets revision information about
+% RenderTooblox3 and its dependencies, including Psychtoolbox, Matlab, the
+% computer, PBRT, and Mitsuba.
+%
+% Returns a struct that contains information collected about each
+% component.
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-% Collect revision information about RenderToolbox3 and dependencies.
-%
-% @details
-% Gets revision and data information about RenderTooblox3 and its
-% dependencies, including Psychtoolbox, Matlab, the computer, PBRT, and
-% Mitsuba.
-%
-% @details
-% Returns a struct that contains information collected about each
-% component.
-function info = rtbGetRenderToolbox3VersionInfo()
 
 % Git info about RenderToolbox3
 try

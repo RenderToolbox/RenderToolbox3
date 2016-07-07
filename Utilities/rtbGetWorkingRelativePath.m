@@ -1,32 +1,24 @@
+function relativePath = rtbGetWorkingRelativePath(originalPath, varargin)
+%% Convert a local absoute path to a relative working path.
+%
+% relativePath = rtbGetWorkingRelativePath(originalPath, 'hints', hints)
+% Converts the given originalPath to a relative path, relative to the
+% working folder specified by the given hints.  See rtbWorkingFolder().
+%
+% If originalPath can be found within the working folder specified by
+% the given hints, returns the corresponding relative path, starting
+% from the working folder.  Otherwise, returns ''.
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Convert a local absoute path to a relative working path.
-%   @param originalPath string file name or absolute path to convert
-%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
-%
-% @details
-% Converts the given @a originalPath to a relative path, relative to the
-% working folder specified by the given @a hints.  See rtbWorkingFolder().
-%
-% @details
-% If @a originalPath can be found within the working folder specified by
-% the given @a hints, returns the corresponding relative path, starting
-% from the working folder.  Otherwise, returns ''.
-%
-% @details
-% Usage:
-%   relativePath = rtbGetWorkingRelativePath(originalPath, hints)
-%
-% @ingroup Utilities
-function relativePath = rtbGetWorkingRelativePath(originalPath, hints)
 
-if nargin < 2
-    hints = rtbDefaultHints();
-else
-    hints = rtbDefaultHints(hints);
-end
+parser = inputParser();
+parser.addRequired('originalPath', @ischar);
+parser.addParameter('hints', rtbDefaultHints(), @isstruct);
+parser.parse(originalPath, varargin{:});
+originalPath = parser.Results.originalPath;
+hints = rtbDefaultHints(parser.Results.hints);
 
 relativePath = '';
 

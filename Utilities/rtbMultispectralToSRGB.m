@@ -23,12 +23,9 @@ function [sRGBImage, XYZImage, rawRGBImage] = rtbMultispectralToSRGB(multispectr
 % returns the intermediate XYZ image and the uncorrected RGB image, which
 % have the same size.
 %
-% [sRGBImage, XYZImage, rawRGBImage] = rtbMultispectralToSRGB(multispectralImage, S, varargin)
-%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
 
 parser = inputParser();
 parser.addRequired('multispectralImage', @isnumeric);

@@ -1,54 +1,38 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function folder = rtbWorkingFolder(varargin)
+%% Get a complete RenderToolbox3 working folder folder.
 %
-% Get a complete RenderToolbox3 working folder folder.
-%   @param folderName string name of a RenderToolbox3 recipe folder
-%   @param isRendererSpecific whether or not folder is renderer specific
-%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
+% folder = rtbWorkingFolder('hints', hints) returns the full path to a
+% RenderToolbox3 recipe folder.  This will
+% include the given hints.workingFolder and hints.recipeName.  If the
+% returned folder does not exist yet, creates it.
 %
-% @details
-% Returns the full path to a RenderToolbox3 recipe folder.  This will
-% include the given @hints.workingFolder and @hints.recipeName, plus an
-% optional @a folderName name like "resources" or "renderings".  If @a
-% isRendererSpecific is true, also includes a subfolder named for the given
-% @a hints.renderer.
-%
-% @details
-% If the returned folder does not exist yet, creates it.
-%
-% @details
-% @a folderName may be one of the folowing:
-%   - 'resources' - where to look for input resources like spectra and
-%   textures
+% rtbWorkingFolder( ... 'folderName', folderName) specifies a standard
+% subfolder name within the working folder.  Valid subfolder names include:
+%   - 'resources' - where to look for input resources like spectra and textures
 %   - 'scenes' - where to put generated scene files
 %   - 'renderings' - where to put renderer output data files
 %   - 'images' - where to put processed image files
-%   - 'temp' - where to put temporary files like intermediate copies of
-%   scene files
-%   .
+%   - 'temp' - where to put temporary files like intermediate copies of scene files
+% The default is not to include any of these subfolders.
 %
-% @details
-% If @a hints is not provided, uses rtbDefaultHints() instead.
+% rtbWorkingFolder( ... 'rendererSpecific', rendererSpecific) specifies a
+% whether to include a subfolder with the name of the given hints.renderer.
+% The default is not to include any renderer-specific subfolder.
 %
-% @details
-% Usage:
-%   folder = rtbWorkingFolder(folderName, isRendererSpecific, hints)
-%
-% @ingroup Utilities
-function folder = rtbWorkingFolder(folderName, isRendererSpecific, hints)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-if nargin < 2
-    isRendererSpecific = false;
-end
+parser = inputParser();
+parser.addParameter('hints', rtbDefaultHints(), @isstruct);
+parser.addParameter('folderName', '', @ischar);
+parser.addParameter('rendererSpecific', false, @islogical);
+parser.parse(varargin{:});
+hints = rtbDefaultHints(parser.Results.hints);
+folderName = parser.Results.folderName;
+rendererSpecific = parser.Results.rendererSpecific;
 
-if nargin < 3
-    hints = rtbDefaultHints();
-else
-    hints = rtbDefaultHints(hints);
-end
-
-if isRendererSpecific
+if rendererSpecific
     renderer = hints.renderer;
 else
     renderer = '';

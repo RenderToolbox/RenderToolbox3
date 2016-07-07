@@ -1,41 +1,29 @@
+function radiometricScaleFactor = rtbComputeRadiometricScaleFactor(renderer)
+%% Calculate scale factors to bring renderer outputs into radiance units.
+%
+% rtbComputeRadiometricScaleFactor(renderer) Calculates a radiometric unit
+% scale factor for the given renderer and stores the scale factor using
+% Matlab's setpref().  Radiometric unit scale factors are used by
+% RenderToolbox3 DataToRadiance functions to bring "raw" renderer output
+% into physical rasiance units.  Computation is based on the
+% ExampleScenes/RadiaceTest recipe which has known radiometric properties.
+%
+% See the RenderToolbox3 wiki for details about radiometric units:
+%	https://github.com/DavidBrainard/RenderToolbox3/wiki/RadianceTest
+%
+% Stores the calculated scale factors for each renderer, using the built-in
+% setpref() function.  To see the results for a renderer such as
+% "SampleRenderer", try
+%   getpref('SampleRenderer', 'radiometricScale')
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Calculate scale factors to bring renderer outputs into radiance units.
-%   @param renderer the name of the renderer to use
-%
-% @details
-% Calculates a radiometric unit scale factor for the given @renderer and
-% stores the scale factor using Matlab's setpref().  Radiometric unit scale
-% factors are used by RenderToolbox3 DataToRadiance functions to bring
-% "raw" renderer output into physical rasiance units.  Computation is based
-% on the ExampleScenes/RadiaceTest recipe which has known radiometric
-% properties.
-%
-% @details
-% See the RenderToolbox3 wiki for details about <a
-% href="https://github.com/DavidBrainard/RenderToolbox3/wiki/RadianceTest'>Radiometric
-% Unit</a> calculation.
-%
-% @details
-% Stores the calculated scale factors for each renderer, using the built-in
-% setpref() function.  To see the results for a @a renderer such as
-% "SampleRenderer", try
-% @code
-%   scaleFactor = getpref('SampleRenderer', 'radiometricScale');
-% @endcode
-%
-% @details
-% Returns the computed radiometric unit scale factor for the given
-% @a renderer.
-%
-% @details
-% Usage:
-%   radiometricScaleFactor = rtbComputeRadiometricScaleFactor(renderer)
-%
-% @ingroup BatchRenderer
-function radiometricScaleFactor = rtbComputeRadiometricScaleFactor(renderer)
+
+parser = inputParser();
+parser.addRequired('renderer');
+parser.parser(renderer);
+renderer = parser.Results.renderer;
 
 %% Produce renderingings with known radiometric properties.
 % render the RadianceTest scene

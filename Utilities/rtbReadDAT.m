@@ -20,8 +20,6 @@ function [imageData, imageSize, lens] = rtbReadDAT(filename, varargin)
 % returns a struct of lens data with fields focalLength, fStop, and
 % fieldOfView.
 %
-% [imageData, imageSize, lens] = rtbReadDAT(filename, varargin)
-%
 %%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.

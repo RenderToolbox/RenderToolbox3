@@ -1,20 +1,14 @@
+function rtbCleanMatlabPath()
+% Remove '.svn' and '.git' folders from the Matlab path.
+%
+% rtbCleanMatlabPath() Modifies the Matlab path, removing path entries that
+% contain '.git' or '.svn'.  You might want to call savepath() afterwards.
+%
+% You can use this function while the Matlab "Set Path" dialog is open!
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Remove '.svn' and '.git' folders from the Matlab path.
-%
-% @details
-% Modifies the Matlab path, removing path entries that contain '.git' or
-% '.svn'.  You should save the path afterwards.  You can use this function
-% while the Matlab "Set Path" dialog is open!
-%
-% @details
-% Usage:
-%   rtbCleanMatlabPath()
-%
-% @ingroup Utilities
-function rtbCleanMatlabPath()
 
 % get the Matlab path
 pathString = path();

@@ -1,9 +1,4 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Set up machine-specific RenderToolbox3 configuration, like where to write
-% output files and renderer configuration.
+%% Set up machine-specific RenderToolbox3 configuration.
 %
 % This script is intended as a template only.  You should make a copy of
 % this script and save it in a folder separate from RenderToolbox3.  You
@@ -18,12 +13,15 @@
 % customize it, and run it.  You can run it again, any time you want to
 % make sure your RenderToolbox3 preferences are correct.
 %
-% After you run this script, you can run RenderToolbox3InstallationTest()
+% After you run this script, you can run rtbTestInstallation()
 % to verify that your configuration is good.
 %
 % You can also run rtbTestAllExampleScenes(), followed by
 % rtbCompareAllExampleScenes() to check example renderings for correctness.
 %
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
 %% Start with RenderToolbox3 "fresh out of the box" configuration.
 rtbInitialize('force', true);

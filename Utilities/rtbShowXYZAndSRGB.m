@@ -1,42 +1,31 @@
+function [xyzFig, srgbFig] = rtbShowXYZAndSRGB(XYZImage, SRGBImage, name)
+%% Plot XYZ and sRGB images.
+%
+% [xyzFig, rgbFig] = rtbShowXYZAndSRGB(XYZImage, SRGBImage, name) is a
+% one-liner to make two plots for XYZ and sRGB images.  The given XYZImage
+% and SRGBImage will be plotted in new figures.  The gven name will appear
+% as the image title in each plot.
+%
+% Returns handles to the new figures.
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Plot XYZ and sRGB image representations.
-%   @param XYZImage image matrix with XYZ color data
-%   @param SRGBImage image matrix with sRGB color data
-%   @param name a name to give the images (optional)
-%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
-%
-% @details
-% Quick plotter for XYZ and sRGB image representations.  The given @a
-% XYZImage and @a SRGB image will be plotted in new figures.  If @a name is
-% provided, it will appear as the image title.
-%
-% @details
-% If @a hints is provided, it must be a struct of RenderToolbox3 options,
-% as returned from rtbDefaultHints().
-%
-% @details
-% Usage:
-%   rtbShowXYZAndSRGB(XYZImage, SRGBImage, name, hints)
-%
-% @ingroup Utilities
-function rtbShowXYZAndSRGB(XYZImage, SRGBImage, name, hints)
 
-if nargin < 3 || isempty(name)
-    name = '';
-end
+parser = inputParser();
+parser.addRequired('XYZImage', @isnumeric);
+parser.addRequired('SRGBImage', @isnumeric);
+parser.addRequired('name', @ischar);
+parser.parse(XYZImage, SRGBImage, name);
+XYZImage = parser.Results.XYZImage;
+SRGBImage = parser.Results.SRGBImage;
+name = parser.Results.name;
 
-if nargin < 4
-    hints = rtbDefaultHints();
-else
-    hints = rtbDefaultHints(hints);
-end
-
+xyzFig = [];
 if nargin > 0 && ~isempty(XYZImage)
-    f = figure();
-    ax = axes('Parent', f);
+    xyzFig = figure();
+    ax = axes('Parent', xyzFig);
+    
     % assume XYZ image is full range floating point
     imshow(XYZImage, 'Parent', ax);
     ylabel(ax, 'XYZ')
@@ -44,9 +33,11 @@ if nargin > 0 && ~isempty(XYZImage)
     drawnow();
 end
 
+srgbFig = [];
 if nargin > 1 && ~isempty(SRGBImage)
-    f = figure();
-    ax = axes('Parent', f);
+    srgbFig = figure();
+    ax = axes('Parent', srgbFig);
+    
     % assume SRGB is gamma corrected unsigned bytes
     imshow(uint8(SRGBImage), 'Parent', ax);
     ylabel(ax, 'SRGB')

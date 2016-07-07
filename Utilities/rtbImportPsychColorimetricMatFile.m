@@ -1,84 +1,78 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function outFiles = rtbImportPsychColorimetricMatFile(inFile, outFile, varargin)
+%% Convert a Psychtooblox colorimetric mat-file to text spd-files.
 %
-% Convert a Psychtooblox colorimetric mat-file to text spd-files.
-%   @param inFile input .mat file with Psychtooblox colorimetric data
-%   @param outFile output file name for new text file(s)
-%   @param isDivideBands whether to divide spectrum samples by band width
+% outFiles = rtbImportPsychColorimetricMatFile(inFile, outFile) Converts
+% the Psychtoolbox colorimetric mat-file inFile to one or more
+% text spd-files named outFile.  Text spd-files are suitable for use
+% with physically based renderers like PBRT and Mitsuba.
 %
-% @details
-% Converts the Psychtoolbox colorimetric mat-file @a inFile to one or more
-% text spd-files named @a outFile.  Text spd-files are suitable for use
-% with PBRT and Mitsuba.
-%
-% @details
-% @a inFile should be the name of a mat-file which obeys Psychtoolbox
+% inFile should be the name of a mat-file which obeys Psychtoolbox
 % colorimetric mat file conventions.  The name should use a descriptive
 % prefix, followed by an underscore, followed by a specific name.  For
 % example, RenderToolbox includes "sur_mccBabel.mat":
 %   - the prefix "sur" describes the data a surface reflectance
 %   - the name "mccBabel" refers to Macbetch Color Checker data from the
 %   BabelColor company.
-%   .
 %
-% @details
+% Returns a cell array of file names for new text spd-files.
+%
 % For more about Psychtooblox colorimetric mat-files and conventions, see
-% the <a
-% href="http://docs.psychtoolbox.org/PsychColorimetricMatFiles">Psychtoolbox web documentation</a>
+% the Psychtoolbox web documentation
+%   http://docs.psychtoolbox.org/PsychColorimetricMatFiles
 % or the file
 %   Psychtoolbox/PsychColorimetricData/PsychColorimetricMatFiles/Contents.m
 %
-% @details
-% If @a inFile contains measurements for just one object, the new text file
-% will have the given name @a outFile.  If @a inFile contains measurements
+% If inFile contains measurements for just one object, the new text file
+% will have the given name outFile.  If inFile contains measurements
 % for multiple objects, a separate text file will be written for each
-% object, using the base name of @a outFile, plus a numeric suffix.  For
-% example, "sur_mccBabel.mat" might produce a file named "mccBabel-24.spd".
+% object, using the base name of outFile, plus a numeric suffix.  For
+% example, "sur_mccBabel.mat" would produce a file named "mccBabel-24.spd".
 %
-% @details
-% By convention, all Psychtoolbox colorimetric .mat files describe power
+% By convention, all Psychtoolbox colorimetric mat-files describe power
 % spectra as power-per-wavelength-band.  This differs from text .spd files,
-% which should describe power spectra as power-per-nanometer.  If @a inFile
-% obeys Psychtoolbox conventions for spectral power .mat files, spectrum
+% which should describe power spectra as power-per-nanometer.  If inFile
+% obeys Psychtoolbox conventions for spectral power mat-files, spectrum
 % samples will be divided by the spectral band width to put them in units
 % of power-per-nanometer.  Psychtoolbox conventions for power spectra
 % include using prefix "spd", and storing data with one column per object.
 %
-% @details
-% If @a isDivideBands is provided and true, spectrum samples will be
-% divided by band width, regardless of Psychtoolbox conventions.  If @a
-% isDivideBands is false, spectrum samples will be left unchanged,
-% regardless of Psychtooblox conventions.  If @a isDivideBands is omitted,
-% attempts to follow Psychtoolbox conventions.
+% rtbImportPsychColorimetricMatFile( ... 'divideBands', divideBands)
+% specifies whether to divide spectrum samples by their band widths.  The
+% default value is 'psychtoolbox', which will attempt to follow the
+% Psychtoolbox conventions above.  The value 'yes' will divide samples by
+% their band widths unconditionally.  The value 'no' will leave samples
+% alone unconditionally.
 %
-% @details
-% Returns a cell array of file names for new text spd-files.
-%
-% @details
-% Usage:
-%   outFiles = rtbImportPsychColorimetricMatFile(inFile, outFile, isDivideBands)
-%
-% @ingroup Utilities
-function outFiles = rtbImportPsychColorimetricMatFile(inFile, outFile, isDivideBands)
+%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-[inPath, inBase, inExt] = fileparts(inFile);
-if nargin < 2 || isempty(outFile)
-    outFile = fullfile(inPath, [inBase '.spd']);
-end
+parser = inputParser();
+parser.addRequired('inFile', @ischar);
+parser.addRequired('outFile', @ischar);
+parser.addParameter('divideBands', 'psychtoolbox', @ischar);
+parser.parse(inFile, outFile, varargin{:});
+inFile = parser.Results.inFile;
+outFile = parser.Results.outFile;
+divideBands = parser.Results.divideBands;
+
 [outPath, outBase, outExt] = fileparts(outFile);
 
-if nargin < 3 || isempty(isDivideBands)
+if strcmp('psychtoolbox', divideBands)
     isObeyPsychConvention = true;
     isDivideBands = false;
+elseif strcmp('yes', divideBands)
+    isObeyPsychConvention = false;
+    isDivideBands = true;
 else
     isObeyPsychConvention = false;
+    isDivideBands = false;
 end
 
 
 %% Read and interpret the Psychtoolbox data.
 % determine the format of spectral data from Psychtoolbox conventions
-[psychData, psychS, psychPrefix, psychName] = ...
+[psychData, psychS, psychPrefix] = ...
     rtbParsePsychColorimetricMatFile(inFile);
 psychWavelengths = SToWls(psychS);
 

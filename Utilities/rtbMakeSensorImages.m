@@ -38,9 +38,6 @@ function outFiles = rtbMakeSensorImages(inFiles, matchingFunctions, varargin)
 %   - one of the given matchingNames
 %   - the name of a Psychtoolbox colorimetric data file
 %   - a numeric suffix
-%   .
-%
-% outFiles = rtbMakeSensorImages(inFiles, matchingFunctions, varargin)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us

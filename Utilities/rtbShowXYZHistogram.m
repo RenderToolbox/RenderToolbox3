@@ -1,55 +1,40 @@
+function [nX, nY, nZ, edges, fig] = rtbShowXYZHistogram(image, varargin)
+%% Plot histograms for XYZ image components.
+%
+% [nX, nY, nZ, edges] = rtbShowXYZHistogram(image) plots
+% histograms of X, Y, and Z components of the given XYZ image, in a
+% new figure.  image should be in Psychtoolbox "Image" format (as
+% opposed to "Calibration" format), with size [nY, nX, 3].
+%
+% Bin edges will range from the image non-zero min to the image max.  0
+% values will be ignored.
+%
+% rtbShowXYZHistogram( ... 'nEdges', nEdges) specifies the number of
+% histogram bin edges.  The default is 100.
+%
+% Returns the counts for each bin, for each XYZ component, as nX, nY, and
+% nZ.  Also returns the bin edges that were used.
+%
+% Also returns the handle to the new figure.
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Plot histograms for XYZ image components.
-%   @param XYZImage matrix of XYZ image data
-%   @param nEdges how many bin edges to use in histograms
-%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
-%
-% @details
-% Plots histograms of X, Y, and Z components of the given @a XYZimage, in a
-% new figure.  @a XYZimage should be in Psychtoolbox "Image" format (as
-% opposed to "Calibration" format), with size [nY, nX, 3].
-%
-% @details
-% By default, plots histograms with 100 bin edges.  If @a nEdges is
-% provided, uses the given number of bin edges.  All
-% components will share the same bin edges, ranging from a common
-% minimum to a commpn maximum.  0-values are ignored.
-%
-% @details
-% Returns the bin frequency counts for each component, X, Y, and Z.  Also
-% returns the array of bin edges.
-%
-% @details
-% If @a hints is provided, it must be a struct of RenderToolbox3 options,
-% as returned from rtbDefaultHints().
-%
-% @details
-% Usage:
-%   [nX, nY, nZ, edges] = rtbShowXYZHistogram(XYZImage, nEdges, hints)
-%
-% @ingroup Utilities
-function [nX, nY, nZ, edges] = rtbShowXYZHistogram(XYZImage, nEdges, hints)
 
-if nargin < 2 || isempty(nEdges)
-    nEdges = 100;
-end
+parser = inputParser();
+parser.addRequired('image', @isnumeric);
+parser.addParameter('nEdges', 100, @isnumeric);
+parser.parse(image, varargin);
+image = parser.Results.image;
+nEdges = parser.Results.nEdges;
 
-if nargin < 3
-    hints = rtbDefaultHints();
-else
-    hints = rtbDefaultHints(hints);
-end
-
-%% compute bin edges
-grandMax = max(XYZImage(:));
-grandMin = min(XYZImage(XYZImage(:)~=0));
+%% Compute bin edges.
+grandMax = max(image(:));
+grandMin = min(image(image(:)~=0));
 edges = linspace(grandMin, grandMax, nEdges);
 
-%% "calibration" format is more natural for histograms
-[XYZCalFormat,m,n] = ImageToCalFormat(XYZImage);
+%% "Calibration" format is more natural for histograms
+XYZCalFormat = ImageToCalFormat(image);
 N = histc(XYZCalFormat, edges, 2);
 nX = N(1,:);
 meanX = mean(XYZCalFormat(1,:));
@@ -60,22 +45,21 @@ meanZ = mean(XYZCalFormat(3,:));
 
 %% plot the three histograms
 %   with markers at the mean
-figure;
-clf;
+fig = figure();
 
-subplot(3,1,1)
+subplot(3,1,1, 'Parent', fig)
 bar(edges, nX)
 line(meanX*[1 1], [0, max(nX)], 'Marker', '+', 'LineStyle', '-')
 xlim([0, grandMax])
 ylabel('X')
 
-subplot(3,1,2);
+subplot(3,1,2, 'Parent', fig);
 bar(edges, nY)
 line(meanY*[1 1], [0, max(nY)], 'Marker', '+', 'LineStyle', '-')
 xlim([0, grandMax])
 ylabel('Y')
 
-subplot(3,1,3);
+subplot(3,1,3, 'Parent', fig);
 bar(edges, nZ)
 line(meanZ*[1 1], [0, max(nZ)], 'Marker', '+', 'LineStyle', '-')
 xlim([0, grandMax])

@@ -1,43 +1,38 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function [wavelengths, magnitudes, sRGB] = rtbGetPixelSpectrum(image, spectrum, x, y)
+%% Get wavelengths and magnitudes from a multi-spectral image pixel.
 %
-% Get wavelengths and magnitudes from a multi-spectral image pixel.
-%   @param image multispectral data matrix of size [height width n]
-%   @param spectrum description of the n spectrum bands of @a image
-%   @param x x-coordinate of the pixel to probe
-%   @param y y-coordinate of the pixel to probe
-%
-% @details
+% [wavelengths, magnitudes, sRGB] = rtbGetPixelSpectrum(image, spectrum, x, y)
 % Gets the spectral magnitude distribution of one pixel in the given
-% multi-spectral @a image.
+% multi-spectral image.
 %
-% @details
-% @a image must be a multi-spectral image matrix, with size [height width
+% The image must be a multi-spectral image matrix, with size [height width
 % n], where height and width are the image pixel dimensions, and n is the
 % number of spectrum bands in the image.
 %
-% @details
-% @a spectrum must be a description of the n spectrum bands in @a image.
-% @a spectrum may be a 1 x n list of wavelengths, or it may be an "S"
-% description of the form [start delta n], where start is the wavelength of
-% the lowest spectrum band, and delta is the width of each band.
+% spectrum must be a description of the n spectrum bands in image.
+% spectrum may be a 1 x n list of wavelengths, or it may be an "S"
+% description of the form [start delta n].
 %
-% @details
-% @a x and @a y must be the x-coordinage and y-coordinate of the pixel of
-% interest.
+% x and y must be the coordinates of the pixel of interest.
 %
-% @details
 % Returns a 1 x n matrix of n wavelengths, and a corresponding 1 x n matrix
 % of magnitudes, for the pixel of interest.  Also returns an sRGB
 % approximation of the spectrum of the pixel of interest.
 %
-% @details
-% Usage:
-%   [wavelengths, magnitudes, sRGB] = rtbGetPixelSpectrum(image, spectrum, x, y)
-%
-% @ingroup Utilities
-function [wavelengths, magnitudes, sRGB] = rtbGetPixelSpectrum(image, spectrum, x, y)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+
+parser = inputParser();
+parser.addRequired('image', @isnumeric);
+parser.addRequired('spectrum', @isnumeric);
+parser.addRequired('x', @isnumeric);
+parser.addRequired('y'), @isnumeric);
+parser.parse(image, spectrum, x, y);
+image = parser.Results.image;
+spectrum = parser.Results.spectrum;
+x = parser.Results.x;
+y = parser.Results.y;
 
 % determine the wavelength of each spectrum band
 wavelengths = MakeItWls(spectrum);

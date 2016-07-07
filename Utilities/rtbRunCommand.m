@@ -1,46 +1,35 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function [status, result, exception] = rtbRunCommand(command, varargin)
+%% Run a system command, capture results or display them live.
 %
-% Run a system command and capture results or display them live.
-%   @param command string command to run with built-in system()
-%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
-%
-% @details
-% rtbRunCommand() executes the given @a command string using Matlab's built-in
+% [status, result, exception] = rtbRunCommand(command, 'hints', hints)
+% executes the given command string using Matlab's built-in
 % system() function, and attempts to capture status codes and messages that
 % result.  Attempts to never throw an exception.  Instead, captures and
 % returns any exception thrown.
 %
-% @details
-% If @a hints.isCaptureCommandResults is false, allows Matlab to print
-% command results to the Command Window immediately as they happen, instead
-% of capturing them.  If @hints is omitted, uses rtbDefaultHints().
+% If the given hints.isCaptureCommandResults is false, allows Matlab to
+% print command results to the Command Window immediately as they happen,
+% instead of capturing them.
 %
-% @details
 % Returns the numeric status code and string result from the system()
 % function.  The result may be empty, if hints.isCaptureCommandResults is
-% false. Also returns any exception that was thrown during command
+% false.  Also returns any exception that was thrown during command
 % execution, or empty [] if no exception was thrown.
 %
-% @details
-% Usage:
-%   [status, result, exception] = rtbRunCommand(command, hints)
-%
-% @ingroup Utilities
-function [status, result, exception] = rtbRunCommand(command, hints)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+
+parser = inputParser();
+parser.addRequired('command', @ischar);
+parser.addParameter('hints', rtbDefaultHints(), @isstruct);
+parser.parse(command, varargin{:});
+command = parser.Results.command;
+hints = rtbDefaultHints(parser.Results.hints);
 
 status = [];
 result = '';
 exception = [];
-
-if nargin < 2
-    hints = rtbDefaultHints();
-end
-
-if ~rtbIsStructFieldPresent(hints, 'isCaptureCommandResults')
-    hints.isCaptureCommandResults = true;
-end
 
 if hints.isCaptureCommandResults
     try

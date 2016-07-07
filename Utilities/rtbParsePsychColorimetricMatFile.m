@@ -14,8 +14,6 @@ function [data, S, category, name] = rtbParsePsychColorimetricMatFile(dataFile)
 % description of the data's spectral sampling, the category prefix from the
 % file name, and the descriptive base file name.
 %
-% [data, S, category, name] = rtbParsePsychColorimetricMatFile(dataFile)
-%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
