@@ -1,34 +1,28 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function rtbPrependLicenseNotice(varargin)
+%% Prepend copyright and license text to all RenderToolbox3 m-files.
 %
-% Prepend copyright and license text to all RenderToolbox3 m-files.
-%   @param isCommit whether to actually modify RenderToolbox3 files.
+% rtbPrependLicenseNotice() Recursively finds all m-files in the
+% RenderToolbox3 file tree.  For each m-file, adds the text in
+% licenseNotice.m to the top of the file.
 %
-% @details
-% Recursively finds all m-files in the RenderToolbox3 file tree.  For each
-% m-file, adds the text in licenseNotice.m to the top of the file.
-%
-% @details
 % The lines in licenseNotice.m all begin with %%%.  Any lines at the top of
 % each m-file that begin with %%% will be overwritten.  Subsequent lines
 % will be copied as they are.  This prevents redundant copyright and
 % license notices, and allows them to be updated.
 %
-% @details
-% By default, displays a preview of each RenderToolbox3 file with copyright
-% and license text prepended.  If @a isCommit is provided and true,
-% actually modifies  RenderToolbox3 files with copyright and license
-% text.
+% rtbPrependLicenseNotice('commit', true) Actually modifies
+% RenderToolbox3 files with copyright and license text.  The default is to
+% display a preview of each RenderToolbox3 file with copyright and license
+% text prepended.
 %
-% @details
-% Usage:
-%   rtbPrependLicenseNotice(isPreview)
-function rtbPrependLicenseNotice(isCommit)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-if nargin < 1
-    isCommit = false;
-end
+parser = inputParser();
+parser.addParameter('commit', false, @islogical);
+parser.parse(varargin{:});
+commit = parser.Results.commit;
 
 % get all the m-files in the RenderToolbox3 source tree
 mFiles = rtbFindFiles(rtbRoot(), '\.m$');
@@ -63,7 +57,7 @@ for ii = 1:nFiles
     % prepend the header text to m-file text
     newText = cat(2, headerText, mFileText);
     
-    if isCommit
+    if commit
         % really modify files
         
         % write new text to a temporary file
