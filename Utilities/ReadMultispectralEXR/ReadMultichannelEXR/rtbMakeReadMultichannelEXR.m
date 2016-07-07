@@ -1,38 +1,25 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function rtbMakeReadMultichannelEXR()
+%% Compile and test the MakeReadMultichannelEXR Mex-function.
 %
-%% Compile the rtbMakeReadMultichannelEXR Mex-function.
+% rtbMakeReadMultichannelEXR() Compiles the ReadMultichannelEXR() mex
+% function from source.  Assumes that the OpenEXR libraries have been
+% installed on the system at user/, user/local/, or opt/local/.  If the
+% libraries are installed somewhere else on your system, you should copy
+% this file and edit the  INC and LINC variables to contain the correct
+% include and library paths  for your OpenEXR installation.
 %
-% @details
-% Compiles the rtbReadMultichannelEXR() mex function from source.  Assumes
-% that the OpenEXR libraries have been installed on the system at
-% user/, user/local/, or opt/local/.  If the libraries are installed
-% somewhere else on your system, you should copy this file and edit the 
-% INC and LINC variables to contain the correct include and library paths 
-% for your OpenEXR installation.
-%
-% @details
-% On Ubuntu, you may wish to run the following command to get the 
-% dependencies you need:
-% @code
-% sudo apt-get install openexr libopenexr-dev libilmbase-dev zlib1g-dev
-% @endcode
-%
-% @details
-% Should produce a new rtbMakeReadMultichannelEXR() function with a
-% platform-specific Mex-function extension.  See Matlab's mexext().
-%
-% @details
 % Attempts to read a sample OpenEXR image and plot channel data in a new
 % figure, to verify that the funciton compiled successfully.
 %
-% @details
-% Usage:
-%   rtbMakeReadMultichannelEXR()
+% On Ubuntu, you may wish to run the following command to get the
+% dependencies you need:
+%   sudo apt-get install openexr libopenexr-dev libilmbase-dev zlib1g-dev
 %
-% @ingroup Mex
-function rtbMakeReadMultichannelEXR()
+% On OS X, you can probably find a similar command with Homebrew.
+%
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
 %% Choose the source and function files
 cd(fullfile(rtbRoot(), 'Utilities', 'ReadMultispectralEXR', 'rtbReadMultichannelEXR'));
@@ -51,11 +38,8 @@ eval(mexCmd);
 
 %% Test the function with a sample EXR file.
 testFile = 'TestSphereMitsuba.exr';
-%testFile = 'TestSphereBlender.exr';
 [sliceInfo, data] = rtbReadMultichannelEXR(testFile);
 
-fprintf('If you see a figure with several images, rtbMakeReadMultichannelEXR() is working.\n');
-
-% show each image layer
-close all;
+fprintf('If you see a figure with several images, rtbReadMultichannelEXR() is working.\n');
+figure();
 rtbPlotSlices(sliceInfo, data);

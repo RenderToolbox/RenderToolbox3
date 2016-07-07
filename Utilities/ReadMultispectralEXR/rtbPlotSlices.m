@@ -1,24 +1,20 @@
+function fig = rtbPlotSlices(sliceInfo, data)
+%% View each slice from a multi-spectral exr-file.
+%
+% fig = rtbPlotSlices(sliceInfo, data) Plots each slice from the given data
+% as a grayscale image, along with the slice name and pixelType from the
+% give sliceInfo.  Returns the new plot figure.
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-%% View each slice from a multi-spectral exr-file.
-%   @param sliceInfo struct array of slice data from rtbReadMultichannelEXR()
-%   @param data matrix of image data from rtbReadMultichannelEXR()
-%
-% @details
-% Plots each slice from the given @a data as a grayscale image, along with
-% the slice name and pixelType from the give @a sliceInfo.
-%
-% @details
-% Returns the plot figure.
-%
-% @details
-% Usage:
-%   fig = rtbPlotSlices(sliceInfo, data)
-%
-% @ingroup Utilities
-function fig = rtbPlotSlices(sliceInfo, data)
+
+parser = inputParser();
+parser.addRequired('sliceInfo', @isstruct);
+parser.addRequired('data', @isnumeric);
+parser.parse(sliceInfo, data);
+sliceInfo = parser.Results.sliceInfo;
+data = parser.Results.data;
 
 fig = figure();
 

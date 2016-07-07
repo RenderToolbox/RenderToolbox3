@@ -1,43 +1,35 @@
-%%% RenderToolbox3 Copyright (c) 2012-2015 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function [wls, S, order] = rtbWlsFromSliceNames(sliceNames, varargin)
+%% Read wavelength info from multi-spectral image slice names.
 %
-% Read scan multi-spectral image slice names for wavelength info
-%   @param sliceNames cell array of image slice names
-%   @param namePattern sscanf() pattern to use on slice names
+% [wls, S, order] = rtbWlsFromSliceNames(sliceNames) scans the cell array
+% of image slice names for wavelength info using sscanf() and the default
+% matching pattern '%f-%f'.
 %
-% @details
-% Scans each multi-spectral image slice in the given @a sliceNames for
-% numeric wavelength data.
-%
-% @details
-% By default, scans each slice name using the sscanf() pattern '%f-%f'.  If
-% @a namePattern is provided, it must be a different pattern to use
-% instead.
-%
-% @details
 % For each image slice, if sscanf() returns a single number, this is
 % treated as a spectral band center.  If sscanf() returns two numbers, they
 % are treated as band edges and averaged to obtain a band center.  If
 % sscanf() returns zero or more than two numbers, that band is ignored.
 %
-% @details
 % Returns an array of n spectral band centers, one for each image slice.
 % The array will be sorted from low to high.  Also returns a summary of the
 % list of wavelengths in "S" format.  This is an array with elements [start
 % delta n].  Finally, returns an array of indices that may be used to sort
-% the given @a sliceNames or other data from low to high wavelength.
+% the given sliceNames or other data from low to high wavelength.
 %
-% @details
-% Usage:
-%   [wls, S, order] = rtbWlsFromSliceNames(sliceNames, namePattern)
+% rtbWlsFromSliceNames( ... 'namePattern', namePattern) specifies the
+% matching pattern to use when scanning slice names.  The default is
+% '%f-%f'.
 %
-% @ingroup Readers
-function [wls, S, order] = rtbWlsFromSliceNames(sliceNames, namePattern)
+%%% RenderToolbox3 Copyright (c) 2012-2015 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-if nargin < 2 || isempty(namePattern)
-    namePattern = '%f-%f';
-end
+parser = inputParser();
+parser.addRequired('sliceNames', @iscell);
+parser.addParameter('namePattern', '%f-%f', @ischar);
+parser.parse(sliceNames, varargin{:});
+sliceNames = parser.Results.sliceNames;
+namePattern = parser.Results.namePattern;
 
 % look for channels that contain wavelengths
 nSlices = numel(sliceNames);
