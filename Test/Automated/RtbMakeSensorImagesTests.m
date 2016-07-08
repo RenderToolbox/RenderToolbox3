@@ -3,7 +3,7 @@ classdef RtbMakeSensorImagesTests < matlab.unittest.TestCase
     methods (Test)
         
         function testColorimetricMatFile(testCase)
-            multispectralDataFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'CoordinatesTest.mat');
+            multispectralDataFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'CoordinatesTest.mat');
             inFiles = {multispectralDataFile, multispectralDataFile};
             matchingFunctions = {'T_cones_ss10', 'T_rods'};
             hints.workingFolder = fullfile(tempdir(), 'RtbMakeSensorImagesTest');
@@ -14,7 +14,7 @@ classdef RtbMakeSensorImagesTests < matlab.unittest.TestCase
         end
         
         function testMatrix(testCase)
-            multispectralDataFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'CoordinatesTest.mat');
+            multispectralDataFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'CoordinatesTest.mat');
             inFiles = {multispectralDataFile, multispectralDataFile};
             matchingFunctions = {zeros(10, 10), ones(10, 10)};
             matchingS = {[400 10 10], [400 10 10]};

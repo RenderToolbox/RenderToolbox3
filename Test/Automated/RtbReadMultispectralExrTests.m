@@ -14,7 +14,7 @@ classdef RtbReadMultispectralExrTests < matlab.unittest.TestCase
         end
         
         function testReadExr(testCase)
-            exrFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'CoordinatesTest.exr');
+            exrFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'CoordinatesTest.exr');
             [channelInfo, imageData] = rtbReadMultichannelEXR(exrFile);
             
             testCase.assertInstanceOf(channelInfo, 'struct');

@@ -45,13 +45,19 @@ parser.addParameter('conditionsFile', '', @ischar);
 parser.addParameter('mappingsFile', '', @ischar);
 parser.addParameter('hints', rtbDefaultHints(), @isstruct);
 parser.parse(parentScene, varargin{:});
-parentScene = which(parser.Results.parentScene);
+parentScene = parser.Results.parentScene;
 conditionsFile = parser.Results.conditionsFile;
 mappingsFile = parser.Results.mappingsFile;
 hints = rtbDefaultHints(parser.Results.hints);
 
 fprintf('\nMakeSceneFiles started at %s.\n\n', datestr(now(), 0));
 
+%% Attempt to locate scene in case it's a relative path.
+if ~isempty(parentScene) && ischar(parentScene) && 2 ~= exist(parentScene, 'file')
+    workingFolder = rtbWorkingFolder('hints', hints);
+    sceneInfo = rtbResolveFilePath(parentScene, workingFolder);
+    parentScene = sceneInfo.absolutePath;
+end
 
 %% Choose the batch rendering strategy.
 if isobject(hints.batchRenderStrategy)

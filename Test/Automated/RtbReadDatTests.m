@@ -16,7 +16,7 @@ classdef RtbReadDatTests < matlab.unittest.TestCase
         end
         
         function testReadDat(testCase)
-            datFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'CoordinatesTest.dat');
+            datFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'CoordinatesTest.dat');
             [imageData, imageSize] = rtbReadDAT(datFile);
             
             testCase.assertSize(imageData, [240 320 32]);
@@ -25,7 +25,7 @@ classdef RtbReadDatTests < matlab.unittest.TestCase
         end
         
         function testReadDatMaxPlanes(testCase)
-            datFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'CoordinatesTest.dat');
+            datFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'CoordinatesTest.dat');
             [imageData, imageSize] = rtbReadDAT(datFile, ...
                 'maxPlanes', 11);
             

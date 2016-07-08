@@ -22,5 +22,5 @@ else
     hints = rtbDefaultHints(hints);
 end
 
-workingFolder = rtbWorkingFolder('', false, hints);
+workingFolder = rtbWorkingFolder('hints', hints);
 wasCreated = rtbChangeToFolder(workingFolder);

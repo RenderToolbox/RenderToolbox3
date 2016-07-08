@@ -39,7 +39,7 @@ classdef RtbVersion3PBRTConverter < handle
             obj.material = RtbVersion3PBRTConverter.defaultMaterial();
             obj.diffuseParameter = 'Kd';
             obj.specularParameter = '';
-            obj.outputFolder = rtbWorkingFolder('', false, obj.hints);
+            obj.outputFolder = rtbWorkingFolder('hints', obj.hints);
             obj.meshSubfolder = 'scenes/PBRT/pbrt-geometry';
             obj.rewriteMeshData = true;
         end

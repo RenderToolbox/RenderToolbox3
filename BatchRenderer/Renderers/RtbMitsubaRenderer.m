@@ -16,7 +16,10 @@ classdef RtbMitsubaRenderer < RtbRenderer
         function obj = RtbMitsubaRenderer(hints)
             obj.hints = rtbDefaultHints(hints);
             obj.mitsuba = getpref('Mitsuba');
-            obj.outputFolder = rtbWorkingFolder('renderings', true, obj.hints);
+            obj.outputFolder = rtbWorkingFolder( ...
+                'folderName', 'renderings', ...
+                'rendererSpecific', true, ...
+                'hints', obj.hints);
         end
         
         function info = versionInfo(obj)
@@ -32,7 +35,7 @@ classdef RtbMitsubaRenderer < RtbRenderer
             % look carefully for the file
             scenePath = fileparts(nativeScene);
             if isempty(scenePath)
-                fileInfo = rtbResolveFilePath(nativeScene, rtbWorkingFolder('', false, obj.hints));
+                fileInfo = rtbResolveFilePath(nativeScene, rtbWorkingFolder('hints', hints));
                 nativeScene = fileInfo.absolutePath;
             end
             

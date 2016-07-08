@@ -30,7 +30,10 @@ end
 %% Create new files in a subfolder next to renderer outputs.
 hints.recipeName = 'rtbMakeSimpleSphere';
 hints.renderer = 'SphereRenderer';
-renderings = rtbWorkingFolder('renderings', true, hints);
+renderings = rtbWorkingFolder( ...
+    'folderName', 'renderings', ...
+    'rendererSpecific', true, ...
+    'hints', hints);
 rtbChangeToFolder(renderings);
 
 %% Choose rendering and scene parameters.

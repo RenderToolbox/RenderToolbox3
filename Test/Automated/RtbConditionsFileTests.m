@@ -3,7 +3,7 @@ classdef RtbConditionsFileTests < matlab.unittest.TestCase
     methods (Test)
         
         function testRead(testCase)
-            conditionsFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'DragonColorCheckerConditions.txt');
+            conditionsFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'DragonColorCheckerConditions.txt');
             [names, values] = rtbParseConditions(conditionsFile);
             testCase.assertEqual(names, {'imageName', 'dragonColor'});
             testCase.assertSize(values, [24, 2]);

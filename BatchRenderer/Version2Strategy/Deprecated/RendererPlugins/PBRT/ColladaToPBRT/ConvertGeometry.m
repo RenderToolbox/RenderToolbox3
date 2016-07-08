@@ -132,7 +132,7 @@ else
     hasTexCoords = ~isempty(texCoordID);
 end
 
-if hasTexCoords    
+if hasTexCoords
     % follow the "TEXCOORD" reference to actual texture coordinate data
     %   make sure the data are 2-element UV
     colladaPath = {texCoordID, ':technique_common', ':accessor' '.stride'};
@@ -271,7 +271,10 @@ end
 % create a new file named like the polylist name
 %   put it in the working scenes folder
 meshFolder = 'pbrt-mesh-data';
-meshFullPath = fullfile(rtbWorkingFolder('scenes', true, hints), meshFolder);
+meshFullPath = fullfile(rtbWorkingFolder( ...
+    'folderName', 'scenes', ...
+    'rendererSpecific', true, ...
+    'hints', hints), meshFolder);
 if ~exist(meshFullPath, 'dir')
     mkdir(meshFullPath);
 end

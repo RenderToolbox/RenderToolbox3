@@ -126,7 +126,7 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
             % look carefully for the file
             scenePath = fileparts(sceneFile);
             if isempty(scenePath)
-                fileInfo = rtbResolveFilePath(sceneFile, rtbWorkingFolder('', false, obj.hints));
+                fileInfo = rtbResolveFilePath(sceneFile, rtbWorkingFolder('hints', obj.hints));
                 sceneFile = fileInfo.absolutePath;
             end
             scene = mexximpCleanImport(sceneFile, obj.importArgs{:});
@@ -160,7 +160,10 @@ classdef RtbVersion3Strategy < RtbBatchRenderStrategy
         
         function [scene, mappings] = resolveResources(obj, scene, mappings)
             % locate files and fix up names
-            resourceFolder = rtbWorkingFolder('resources', false, obj.hints);
+            resourceFolder = rtbWorkingFolder( ...
+                'folderName', 'resources', ...
+                'rendererSpecific', false, ...
+                'hints', obj.hints);
             mappings = rtbVisitStructFields(mappings, @rtbLocateResource, ...
                 'filterFunction', @RtbVersion3Strategy.mightBeFile, ...
                 'visitArgs', { ...

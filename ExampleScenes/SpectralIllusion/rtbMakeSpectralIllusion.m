@@ -18,7 +18,10 @@ hints.imageHeight = 480;
 hints.recipeName = mfilename();
 rtbChangeToWorkingFolder(hints);
 
-resources = rtbWorkingFolder('resources', false, hints);
+resources = rtbWorkingFolder( ...
+    'folderName', 'resources', ...
+    'rendererSpecific', false, ...
+    'hints', hints);
 
 toneMapFactor = 100;
 isScale = true;

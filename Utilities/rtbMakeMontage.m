@@ -67,7 +67,10 @@ end
 [outPath, outBase, outExt] = fileparts(outFile);
 
 if isempty(outPath)
-    outPath = rtbWorkingFolder('images', true, hints);
+    outPath = rtbWorkingFolder( ...
+        'folderName', 'images', ...
+        'rendererSpecific', true, ...
+        'hints', hints);
 end
 
 SRGBMontage = [];
@@ -93,7 +96,7 @@ for ii = 1:nIns
     S = inData.S;
     
     % convert down to XYZ representation
-    XYZImage = rtbMultispectralToSensorImage(multiImage, S, 'T_xyz1931');
+    XYZImage = rtbMultispectralToSensorImage(multiImage, S, 'T_xyz1931', []);
     
     % first image, allocate a big XYZ montage
     if ii == 1
@@ -112,7 +115,7 @@ end
 
 %% Convert the whole big XYZ montage to SRGB.
 [SRGBMontage, ~, luminanceScale] = ...
-    rtbXYZToSRGB(XYZMontage, toneMapFactor, 0, isScale);
+    rtbXYZToSRGB(XYZMontage, 'toneMapFactor', toneMapFactor, 'isScale', isScale);
 
 %% Save to disk.
 if ~isempty(outPath) && 7 ~= exist(outPath, 'dir')

@@ -9,7 +9,7 @@ classdef RtbReadWriteSpectrumTests < matlab.unittest.TestCase
         end
         
         function testReadFile(testCase)
-            spdFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'D65.spd');
+            spdFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'D65.spd');
             [wavelengths, magnitudes] = rtbReadSpectrum(spdFile);
             testCase.assertEqual(wavelengths, [380:5:780]');
             testCase.assertEqual(min(magnitudes), 46.42, 'AbsTol', 1e-6);

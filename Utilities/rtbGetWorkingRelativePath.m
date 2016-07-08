@@ -22,7 +22,7 @@ hints = rtbDefaultHints(parser.Results.hints);
 
 relativePath = '';
 
-workingFolder = rtbWorkingFolder('', false, hints);
+workingFolder = rtbWorkingFolder('hints', hints);
 info = rtbResolveFilePath(originalPath, workingFolder);
 if info.isRootFolderMatch
     relativePath = info.resolvedPath;

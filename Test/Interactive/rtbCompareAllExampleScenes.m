@@ -57,7 +57,7 @@
 % matched pair.  Each figure shows sRGB representations of multi-spectral
 % renderings and rendering differences: A, B, A-B, and B-A.  Also
 % saves each detail figure as a Matlab fig-file and a png-file image,
-% in the folder given by rtbWorkingFolder('images').
+% in the folder given by rtbWorkingFolder('folderName', 'images').
 %
 % @details
 % This function is intended to help validate RenderToolbox3 installations
@@ -198,7 +198,10 @@ fprintf('\n')
 
 % compare matched images!
 hints.recipeName = mfilename();
-comparisonFolder = rtbWorkingFolder('images', false, hints);
+comparisonFolder = rtbWorkingFolder( ...
+    'folderName', 'images', ...
+    'rendererSpecific', false, ...
+    'hints', hints);
 for ii = 1:nMatches
     fprintf('%d of %d: %s\n', ii, nMatches, matchInfo(ii).relativeA);
     

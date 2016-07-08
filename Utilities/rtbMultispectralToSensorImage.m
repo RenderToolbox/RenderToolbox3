@@ -38,12 +38,12 @@ function sensorImage = rtbMultispectralToSensorImage(multispectralData, imageS, 
 parser = inputParser();
 parser.addRequired('multispectralData', @isnumeric);
 parser.addRequired('imageS', @isnumeric);
-parser.addRequired('matchinFunction');
-parser.addRequireds('matchingS', @isnumeric);
+parser.addRequired('matchingFunction');
+parser.addRequired('matchingS', @isnumeric);
 parser.parse(multispectralData, imageS, matchingFunction, matchingS);
 multispectralData = parser.Results.multispectralData;
 imageS = parser.Results.imageS;
-matchinFunction = parser.Results.matchinFunction;
+matchingFunction = parser.Results.matchingFunction;
 matchingS = parser.Results.matchingS;
 
 % load matchingFunction and matchingS from Psychtoolbox .mat file?

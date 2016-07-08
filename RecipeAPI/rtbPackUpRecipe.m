@@ -45,7 +45,7 @@ end
 
 %% Set up a clean, temporary folder.
 hints.workingFolder = recipe.input.hints.workingFolder;
-workingFolder = rtbWorkingFolder('', false, hints);
+workingFolder = rtbWorkingFolder('hints', hints);
 tempFolder = fullfile(workingFolder, mfilename(), archiveBase);
 if exist(tempFolder, 'dir')
     rmdir(tempFolder, 's');
@@ -59,12 +59,14 @@ save(recipeFileName, 'recipe');
 %% Resolve named ignored folders to local file paths.
 ignorePaths = cell(size(ignoreFolders));
 for ii = 1:numel(ignoreFolders)
-    ignorePaths{ii} = ...
-        rtbWorkingFolder(ignoreFolders{ii}, false, recipe.input.hints);
+    ignorePaths{ii} = rtbWorkingFolder( ...
+        'folderName', ignoreFolders{ii}, ...
+        'rendererSpecific', false, ...
+        'hints', recipe.input.hints);
 end
 
 %% Copy dependencies from the working folder to the temp folder.
-workingRoot = rtbWorkingFolder('', false, recipe.input.hints);
+workingRoot = rtbWorkingFolder('hints', recipe.input.hints);
 dependencies = rtbFindFiles('root', workingRoot);
 for ii = 1:numel(dependencies)
     localPath = dependencies{ii};

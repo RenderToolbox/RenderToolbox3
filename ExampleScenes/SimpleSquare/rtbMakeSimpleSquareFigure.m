@@ -52,7 +52,10 @@ for ii = 1:nImages
     
     % read PBRT square data from file
     hints.renderer = 'PBRT';
-    dataFolder = rtbWorkingFolder('renderings', true, hints);
+    dataFolder = rtbWorkingFolder( ...
+    'folderName', 'renderings', ...
+    'rendererSpecific', true, ...
+    'hints', hints);
     file = rtbFindFiles(dataFolder, [imageNum '.mat']);
     data = load(file{1});
     pbrt(ii).imageSpectral = data.multispectralImage;
@@ -62,7 +65,10 @@ for ii = 1:nImages
     
     % read Mitsuba square data from file
     hints.renderer = 'Mitsuba';
-    dataFolder = rtbWorkingFolder('renderings', true, hints);
+    dataFolder = rtbWorkingFolder( ...
+    'folderName', 'renderings', ...
+    'rendererSpecific', true, ...
+    'hints', hints);
     file = rtbFindFiles(dataFolder, [imageNum '.mat']);
     data = load(file{1});
     mitsuba(ii).imageSpectral = data.multispectralImage;

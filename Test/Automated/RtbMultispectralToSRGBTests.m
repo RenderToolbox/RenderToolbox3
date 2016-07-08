@@ -3,7 +3,7 @@ classdef RtbMultispectralToSRGBTests < matlab.unittest.TestCase
     methods (Test)
         
         function testScaling(testCase)
-            multispectralDataFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'CoordinatesTest.mat');
+            multispectralDataFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'CoordinatesTest.mat');
             data = load(multispectralDataFile);
             sRgbImage = rtbMultispectralToSRGB(data.multispectralImage, data.S, ...
                 'toneMapFactor', 100, ...

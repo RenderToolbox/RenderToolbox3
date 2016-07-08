@@ -37,18 +37,21 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             % look carefully for the file
             [scenePath, sceneBase, sceneExt] = fileparts(sceneFile);
             if isempty(scenePath) && exist(sceneFile, 'file')
-                fileInfo = rtbResolveFilePath(sceneFile, rtbWorkingFolder('', false, obj.hints));
+                fileInfo = rtbResolveFilePath(sceneFile, rtbWorkingFolder('hints', obj.hints));
                 sceneFile = fileInfo.absolutePath;
             end
             
             % strip out non-ascii 7-bit characters
-            tempFolder = rtbWorkingFolder('temp', true, obj.hints);
+            tempFolder = rtbWorkingFolder( ...
+                'folderName', 'temp', ...
+                'rendererSpecific', true, ...
+                'hints', obj.hints);
             collada7Bit = fullfile(tempFolder, [sceneBase '-7bit' sceneExt]);
             WriteASCII7BitOnly(sceneFile, collada7Bit);
             
             % clean up Collada elements and resource paths
             colladaDoc = ReadSceneDOM(collada7Bit);
-            workingFolder = rtbWorkingFolder('', false, obj.hints);
+            workingFolder = rtbWorkingFolder('hints', obj.hints);
             cleanDoc = CleanUpColladaDocument(colladaDoc, workingFolder);
             sceneCopy = fullfile(tempFolder, [sceneBase '-7bit-clean' sceneExt]);
             WriteSceneDOM(sceneCopy, cleanDoc);
@@ -157,7 +160,7 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             % read original Collada document into memory
             [scenePath, sceneBase, sceneExt] = fileparts(colladaFile);
             if isempty(scenePath) && 2 == exist(colladaFile, 'file')
-                info = rtbResolveFilePath(colladaFile, rtbWorkingFolder('', false, obj.hints));
+                info = rtbResolveFilePath(colladaFile, rtbWorkingFolder('hints', obj.hints));
                 colladaFile = info.absolutePath;
             end
             colladaDoc = ReadSceneDOM(colladaFile);
@@ -166,7 +169,10 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             colladaDoc = feval(remodelerFunction, colladaDoc, varargin{:}, obj.hints);
             
             % write modified document to new file
-            tempFolder = fullfile(rtbWorkingFolder('temp', true, obj.hints));
+            tempFolder = fullfile(rtbWorkingFolder( ...
+                'folderName', 'temp', ...
+                'rendererSpecific', true, ...
+                'hints', obj.hints));
             colladaCopy = fullfile(tempFolder, [sceneBase '-' functionName sceneExt]);
             WriteSceneDOM(colladaCopy, colladaDoc);
         end

@@ -26,8 +26,9 @@ else
 end
 
 errorData = [];
+message = '';
 try
-    wasCreated = rtbChangeToWorkingFolder(hints);
+    wasCreated = rtbChangeToWorkingFolder('hints', hints);
     if wasCreated
         message = ['Created ' pwd()];
     else

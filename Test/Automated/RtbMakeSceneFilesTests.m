@@ -16,7 +16,7 @@ classdef RtbMakeSceneFilesTests < matlab.unittest.TestCase
             hints.remodeler = 'SampleRemodeler';
             hints = rtbDefaultHints(hints);
             
-            colladaFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'CoordinatesTest.dae');
+            colladaFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'CoordinatesTest.dae');
             hints.workingFolder = fullfile(tempdir(), 'RtbMakeSceneFilesTests');
             scenes = rtbMakeSceneFiles(colladaFile, 'hints', hints);
             testCase.assertNumElements(scenes, 1);

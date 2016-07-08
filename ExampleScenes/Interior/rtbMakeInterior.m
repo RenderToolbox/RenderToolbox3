@@ -15,7 +15,10 @@ hints.whichConditions = [];
 hints.recipeName = mfilename();
 rtbChangeToWorkingFolder(hints);
 
-resources = rtbWorkingFolder('resources', false, hints);
+resources = rtbWorkingFolder( ...
+    'folderName', 'resources', ...
+    'rendererSpecific', false, ...
+    'hints', hints);
 
 %% Write some spectra to use.
 load B_cieday

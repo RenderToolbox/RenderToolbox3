@@ -61,7 +61,10 @@ radiance_PowerPerAreaSrUnitWl = irradiance_PowerPerUnitAreaUnitWl/(pi);
 
 %% Compute a radiometric unit scale factor the given render.
 hints.recipeName = 'rtbMakeRadianceTest';
-dataFolder = rtbWorkingFolder('renderings', true, hints);
+dataFolder = rtbWorkingFolder( ...
+    'folderName', 'renderings', ...
+    'rendererSpecific', true, ...
+    'hints', hints);
 
 % locate RadianceTest "reference" data file
 dataFile = rtbFindFiles(dataFolder, [renderer '.+reference']);

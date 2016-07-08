@@ -30,7 +30,10 @@ hints.recipeName = 'rtbMakeInterreflection';
 for ii = 1:nImages
     % read PBRT data for this condition
     hints.renderer = 'PBRT';
-    dataFolder = rtbWorkingFolder('renderings', true, hints);
+    dataFolder = rtbWorkingFolder( ...
+        'folderName', 'renderings', ...
+        'rendererSpecific', true, ...
+        'hints', hints);
     file = rtbFindFiles(dataFolder, [imageNames{ii} '.mat']);
     data = load(file{1});
     pbrt(ii).imageSpectral = data.multispectralImage;
@@ -39,7 +42,10 @@ for ii = 1:nImages
     
     % read Mitsuba data for this condition
     hints.renderer = 'Mitsuba';
-    dataFolder = rtbWorkingFolder('renderings', true, hints);
+    dataFolder = rtbWorkingFolder( ...
+        'folderName', 'renderings', ...
+        'rendererSpecific', true, ...
+        'hints', hints);
     file = rtbFindFiles(dataFolder, [imageNames{ii} '.mat']);
     data = load(file{1});
     mitsuba(ii).imageSpectral = data.multispectralImage;
@@ -217,7 +223,7 @@ for ii = 1:nImages
             'Color', mitsubaColor, ...
             'LineStyle', '-', ...
             'LineWidth', 1, ...
-            'Marker', 'none');        
+            'Marker', 'none');
         
         % slice power
         title(axPower, 'Spectral Power')
@@ -250,7 +256,7 @@ imshow(uint8(pbrtMontage), 'Parent', axCrop);
 % label the croppings
 labelX = -10;
 labelY = cropWidth/2 + (0:2)*cropWidth;
-for ii = 1:nImages    
+for ii = 1:nImages
     text(labelX, labelY(ii), imageNames{ii}, ...
         'Parent', axCrop, ...
         'HorizontalAlignment', 'right', ...

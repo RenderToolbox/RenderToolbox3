@@ -39,7 +39,10 @@ classdef RtbVersion3MitsubaConverter < handle
             obj.material = RtbVersion3MitsubaConverter.defaultMaterial();
             obj.diffuseParameter = 'reflectance';
             obj.specularParameter = '';
-            obj.outputFolder = rtbWorkingFolder('scenes', true, obj.hints);
+            obj.outputFolder = rtbWorkingFolder( ...
+                'folderName', 'scenes', ...
+                'rendererSpecific', true, ...
+                'hints', obj.hints);
             obj.meshSubfolder = 'mitsuba-geometry';
             obj.rewriteMeshData = true;
         end

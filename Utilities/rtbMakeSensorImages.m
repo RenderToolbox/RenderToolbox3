@@ -129,7 +129,10 @@ for ii = 1:nMatching
     % choose a name for the new data file of the form
     %   inputFileName_matchingFunctionName.mat
     outName = [inBase '_' matchNames{ii} '.mat'];
-    outFolder = rtbWorkingFolder('images', true, hints);
+    outFolder = rtbWorkingFolder( ...
+        'folderName', 'images', ...
+        'rendererSpecific', true, ...
+        'hints', hints);
     outFiles{ii} = fullfile(outFolder, outName);
     
     % save sensor image and some metadata

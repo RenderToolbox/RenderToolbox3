@@ -17,5 +17,5 @@ parser.parse(originalPath, varargin{:});
 originalPath = parser.Results.originalPath;
 hints = rtbDefaultHints(parser.Results.hints);
 
-workingFolder = rtbWorkingFolder('', false, hints);
+workingFolder = rtbWorkingFolder('hints', hints);
 absolutePath = fullfile(workingFolder, originalPath);

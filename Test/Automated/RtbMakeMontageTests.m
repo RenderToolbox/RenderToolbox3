@@ -3,7 +3,7 @@ classdef RtbMakeMontageTests < matlab.unittest.TestCase
     methods (Test)
         
         function testVerticalPanels(testCase)
-            multispectralDataFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'CoordinatesTest.mat');
+            multispectralDataFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'CoordinatesTest.mat');
             inFiles = {multispectralDataFile; ...
                 multispectralDataFile; ...
                 multispectralDataFile;};

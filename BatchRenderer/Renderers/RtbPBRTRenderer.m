@@ -19,8 +19,11 @@ classdef RtbPBRTRenderer < RtbRenderer
         function obj = RtbPBRTRenderer(hints)
             obj.hints = rtbDefaultHints(hints);
             obj.pbrt = getpref('PBRT');
-            obj.outputFolder = rtbWorkingFolder('renderings', true, obj.hints);
-            obj.workingFolder = rtbWorkingFolder('', false, obj.hints);
+            obj.outputFolder = rtbWorkingFolder( ...
+                'folderName', 'renderings', ...
+                'rendererSpecific', true, ...
+                'hints', obj.hints);
+            obj.workingFolder = rtbWorkingFolder('hints', obj.hints);
         end
         
         function info = versionInfo(obj)

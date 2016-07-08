@@ -3,14 +3,14 @@ classdef RtbMappingsFileTests < matlab.unittest.TestCase
     methods (Test)
         
         function testRead(testCase)
-            mappingsFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'DragonColorCheckerMappings.txt');
+            mappingsFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'DragonColorCheckerMappings.txt');
             mappings = ParseMappings(mappingsFile);
             testCase.assertInstanceOf(mappings, 'struct');
             testCase.assertNumElements(mappings, 11);
         end
         
         function testRoundTrip(testCase)
-            colladaFile = fullfile(rtbRoot(), 'Test', 'Fixture', 'CoordinatesTest.dae');
+            colladaFile = fullfile(rtbRoot(), 'Test', 'Automated', 'Fixture', 'CoordinatesTest.dae');
             mappingsFile = fullfile(tempdir(), 'RtbMappingsFileTests', 'testMappings.txt');
             lightSpectrum = '300:1 800:1';
             WriteDefaultMappingsFile(colladaFile, ...

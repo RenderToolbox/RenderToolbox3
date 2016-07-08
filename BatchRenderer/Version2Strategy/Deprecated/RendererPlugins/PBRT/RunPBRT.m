@@ -46,7 +46,7 @@ rtbInitialize();
 % copy scene file to working folder
 % so that PBRT can resolve relative paths from there
 if rtbIsStructFieldPresent(hints, 'workingFolder')
-    copyDir = rtbWorkingFolder('', false, hints);
+    copyDir = rtbWorkingFolder('hints', hints);
 else
     warning('RenderToolbox3:NoWorkingFolderGiven', ...
         'hints.workingFolder is missing, using pwd() instead');
@@ -57,7 +57,10 @@ sceneCopy = fullfile(copyDir, [sceneBase, sceneExt]);
 fprintf('PBRT needs to copy %s \n  to %s\n', sceneFile, sceneCopy);
 [~, ~] = copyfile(sceneFile, sceneCopy, 'f');
 
-renderings = rtbWorkingFolder('renderings', true, hints);
+renderings = rtbWorkingFolder( ...
+    'folderName', 'renderings', ...
+    'rendererSpecific', true, ...
+    'hints', hints);
 output = fullfile(renderings, [sceneBase '.dat']);
 
 %% Invoke PBRT.
@@ -69,5 +72,5 @@ fprintf('%s\n', renderCommand);
 %% Show a warning or figure?
 if status ~= 0
     warning(result)
-    warning('Could not render scene "%s".', sceneBase)    
+    warning('Could not render scene "%s".', sceneBase)
 end
