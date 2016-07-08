@@ -35,11 +35,11 @@ geometryFile = fullfile(tempFolder, [imageName 'Unadjusted.serialized']);
 adjustmentsFile = fullfile(tempFolder, [imageName 'Adjustments.xml']);
 
 % report new files as relative paths
-scene.colladaFile = rtbGetWorkingRelativePath(colladaFile, hints);
-scene.mitsubaFile = rtbGetWorkingRelativePath(mitsubaFile, hints);
-scene.unadjustedMitsubaFile = rtbGetWorkingRelativePath(unadjustedMitsubaFile, hints);
-scene.geometryFile = rtbGetWorkingRelativePath(geometryFile, hints);
-scene.adjustmentsFile = rtbGetWorkingRelativePath(adjustmentsFile, hints);
+scene.colladaFile = rtbGetWorkingRelativePath(colladaFile, 'hints', hints);
+scene.mitsubaFile = rtbGetWorkingRelativePath(mitsubaFile, 'hints', hints);
+scene.unadjustedMitsubaFile = rtbGetWorkingRelativePath(unadjustedMitsubaFile, 'hints', hints);
+scene.geometryFile = rtbGetWorkingRelativePath(geometryFile, 'hints', hints);
+scene.adjustmentsFile = rtbGetWorkingRelativePath(adjustmentsFile, 'hints', hints);
 
 % high-dynamic-range is a good default film for Mitsuba
 if isempty(hints.filmType)

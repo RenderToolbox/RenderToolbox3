@@ -5,24 +5,24 @@
 %% Render the Dragon scene with 5 graded colors.
 
 %% Choose example files, make sure they're on the Matlab path.
-parentSceneFile = 'Dragon.dae';
+parentSceneFile = 'Dragon.blend';
 conditionsFile = 'DragonGradedConditions.txt';
-mappingsFile = 'DragonGradedMappings.txt';
+mappingsFile = 'DragonGradedMappings.json';
 
 %% Choose batch renderer options.
 nSteps = 6;
 hints.whichConditions = 1:nSteps;
 hints.imageWidth = 320;
 hints.imageHeight = 240;
+hints.fov = 49.13434 * pi() / 180;
 hints.recipeName = mfilename();
-rtbChangeToWorkingFolder(hints);
 
-resources = rtbWorkingFolder( ...
+%% Write graded spectrum files.
+resourcesFolder = rtbWorkingFolder( ...
     'folderName', 'resources', ...
     'rendererSpecific', false, ...
     'hints', hints);
 
-%% Write graded spectrum files.
 % choose two spectrums to grade between
 spectrumA = 'mccBabel-6.spd';
 [wlsA, srfA] = rtbReadSpectrum(spectrumA);
@@ -36,29 +36,36 @@ fileNames = cell(nSteps, 1);
 for ii = 1:nSteps
     srf = alpha(ii)*srfA + (1-alpha(ii))*srfB;
     imageNames{ii} = sprintf('GradedDragon-%d', ii);
-    fileNames{ii} = sprintf('GradedSpectrum-%d.spd', ii);
+    fileNames{ii} = sprintf('GradedSpectrum_%d.spd', ii);
     rtbWriteSpectrumFile(wlsA, srf, ...
-        fullfile(resources, fileNames{ii}));
+        fullfile(resourcesFolder, fileNames{ii}));
 end
 
 % write a conditions file with image names and spectrum file names.
 varNames = {'imageName', 'dragonColor'};
 varValues = cat(2, imageNames, fileNames);
-conditionsFile = rtbWriteConditionsFile( ...
-    fullfile(resources, conditionsFile), varNames, varValues);
+conditionsPath = fullfile(resourcesFolder, conditionsFile);
+rtbWriteConditionsFile(conditionsPath, varNames, varValues);
 
 %% Render with Mitsuba and PBRT.
+rtbChangeToWorkingFolder('hints', hints);
 toneMapFactor = 10;
 isScaleGamma = true;
 for renderer = {'Mitsuba'}
     hints.renderer = renderer{1};
-    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
-    radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
+    
+    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, ...
+        'mappingsFile', mappingsFile, ...
+        'conditionsFile', conditionsPath, ...
+        'hints', hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, 'hints', hints);
+    
     for ii = 1:nSteps
-        montageName = sprintf('DragonGraded-%d (%s)', ii, hints.renderer);
-        montageFile = [montageName '.png'];
-        [SRGBMontage, XYZMontage] = rtbMakeMontage( ...
-            radianceDataFiles(ii), montageFile, toneMapFactor, isScaleGamma, hints);
-        rtbShowXYZAndSRGB([], SRGBMontage, montageName);
+        [SRGBMontage, XYZMontage] = ...
+            rtbMakeMontage(radianceDataFiles(ii), ...
+            'toneMapFactor', toneMapFactor, ...
+            'isScale', isScaleGamma, ...
+            'hints', hints);
+        rtbShowXYZAndSRGB([], SRGBMontage, sprintf('%s-%d (%s)', hints.recipeName, ii, hints.renderer));
     end
 end

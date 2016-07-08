@@ -1,4 +1,4 @@
-function [fileName, isLocated, info] = rtbLocateResource(fileName, varargin)
+function [outName, isLocated, info] = rtbLocateResource(inName, varargin)
 %% Locate file resources mentioned in the given scene.
 %
 % The idea here is to resolve file references and clean up those
@@ -13,7 +13,7 @@ function [fileName, isLocated, info] = rtbLocateResource(fileName, varargin)
 % These are all a pain in the neck, but many of these can be resolved
 % automatically.
 %
-% [fileName, info] = rtbLocateResource(fileName) attempts to do fuzzy
+% [outName, info] = rtbLocateResource(inName) attempts to do fuzzy
 % matching between the given fileName and the files found in pwd().
 % When a match is found, the fileName will be updated.
 %
@@ -53,20 +53,20 @@ function [fileName, isLocated, info] = rtbLocateResource(fileName, varargin)
 % flag, true when the resource was located.  Also returns a struct
 % of information about what happened.
 %
-% [fileName, isLocated, info] = rtbLocateResource(fileName, varargin)
+% [outName, isLocated, info] = rtbLocateResource(inName, varargin)
 %
 % Copyright (c) 2016 mexximp Teame
 
 parser = inputParser();
-parser.addRequired('fileName', @ischar);
+parser.addRequired('inName', @ischar);
 parser.addParameter('resourceFolder', pwd(), @ischar);
 parser.addParameter('writeFullPaths', true, @islogical);
 parser.addParameter('relativePath', '', @ischar);
 parser.addParameter('toReplace', '-:', @ischar);
 parser.addParameter('copyOnReplace', true, @islogical);
 parser.addParameter('useMatlabPath', true, @islogical);
-parser.parse(fileName, varargin{:});
-fileName = parser.Results.fileName;
+parser.parse(inName, varargin{:});
+inName = parser.Results.inName;
 resourceFolder = parser.Results.resourceFolder;
 writeFullPaths = parser.Results.writeFullPaths;
 relativePath = parser.Results.relativePath;
@@ -83,29 +83,30 @@ resources = {resourceDir(~isDir).name};
 
 
 %% Try to find a the local file.
-resourceMatch = matchResource(fileName, resources);
+resourceMatch = matchResource(inName, resources);
 if isempty(resourceMatch)
     % fall back on Matlab path?
-    if useMatlabPath && 2 == exist(fileName, 'file')
+    if useMatlabPath && 2 == exist(inName, 'file')
         % report full path to file on Matlab path
-        fullPathName = which(fileName);
-        info.verbatimName = fileName;
+        fullPathName = which(inName);
+        info.verbatimName = inName;
         info.writtenName = fullPathName;
         info.isMatched = false;
-        info.matchName = fileName;
+        info.matchName = inName;
         info.matchFullPath = fullPathName;
         
-        fileName = fullPathName;
+        outName = fullPathName;
         isLocated = true;
         return;
     end
     
     % report an unmatched file
-    info.verbatimName = fileName;
-    info.writtenName = fileName;
+    info.verbatimName = inName;
+    info.writtenName = inName;
     info.isMatched = false;
     info.matchName = '';
     info.matchFullPath = '';
+    outName = inName;
     return;
 end
 
@@ -121,15 +122,17 @@ end
 
 %% Choose a new file name.
 isLocated = true;
+resourceFullPath = fullfile(resourceFolder, resourceMatch);
+resourceRelativePath = fullfile(relativePath, resourceMatch);
 if writeFullPaths
-    fileName = resourceFullPath;
+    outName = resourceFullPath;
 else
-    fileName = fullfile(relativePath, resourceMatch);
+    outName = resourceRelativePath;
 end
 
 %% Report a successful update.
-info.verbatimName = fileName;
-info.writtenName = writtenName;
+info.verbatimName = inName;
+info.writtenName = outName;
 info.isMatched = true;
 info.matchName = resourceMatch;
 info.matchFullPath = resourceFullPath;

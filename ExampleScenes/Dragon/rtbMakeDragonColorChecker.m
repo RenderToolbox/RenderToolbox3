@@ -5,22 +5,15 @@
 %% Render the Dragon scene with 24 ColorChecker colors.
 
 %% Choose example files, make sure they're on the Matlab path.
-parentSceneFile = 'Dragon.dae';
+parentSceneFile = 'Dragon.blend';
+mappingsFile = 'DragonColorCheckerMappings.json';
 conditionsFile = 'DragonColorCheckerConditions.txt';
-mappingsFile = 'DragonColorCheckerMappings.txt';
 
 %% Choose batch renderer options.
-% which colors to use, [] means all
-hints.whichConditions = [];
-
-% pixel size of each rendering
 hints.imageWidth = 150;
 hints.imageHeight = 120;
+hints.fov = 49.13434 * pi() / 180;
 hints.recipeName = mfilename();
-rtbChangeToWorkingFolder(hints);
-
-% capture and save renderer output, or display it live in Command Window
-hints.isCaptureCommandResults = true;
 
 %% Make a fresh conditions file.
 % choose spectrum file names and output image names
@@ -35,35 +28,30 @@ end
 % write file names and image names to a conditions file
 varNames = {'imageName', 'dragonColor'};
 varValues = cat(2, imageNames, fileNames);
-conditionsFile = rtbWriteConditionsFile( ...
-    fullfile(rtbWorkingFolder( ...
+resourceFolder = rtbWorkingFolder( ...
     'folderName', 'resources', ...
     'rendererSpecific', false, ...
-    'hints', hints), conditionsFile), ...
-    varNames, varValues);
+    'hints', hints);
+conditionsPath = fullfile(resourceFolder, conditionsFile);
+rtbWriteConditionsFile(conditionsPath, varNames, varValues);
 
 %% Render with Mitsuba and PBRT.
-
-% how to convert multi-spectral images to sRGB
-toneMapFactor = 100;
-isScaleGamma = true;
-
-% make a montage with each renderer
+toneMapFactor = 10;
+isScale = true;
 for renderer = {'Mitsuba', 'PBRT'}
-    
-    % choose one renderer
     hints.renderer = renderer{1};
     
-    % make 24 multi-spectral renderings, saved in .mat files
-    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
-    radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
+    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, ...
+        'mappingsFile', mappingsFile, ...
+        'conditionsFile', conditionsPath, ...
+        'hints', hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, 'hints', hints);
     
-    % condense multi-spectral renderings into one sRGB montage
-    montageName = sprintf('%s (%s)', 'DragonColorChecker', hints.renderer);
-    montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
-        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScaleGamma, hints);
-    
-    % display the sRGB montage
-    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbMakeMontage(radianceDataFiles, ...
+        'toneMapFactor', toneMapFactor, ...
+        'isScale', isScale, ...
+        'hints', hints);
+    rtbShowXYZAndSRGB([], SRGBMontage, sprintf('%s (%s)', hints.recipeName, hints.renderer));
 end
+

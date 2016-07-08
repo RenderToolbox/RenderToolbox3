@@ -61,8 +61,8 @@ isScale = parser.Results.isScale;
 hints = rtbDefaultHints(parser.Results.hints);
 
 if isempty(outFile)
-    [~, inBase] = fileparts(inFiles{1});
-    outFile = [inBase '-montage.png'];
+    montageName = sprintf('%s-%s', hints.recipeName, hints.renderer);
+    outFile = [montageName '.png'];
 end
 [outPath, outBase, outExt] = fileparts(outFile);
 

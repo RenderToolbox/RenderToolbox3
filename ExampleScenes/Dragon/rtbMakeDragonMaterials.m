@@ -5,27 +5,32 @@
 %% Render a dragon in several materials.
 
 %% Choose example files, make sure they're on the Matlab path.
-parentSceneFile = 'Dragon.dae';
+parentSceneFile = 'Dragon.blend';
 conditionsFile = 'DragonMaterialsConditions.txt';
-mappingsFile = 'DragonMaterialsMappings.txt';
+mappingsFile = 'DragonMaterialsMappings.json';
 
 %% Choose batch renderer options.
-hints.whichConditions = [];
-hints.imageWidth = 200;
-hints.imageHeight = 160;
+hints.imageWidth = 320;
+hints.imageHeight = 240;
+hints.fov = 49.13434 * pi() / 180;
 hints.recipeName = mfilename();
-rtbChangeToWorkingFolder(hints);
 
 %% Render with Mitsuba and PBRT.
 toneMapFactor = 10;
 isScale = true;
-for renderer = {'PBRT', 'Mitsuba'}
+for renderer = {'Mitsuba', 'PBRT'}
     hints.renderer = renderer{1};
-    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, conditionsFile, mappingsFile, hints);
-    radianceDataFiles = rtbBatchRender(nativeSceneFiles, hints);
-    montageName = sprintf('%s (%s)', 'DragonMaterials', hints.renderer);
-    montageFile = [montageName '.png'];
+    
+    nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, ...
+        'conditionsFile', conditionsFile, ...
+        'mappingsFile', mappingsFile, ...
+        'hints', hints);
+    radianceDataFiles = rtbBatchRender(nativeSceneFiles, 'hints', hints);
+    
     [SRGBMontage, XYZMontage] = ...
-        rtbMakeMontage(radianceDataFiles, montageFile, toneMapFactor, isScale, hints);
-    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
+        rtbMakeMontage(radianceDataFiles, ...
+        'toneMapFactor', toneMapFactor, ...
+        'isScale', isScale, ...
+        'hints', hints);
+    rtbShowXYZAndSRGB([], SRGBMontage, sprintf('%s (%s)', hints.recipeName, hints.renderer));
 end

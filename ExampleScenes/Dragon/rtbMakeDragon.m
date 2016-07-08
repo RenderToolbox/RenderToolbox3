@@ -5,7 +5,7 @@
 %% Render the Dragon scene.
 
 %% Choose example files, make sure they're on the Matlab path.
-parentSceneFile = 'Dragon.dae';
+parentSceneFile = 'Dragon.blend';
 mappingsFile = 'DragonMappings.json';
 
 %% Choose batch renderer options.
@@ -19,21 +19,16 @@ toneMapFactor = 10;
 isScale = true;
 for renderer = {'Mitsuba', 'PBRT'}
     hints.renderer = renderer{1};
-    hints.batchRenderStrategy = RtbVersion3Strategy(hints);
     
     nativeSceneFiles = rtbMakeSceneFiles(parentSceneFile, ...
         'mappingsFile', mappingsFile, ...
         'hints', hints);
-    
     radianceDataFiles = rtbBatchRender(nativeSceneFiles, 'hints', hints);
     
-    montageName = sprintf('Dragon (%s)', hints.renderer);
-    montageFile = [montageName '.png'];
     [SRGBMontage, XYZMontage] = ...
         rtbMakeMontage(radianceDataFiles, ...
-        'outFile', montageFile, ...
         'toneMapFactor', toneMapFactor, ...
         'isScale', isScale, ...
         'hints', hints);
-    rtbShowXYZAndSRGB([], SRGBMontage, montageName);
+    rtbShowXYZAndSRGB([], SRGBMontage, sprintf('%s (%s)', hints.recipeName, hints.renderer));
 end

@@ -50,7 +50,7 @@ defaultConfig.workingFolder = fullfile(rtbGetUserFolder(), 'render-toolbox');
 defaultConfig.recipeName = '';
 
 % default scene file and rendering options
-defaultConfig.batchRenderStrategy = 'RtbVersion2Strategy';
+defaultConfig.batchRenderStrategy = 'RtbVersion3Strategy';
 defaultConfig.renderer = 'SampleRenderer';
 defaultConfig.converter = '';
 defaultConfig.imageHeight = 240;

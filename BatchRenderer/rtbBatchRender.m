@@ -63,7 +63,7 @@ elseif 2 == exist(hints.batchRenderStrategy, 'file')
     constructorFunction = str2func(hints.batchRenderStrategy);
     strategy = feval(constructorFunction, hints);
 else
-    strategy = RtbVersion2Strategy(hints);
+    strategy = RtbVersion3Strategy(hints);
 end
 fprintf('Using strategy %s\n\n', class(strategy));
 

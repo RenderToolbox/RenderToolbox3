@@ -17,7 +17,7 @@
 function [status, result, multispectralImage, S] = RTB_Render_PBRT(scene, hints)
 
 % resolve the scene which should be located in the working folder
-sceneFile = rtbWorkingAbsolutePath(scene.pbrtFile, hints);
+sceneFile = rtbWorkingAbsolutePath(scene.pbrtFile, 'hints', hints);
 
 % invoke PBRT!
 [status, result, output] = RunPBRT(sceneFile, hints);
