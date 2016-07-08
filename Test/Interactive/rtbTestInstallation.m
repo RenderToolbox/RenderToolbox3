@@ -122,7 +122,7 @@ else
     
     fprintf('\nTesting rendering with %d example scripts.\n', numel(testScenes));
     fprintf('You should see several figures with rendered images.\n\n');
-    renderResults = rtbTestAllExampleScenes([], testScenes);
+    renderResults = rtbTestAllExampleScenes('makeFunctions', testScenes);
     
 end
 
