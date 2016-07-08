@@ -1,66 +1,62 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function results = rtbTestAllExampleScenes(varargin)
+%% Run all "Make*" executive scripts in the ExampleScenes/ folder.
 %
-% Run all "Make*" executive scripts in the ExampleScenes/ folder.
-%   @param outputRoot base path where to save output data
-%   @param makeFunctions cell array of executive scripts to invoke
+% results = rtbTestAllExampleScenes() renders example scenes by invoking
+% all of the "Make..." executive sripts found within the ExampleScenes/
+% folder
 %
-% @details
-% By default, renders example scenes by invoking all of the "Make*"
-% executive sripts found within the ExampleScenes/ folder.  If @a
-% makeFunctions is provided, it must be a cell array of executive scripts
-% to invoke instead.
-%
-% @details
-% @a outputRoot is the base path under which all output data should be
-% saved.  If outputRoot is missing or empty, uses the default from
-% getpref('RenderToolbox3', 'workingFolder').
-%
-% @details
 % Returns a struct with information about each executive script, such as
 % whether the script executed successfully, any Matlab error that was
 % thrown, and when the script completed.
 %
-% @details
-% Saves a mat-file with several variables about test parameters and
+% Also saves a mat-file with several variables about test parameters and
 % results:
-%   - outputRoot, the given @a outputRoot or default workingFolder
-%   - makeFunctions, the given @a makeFunctions
-%   - hints, RenderToolbox3 options, as returned from rtbDefaultHints()
-%   - results, the returned struct of results about rendering scripts
-% .
-% @details
-% The mat-file will be saved in the given @a outputRoot folder or
-% default workingFolder.  It will have a name that that includes the name
-% of this m-file, plus the date and time.
+%   - outputRoot -- the workingFolder that contains test outputs
+%   - makeFunctions -- the execuive scripts that were run
+%   - hints -- default RenderToolbox3 option
+%   - results -- the returned struct of results about rendering scripts
 %
-% @details
-% Usage:
-%   results = rtbTestAllExampleScenes(outputRoot, makeFunctions)
+% The mat-file will be saved in the working outputRoot folder.  It will
+% have a name that that includes the name of this m-file, plus the date and
+% time.
 %
-% @ingroup ExampleScenes
-function results = rtbTestAllExampleScenes(outputRoot, makeFunctions)
+% rtbTestAllExampleScenes( ... 'outputRoot', outputRoot) specifies the
+% working folder where to put rendering outputs.  The default is from
+% rtbDefaultHints().
+%
+% rtbTestAllExampleScenes( ... 'makeFunctions', makeFunctions) specifies a
+% cell array of executive functions to run.  The default is to search the
+% ExampleScenes/ folder for files that begin with "Make".
+%
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-if nargin < 1  || isempty(outputRoot)
-    outputRoot = rtbWorkingFolder();
-else
-    setpref('RenderToolbox3', 'workingFolder', outputRoot);
-end
+parser = inputParser();
+parser.addParameter('outputRoot', rtbWorkingFolder(), @ischar);
+parser.addParameter('makeFunctions', {}, @iscellstr);
+parser.parse(varargin{:});
+outputRoot = parser.Results.outputRoot;
+makeFunctions = parser.Results.makeFunctions;
 
-if nargin < 2 || isempty(makeFunctions)
+% set global workingFolder preference so that scrupts can find it
+% make best effort to restore workingFolder at the end
+oldOutputRoot = getpref('RenderToolbox3', 'workingFolder');
+setpref('RenderToolbox3', 'workingFolder', outputRoot);
+hints = rtbDefaultHints();
+
+% choose execitive scripts/functions to run
+if isempty(makeFunctions)
     % find all the m-functions named "Make*", in ExampleScenes/
     makePattern = 'Make\w+\.m';
     exampleRoot = fullfile(rtbRoot(), 'ExampleScenes');
-    makeFunctions = rtbFindFiles(exampleRoot, makePattern);
+    makeFunctions = rtbFindFiles('root', exampleRoot, 'filter', makePattern);
     
     % exclude functions that don't work yet
     notWorkingPath = fullfile(exampleRoot, 'NotYetWorking');
-    notWorkingFunctions = rtbFindFiles(notWorkingPath, makePattern);
+    notWorkingFunctions = rtbFindFiles('root', notWorkingPath, 'filter', makePattern);
     makeFunctions = setdiff(makeFunctions, notWorkingFunctions);
 end
-
-testTic = tic();
 
 % declare a struct for test results
 results = struct( ...
@@ -75,9 +71,10 @@ warnState(1) = warning('off','RenderToolbox3:PBRTXMLIncorrectlyScaled');
 warnState(2) = warning('off','RenderToolbox3:DefaultParamsIncorrectlyScaled');
 
 % try to render each example scene
+testTic = tic();
 for ii = 1:numel(makeFunctions)
     
-    [makePath, makeName, makeExt] = fileparts(makeFunctions{ii});
+    [makePath, makeName] = fileparts(makeFunctions{ii});
     
     try
         % make the example scene!
@@ -91,17 +88,7 @@ for ii = 1:numel(makeFunctions)
         results(ii).error = err;
     end
     
-    % sometimes the Matlab java heap fills up.  If
-    % the jheapcl function is on the path, call it
-    % to clear the Java heap.  This may help a bit.
-    %
-    % or it may hurt.  I commented this back out.
-    %if (exist('jheapcl','file'))
-    %    jheapcl;
-    %end
-    
-    % close figures so as to avoid filling up 
-    % memory
+    % close figures so as to avoid filling up memory
     close all;
     
     % keep track of timing
@@ -112,6 +99,9 @@ end
 for ii = 1:length(warnState)
     warning(warnState(ii).state,warnState(ii).identifier);
 end
+
+% restore working folder preference
+setpref('RenderToolbox3', 'workingFolder', oldOutputRoot);
 
 % how did it go?
 isExampleSuccess = [results.isSuccess];
@@ -139,5 +129,4 @@ baseName = mfilename();
 dateTime = datestr(now(), 30);
 resultsBase = sprintf('%s-%s', baseName, dateTime);
 resultsFile = fullfile(outputRoot, resultsBase);
-hints = rtbDefaultHints();
 save(resultsFile, 'outputRoot', 'makeFunctions', 'results', 'hints');

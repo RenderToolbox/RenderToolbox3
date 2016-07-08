@@ -1,70 +1,42 @@
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
-%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
-%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
+function [matchInfo, unmatchedA, unmatchedB] = rtbCompareAllExampleScenes(workingFolderA, workingFolderB, varargin)
+%% Compare recipe renderings that were generated at different times.
 %
-% Compare recipe renderings that were generated at different times.
-%   @param workingFolderA base path where to find data set A
-%   @param workingFolderB base path where to find data set B
-%   @param filterExpression regular expression for filtering comparisons
-%   @param visualize whether or not to plot renderings and comparisons
-%
-% @details
+% [matchInfo, unmatchedA, unmatchedB] = rtbCompareAllExampleScenes(workingFolderA, workingFolderB)
 % Finds 2 sets of rendering outputs: set A includes renderings located
-% under the given @a workingFolderA, set B includes renderings located
-% under @a workingFolderB.  Attempts to match up data files from both sets,
+% under the given workingFolderA, set B includes renderings located
+% under workingFolderB.  Attempts to match up data files from both sets,
 % based on recipe names and renderer names.  Computes comparison statistics
 % and shows difference images for each matched pair.
 %
-% @details
 % Data sets must use a particular folder structure, consistent with
 % rtbWorkingFolder().  For each rendering data file, the expected path is:
-% @code
-%   workingFolder/recipeName/rendererName/renderings/fileName.mat
-% @endcode
-% workingFolder is either @a workingFolderA or @a workingFolderB.
-% @b recipeName must be the name of a recipe such as "MakeDragon".
-% @b rendererName must be the name of a renderer, like "PBRT" or "Mitsuba".
-% @b fileName must be the name of a multi-spectral data file, such as
-% "Dragon-001".
+%	workingFolder/recipeName/rendererName/renderings/fileName.mat
 %
-% @details
-% If @a workingFolderA or @a workingFolderB is omitted or empty, uses the
-% default working folder from rtbWorkingFolder().
+% where:
+%   - workingFolder is either workingFolderA or workingFolderB
+%	- recipeName must be the name of a recipe such as "MakeDragon"
+%	- rendererName must be the name of a renderer, like "PBRT" or "Mitsuba"
+%	- fileName must be the name of a multi-spectral data file, such as "Dragon-001"
 %
-% @details
-% By default, compares all renderings matched in @a workingFolderA, and @a
-% workingFolderB.  If @a filterExpression is provided, it must be a regular
-% expression used to match file paths.  Only data files whose paths match
-% this expression will be compared.
+% rtbCompareAllExampleScenes( ... 'filterExpression', filterExpression)
+% uses the given regular expression filterExpr'/home/ben/Desktop/testA'ession to select file paths.
+% Only data files whose paths match the expression will be compared.  The
+% default is to do no such filtering.
 %
-% @details
-% For example, you could use @a filterExpression to match only those
-% renderings that came from the CoordinatesTest and Checherboard example
-% scenes:
-% @code
-% rtbCompareAllExampleScenes(workingFolderA, workingFolderB, 'CoordinatesTest|Checkerboard', 2);
-% @endcode
+% rtbCompareAllExampleScenes( ... 'visualize', visualize) specifies the
+% level of visualization to do during comparinsons.  The options are:
+%   - 0 -- don't plot anything
+%   - 1 -- (default) plot a summary figure at the end
+%   - 2 -- plot a summary figure at the end and a detail figure for each comparison
 %
-% @details
-% If @a visualize is greater than 0 (the default), plots a grand summary
-% of all matched rendering pairs.  The summary shows the name of each pair,
-% and some difference statistics for multi-spectral data A vs B.  Also
-% saves a Matlab figure-file for the summary figure in the folder given by
-% GetfileName('images').
+% rtbCompareAllExampleScenes( ... 'figureFolder', figureFolder) specifies
+% an output folder where to save figures used for visualization.  The
+% default is rtbWorkingFolder().
 %
-% @details
-% If @a visualize is greater than 1, makes a detailed figure for each
-% matched pair.  Each figure shows sRGB representations of multi-spectral
-% renderings and rendering differences: A, B, A-B, and B-A.  Also
-% saves each detail figure as a Matlab fig-file and a png-file image,
-% in the folder given by rtbWorkingFolder('folderName', 'images').
-%
-% @details
 % This function is intended to help validate RenderToolbox3 installations
 % and detect bugs in the RenderToolbox3 code.  A potential use would
 % compare renderings produced locally with archived renderings located at
 % GitHub.  For example:
-% @code
 %   % produce renderings locally
 %   rtbTestAllExampleScenes('my/local/renderings');
 %
@@ -75,39 +47,30 @@
 %   workingFolderA = 'my/local/archive/data';
 %   visualize = 1;
 %   matchInfo = rtbCompareAllExampleScenes(workingFolderA, workingFolderB, '', visualize);
-% @endcode
 %
-% @details
 % Returns a struct array of info about each matched pair, including file
 % names and differneces between multispectral images (A minus B).
 %
-% @details
 % Also returns a cell array of paths for files in set A that did not match
 % any of the files in set B.  Likewise, returns a cell array of paths for
 % files in set B that did not match any of the files in set A.
 %
-% @details
-% Usage:
-%   [matchInfo, unmatchedA, unmatchedB] = rtbCompareAllExampleScenes(workingFolderA, workingFolderB, filterExpression, visualize)
-%
-% @ingroup ExampleScenes
-function [matchInfo, unmatchedA, unmatchedB] = rtbCompareAllExampleScenes(workingFolderA, workingFolderB, filterExpression, visualize)
+%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
+%%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-if nargin < 1 || isempty(workingFolderA)
-    workingFolderA = rtbWorkingFolder();
-end
-
-if nargin < 2 || isempty(workingFolderB)
-    workingFolderB = rtbWorkingFolder();
-end
-
-if nargin < 3 || isempty(filterExpression)
-    filterExpression = '';
-end
-
-if nargin < 4 || isempty(visualize)
-    visualize = 1;
-end
+parser = inputParser();
+parser.addRequired('workingFolderA', @ischar);
+parser.addRequired('workingFolderB', @ischar);
+parser.addParameter('filterExpression', '', @ischar);
+parser.addParameter('visualize', 1, @isnumeric);
+parser.addParameter('figureFolder', fullfile(rtbWorkingFolder(), 'comparisons'), @ischar);
+parser.parse(workingFolderA, workingFolderB, varargin{:});
+workingFolderA = parser.Results.workingFolderA;
+workingFolderB = parser.Results.workingFolderB;
+filterExpression = parser.Results.filterExpression;
+visualize = parser.Results.visualize;
+figureFolder = parser.Results.figureFolder;
 
 matchInfo = [];
 unmatchedA = {};
@@ -115,8 +78,8 @@ unmatchedB = {};
 
 % find .mat files for sets A and B
 fileFilter = [filterExpression '[^\.]*\.mat$'];
-filesA = rtbFindFiles(workingFolderA, fileFilter);
-filesB = rtbFindFiles(workingFolderB, fileFilter);
+filesA = rtbFindFiles('root', workingFolderA, 'filter', fileFilter);
+filesB = rtbFindFiles('root', workingFolderB, 'filter', fileFilter);
 
 if isempty(filesA)
     fprintf('Found no files for set A in: %s\n', workingFolderA);
@@ -135,11 +98,11 @@ infoB = scanDataPaths(filesB);
 % report unmatched files
 relativeA = {infoA.relativePath};
 relativeB = {infoB.relativePath};
-[setMatch, indexA, indexB] = intersect( ...
+[~, indexA, indexB] = intersect( ...
     relativeA, relativeB, 'stable');
-[unmatched, unmatchedIndex] = setdiff(relativeA, relativeB);
+[~, unmatchedIndex] = setdiff(relativeA, relativeB);
 unmatchedA = filesA(unmatchedIndex);
-[unmatched, unmatchedIndex] = setdiff(relativeB, relativeA);
+[~, unmatchedIndex] = setdiff(relativeB, relativeA);
 unmatchedB = filesB(unmatchedIndex);
 
 % allocate an info struct for image comparisons
@@ -197,11 +160,6 @@ end
 fprintf('\n')
 
 % compare matched images!
-hints.recipeName = mfilename();
-comparisonFolder = rtbWorkingFolder( ...
-    'folderName', 'images', ...
-    'rendererSpecific', false, ...
-    'hints', hints);
 for ii = 1:nMatches
     fprintf('%d of %d: %s\n', ii, nMatches, matchInfo(ii).relativeA);
     
@@ -318,7 +276,7 @@ for ii = 1:nMatches
         % save detail figure to disk
         drawnow();
         [imagePath, imageName] = fileparts(matchInfo(ii).relativeA);
-        imageCompPath = fullfile(comparisonFolder, imagePath);
+        imageCompPath = fullfile(figureFolder, imagePath);
         if ~exist(imageCompPath, 'dir')
             mkdir(imageCompPath);
         end
@@ -341,16 +299,16 @@ if visualize > 0
     f = showDifferenceSummary(matchInfo);
     
     % save summary figure to disk
-    if ~exist(comparisonFolder, 'dir')
-        mkdir(comparisonFolder);
+    if ~exist(figureFolder, 'dir')
+        mkdir(figureFolder);
     end
     imageName = sprintf('%s-summary', mfilename());
-    figName = fullfile(comparisonFolder, [imageName '.fig']);
+    figName = fullfile(figureFolder, [imageName '.fig']);
     saveas(f, figName, 'fig');
 end
 
 if visualize > 1
-    fprintf('\nSee comparison images saved in:\n  %s\n', comparisonFolder);
+    fprintf('\nSee comparison images saved in:\n  %s\n', figureFolder);
 end
 
 
@@ -412,10 +370,10 @@ function f = showDifferenceImage(info, A, B)
 [A, B, S] = truncatePlanes(A, B, info.samplingA, info.samplingB);
 isScale = true;
 toneMapFactor = 0;
-imageA = rtbMultispectralToSRGB(A, S, toneMapFactor, isScale);
-imageB = rtbMultispectralToSRGB(B, S, toneMapFactor, isScale);
-imageAB = rtbMultispectralToSRGB(A-B, S, toneMapFactor, isScale);
-imageBA = rtbMultispectralToSRGB(B-A, S, toneMapFactor, isScale);
+imageA = rtbMultispectralToSRGB(A, S, 'toneMapFactor', toneMapFactor, 'isScale', isScale);
+imageB = rtbMultispectralToSRGB(B, S, 'toneMapFactor', toneMapFactor, 'isScale', isScale);
+imageAB = rtbMultispectralToSRGB(A-B, S, 'toneMapFactor', toneMapFactor, 'isScale', isScale);
+imageBA = rtbMultispectralToSRGB(B-A, S, 'toneMapFactor', toneMapFactor, 'isScale', isScale);
 
 % show images in a new figure
 name = sprintf('sRGB scaled: %s', info.relativeA);
@@ -457,7 +415,7 @@ goodInfo = info([info.isGoodComparison]);
 % sort the summary by size of error
 diffSummary = [goodInfo.relNormDiff];
 errorStat = [diffSummary.max];
-[sorted, order] = sort(errorStat);
+[~, order] = sort(errorStat);
 goodInfo = goodInfo(order);
 
 % summarize data correlation coefficients
