@@ -67,7 +67,7 @@ output = fullfile(renderings, [sceneBase '.dat']);
 % find the PBRT executable
 renderCommand = sprintf('%s --outfile %s %s', pbrt.executable, output, sceneCopy);
 fprintf('%s\n', renderCommand);
-[status, result] = rtbRunCommand(renderCommand, hints);
+[status, result] = rtbRunCommand(renderCommand, 'hints', hints);
 
 %% Show a warning or figure?
 if status ~= 0

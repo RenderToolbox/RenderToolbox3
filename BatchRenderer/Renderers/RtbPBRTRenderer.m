@@ -54,7 +54,7 @@ classdef RtbPBRTRenderer < RtbRenderer
             fprintf('%s\n', renderCommand);
             
             % invoke pbrt
-            [status, result] = rtbRunCommand(renderCommand, obj.hints);
+            [status, result] = rtbRunCommand(renderCommand, 'hints', obj.hints);
             if status ~= 0
                 error('RtbPbrtRenderer:pbrtError', result);
             end

@@ -54,7 +54,7 @@ classdef RtbMitsubaRenderer < RtbRenderer
             fprintf('%s\n', renderCommand);
             
             % invoke mitsuba
-            [status, result] = rtbRunCommand(renderCommand, obj.hints);
+            [status, result] = rtbRunCommand(renderCommand, 'hints', obj.hints);
             if status ~= 0
                 error('RtbMitsubaRenderer:mitsubaError', result);
             end

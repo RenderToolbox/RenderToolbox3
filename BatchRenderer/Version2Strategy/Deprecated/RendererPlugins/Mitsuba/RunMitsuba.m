@@ -55,7 +55,7 @@ renderCommand = sprintf('%s="%s" "%s" -o "%s" "%s"', ...
     output, ...
     sceneFile);
 fprintf('%s\n', renderCommand);
-[status, result] = rtbRunCommand(renderCommand, hints);
+[status, result] = rtbRunCommand(renderCommand, 'hints', hints);
 
 %% Show a warning or figure?
 if status ~= 0

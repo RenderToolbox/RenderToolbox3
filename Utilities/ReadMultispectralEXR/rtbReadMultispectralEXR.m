@@ -40,7 +40,7 @@ namePattern = parser.Results.namePattern;
 
 % scan channel names for wavelength info
 sliceNames = {sliceInfo.name};
-[wls, S, order] = rtbWlsFromSliceNames(sliceNames, namePattern);
+[wls, S, order] = rtbWlsFromSliceNames(sliceNames, 'namePattern', namePattern);
 
 % sort data slices by wavelength
 imageData = imageData(:,:,order);
