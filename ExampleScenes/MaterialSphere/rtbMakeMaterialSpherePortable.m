@@ -45,7 +45,7 @@ recipe = rtbNewRecipe([], executive, parentSceneFile, ...
     conditionsFile, mappingsFile, hints);
 
 % add a log message about creating this new recipe
-recipe = rtbAppendRecipeLog(recipe, 'Portable recipe for Material Sphere');
+recipe = rtbAppendRecipeLog(recipe, 'comment', 'Portable recipe for Material Sphere');
 
 %% Move resource files inside the workingFolder, so they can be detected.
 resourceFiles = { ...
@@ -70,7 +70,7 @@ recipe = rtbExecuteRecipe(recipe, 1);
 % pack up the recipe with resources and pre-generated scene files
 %   don't pack up boring temp files
 archiveName = fullfile(rtbWorkingFolder(), 'MaterialSpherePortable.zip');
-rtbPackUpRecipe(recipe, archiveName, {'temp'});
+rtbPackUpRecipe(recipe, archiveName, 'ignoreFolders', {'temp'});
 
 % boldly delete the working folder, now that the recie is packed up
 rmdir(workingPortable, 's');

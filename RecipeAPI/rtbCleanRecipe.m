@@ -1,22 +1,17 @@
+function recipe = rtbCleanRecipe(recipe)
+%% Clear out recipe derived data fileds.
+%
+% recipe = rtbCleanRecipe(recipe) clears out derived data fields from the
+% given recupe and returns the updated recupe.
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Clear out recipe derived data fileds.
-%   @param recipe a recipe struct to be cleaned
-%
-% @details
-% Clear recipe derived data fields.
-%
-% @details
-% Returns the given @a recipe, cleared out and reset to a like-new state.
-%
-% @details
-% Usage:
-%   recipe = rtbCleanRecipe(recipe)
-%
-% @ingroup RecipeAPI
-function recipe = rtbCleanRecipe(recipe)
+
+parser = inputParser();
+parser.addRequired('recipe', @isstruct);
+parser.parse(recipe);
+recipe = parser.Results.recipe;
 
 % Clear all derived data fields
 recipe.rendering = [];

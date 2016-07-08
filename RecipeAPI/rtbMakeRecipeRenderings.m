@@ -3,7 +3,7 @@ function recipe = rtbMakeRecipeRenderings(recipe)
 %
 % recipe = rtbMakeRecipeRenderings(recipe) Uses the given recipe's renderer
 % native scene descriptions to produce renderings, using the given
-% recipe.input.hints.renderer. 
+% recipe.input.hints.renderer.
 %
 % Returns the given recipe, with recipe.rendering.radianceDataFiles
 % filled in.
@@ -33,5 +33,6 @@ end
 
 % put this execution in the log with any error data
 recipe = rtbAppendRecipeLog(recipe, ...
-    ['run automatically by ' mfilename()], ...
-    @BatchRender, errorData, 0);
+    'comment', ['run automatically by ' mfilename()], ...
+    'executed', @BatchRender, ...
+    'errorData', errorData);

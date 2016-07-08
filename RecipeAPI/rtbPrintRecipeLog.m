@@ -1,34 +1,24 @@
+function summary = rtbPrintRecipeLog(recipe, varargin)
+%% Print a recipe's log as formatted text.
+%
+% summary = rtbPrintRecipeLog(recipe) prints a compact summary of the log
+% data for the given as nicely formatted text.
+%
+% rtbPrintRecipeLog( ... 'verbose', verbose) specify whether to print
+% verbose log data (true) or a compact log summary (false).  The default is
+% false, print a compact summary.
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Print a recipe's log as formatted text.
-%   @param recipe a recipe struct
-%   @param verbose true for full detail, false for simple summary
-%
-% @details
-% Prints the log data for the given @recipe as nicely formatted text.  if
-% @a verbose is provided and true, prints lots of details and stack traces
-% for logged exceptions.  Otherwise, prints a compact summary.
-%
-% @details
-% Prints the log data to the Command Window and also returns the same
-% formatted text as a string.
-%
-% @details
-% Usage:
-%   summary = rtbPrintRecipeLog(recipe, verbose)
-%
-% @ingroup RecipeAPI
-function summary = rtbPrintRecipeLog(recipe, verbose)
 
-if nargin < 1 || ~isstruct(recipe)
-    error('You must suplpy a recipe struct');
-end
+parser = inputParser();
+parser.addRequired('recipe', @isstruct);
+parser.addParameter('verbose', false, @islogical);
+parser.parse(recipe, varargin{:});
+recipe = parser.Results.recipe;
+verbose = parser.Results.verbose;
 
-if nargin < 2
-    verbose = false;
-end
 
 %% Print a paragraph for each log entry.
 summary = '';

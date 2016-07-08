@@ -19,6 +19,11 @@
 % @ingroup RecipeAPI
 function recipe = rtbChangeToRecipeFolder(recipe)
 
+parser = inputParser();
+parser.addRequired('recipe', @isstruct);
+parser.parse(recipe);
+recipe = parser.Results.recipe;
+
 if rtbIsStructFieldPresent(recipe.input, 'hints')
     hints = recipe.input.hints;
 else
@@ -41,5 +46,6 @@ end
 
 % put this execution in the log with any error data
 recipe = rtbAppendRecipeLog(recipe, ...
-    [mfilename() ' ' message], ...
-    @rtbChangeToWorkingFolder, errorData, 0);
+    'comment', [mfilename() ' ' message], ...
+    'executed', @rtbChangeToWorkingFolder, ...
+    'errorData', errorData);

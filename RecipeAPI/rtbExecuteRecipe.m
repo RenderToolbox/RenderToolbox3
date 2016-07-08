@@ -23,8 +23,6 @@ function recipe = rtbExecuteRecipe(recipe, varargin)
 %
 % Returns the given recipe, with recipe.log filled in.
 %
-% recipe = rtbExecuteRecipe(recipe, varargin)
-%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
@@ -75,8 +73,10 @@ for ii = whichExecutives
     
     % put this execution in the log with any error data
     recipe = rtbAppendRecipeLog(recipe, ...
-        ['run automatically by ' mfilename()], ...
-        executive, errorData, ii);
+        'comment', ['run automatically by ' mfilename()], ...
+        'executed', executive, ...
+        'errorData', errorData, ...
+        'executiveIndex', ii);
     
     errorData = rtbGetFirstRecipeError(recipe, throwException);
     if ~isempty(errorData)

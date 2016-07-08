@@ -24,6 +24,11 @@
 % @ingroup RecipeAPI
 function recipe = rtbConfigureForRecipe(recipe)
 
+parser = inputParser();
+parser.addRequired('recipe', @isstruct);
+parser.parse(recipe);
+recipe = parser.Results.recipe;
+
 recipe = rtbChangeToRecipeFolder(recipe);
 
 errorData = [];
@@ -41,5 +46,6 @@ recipe = rtbCurrentRecipe();
 
 % put this execution in the log with any error data
 recipe = rtbAppendRecipeLog(recipe, ...
-    ['run automatically by ' mfilename()], ...
-    recipe.input.configureScript, errorData, 0);
+    'comment', ['run automatically by ' mfilename()], ...
+    'executed', recipe.input.configureScript, ...
+    'errorData', errorData);

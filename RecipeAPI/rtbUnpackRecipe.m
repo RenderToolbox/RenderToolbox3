@@ -1,37 +1,27 @@
+function recipe = rtbUnpackRecipe(archiveName, varargin)
+%% Load a recipe and its file dependencies from an archive file.
+%
+% recipe = rtbUnpackRecipe(archiveName) Creates a new recipe struct based
+% on the given archiveName, as produced by rtbPackUpRecipe().  Also unpacks
+% recipe file dependencies that were saved in the archive, to the current
+% working folder.
+%
+% Returns a new recipe struct that was contained in the given archiveName.
+%
+% rtbUnpackRecipe( ... 'hints', hints) specifies a struct of RenderToolbox3
+% options to use with the new recipe.  In particular, the given
+% hints.workingFolder will be used for unpacking the recipe.
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Load a recipe and its file dependencies from an archive file.
-%   @param archiveName name of the archive file to unpack
-%   @param hints struct of RenderToolbox3 options, see rtbDefaultHints()
-%
-% @details
-% Creates a new recipe struct based on the given @a archiveName, as
-% produced by rtbPackUpRecipe().  Also unpacks recipe file dependencies that
-% were saved in the archive, to the current working folder.
-%
-% @details
-% Returns a new recipe struct that was contained in the given @a
-% archiveName.
-%
-% @details
-% Usage:
-%   recipe = rtbUnpackRecipe(archiveName, hints)
-%
-% @ingroup RecipeAPI
-function recipe = rtbUnpackRecipe(archiveName, hints)
 
-if nargin < 1 || ~exist(archiveName, 'file')
-    error('You must suplpy the name of an archive file');
-end
-[archivePath, archiveBase] = fileparts(archiveName);
-
-if nargin < 2
-    hints = rtbDefaultHints();
-else
-    hints = rtbDefaultHints(hints);
-end
+parser = inputParser();
+parser.addRequired('archiveName', @ischar);
+parser.addParameter('hints', rtbDefaultHints(), @isstruct);
+parser.parse(archiveName, varargin{:});
+archiveName = parser.Results.archiveName;
+hints = rtbDefaultHints(parser.Results.hints);
 
 %% Set up a clean, temporary folder.
 hints.recipeName = mfilename();
@@ -67,7 +57,7 @@ for ii = 1:numel(dependencies)
         continue;
     end
     
-    [isPrefix, relativePath] = rtbIsPathPrefix(unpackedFolder, tempPath);
+    [~, relativePath] = rtbIsPathPrefix(unpackedFolder, tempPath);
     localPath = rtbWorkingAbsolutePath(relativePath, recipe.input.hints);
     
     localPrefix = fileparts(localPath);

@@ -1,47 +1,33 @@
+function archiveName = rtbPackUpRecipe(recipe, archiveName, varargin)
+%% Save a recipe and its file dependencies to a zip file.
+%
+% archiveName = rtbPackUpRecipe(recipe, archiveName) Creates a new zip
+% archive named archiveName which contains the given recipe (in a mat-file)
+% along with its file dependencies from the current working folder.  See
+% rtbWorkingFolder().
+%
+% rtbPackUpRecipe( ... 'ignoreFolders', ignoreFolders) specifiy a cell
+% array of subfolder names to ignore when saving the working folder.  For
+% example, {'temp'} would omit the temp folder from the saved archive.  The
+% default is to save all subfolders of the working folder.
+%
+% Returns the name of the zip archive that was created, which may be the
+% same as the given archiveName.
+%
 %%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
-%
-% Save a recipe and its file dependencies to a zip file.
-%   @param recipe a recipe struct
-%   @param archiveName name of the archive file to create
-%   @param ignoreFolders optional cell array of folder names to ignore
-%
-% @details
-% Creates a new zip archive named @a archiveName which contains the given
-% @a recipe (in a mat-file) along with its file dependencies from the
-% current working folder.  See rtbWorkingFolder().
-%
-% @details
-% By default, packs up all files in the recipe's working folder.  If @a
-% ignoreFolders is provided, it must be a cell array of named subfolders
-% not to pack up with the recipe.  For example, {'temp'}.  See
-% rtbWorkingFolder() for more about named subfolders.
-%
-% @details
-% Returns the name of the zip archive that was created, which may be the
-% same as the given @a archiveName.
-%
-% @details
-% Usage:
-%   archiveName = rtbPackUpRecipe(recipe, archiveName, ignoreFolders)
-%
-% @ingroup RecipeAPI
-function archiveName = rtbPackUpRecipe(recipe, archiveName, ignoreFolders)
 
-if nargin < 1 || ~isstruct(recipe)
-    error('You must suplpy a recipe struct');
-end
+parser = inputParser();
+parser.addRequired('recipe', @isstruct);
+parser.addRequired('archiveName', @ischar);
+parser.addParameter('ignoreFolders', {}, @iscellstr);
+parser.parse(recipe, archiveName, varargin{:});
+recipe = parser.Recipe.recipe;
+archiveName = parser.Recipe.archiveName;
+ignoreFolders = parser.Recipe.ignoreFolders;
 
-if nargin < 2
-    archiveName = 'recipe.zip';
-end
 [archivePath, archiveBase] = fileparts(archiveName);
-
-if nargin < 3
-    ignoreFolders = {};
-end
-
 
 %% Set up a clean, temporary folder.
 hints.workingFolder = recipe.input.hints.workingFolder;
