@@ -16,11 +16,5 @@ parser.addParameter('hints', rtbDefaultHints(), @isstruct);
 parser.parse(varargin{:});
 hints = rtbDefaultHints(parser.Results.hints);
 
-if nargin < 1
-    hints = rtbDefaultHints();
-else
-    hints = rtbDefaultHints(hints);
-end
-
 workingFolder = rtbWorkingFolder('hints', hints);
 wasCreated = rtbChangeToFolder(workingFolder);
