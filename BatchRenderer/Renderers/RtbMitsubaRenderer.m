@@ -34,8 +34,9 @@ classdef RtbMitsubaRenderer < RtbRenderer
         function [status, result, image, sampling, imageName] = render(obj, nativeScene)
             % look carefully for the file
             scenePath = fileparts(nativeScene);
-            if isempty(scenePath)
-                fileInfo = rtbResolveFilePath(nativeScene, rtbWorkingFolder('hints', hints));
+            if 7 ~= exist(scenePath, 'dir')
+                workingFolder = rtbWorkingFolder('hints', obj.hints);
+                fileInfo = rtbResolveFilePath(nativeScene, workingFolder);
                 nativeScene = fileInfo.absolutePath;
             end
             

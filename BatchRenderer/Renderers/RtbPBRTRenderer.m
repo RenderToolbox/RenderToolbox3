@@ -37,7 +37,7 @@ classdef RtbPBRTRenderer < RtbRenderer
         function [status, result, image, sampling, imageName] = render(obj, nativeScene)
             % look carefully for the file
             [scenePath, sceneBase, sceneExt] = fileparts(nativeScene);
-            if isempty(scenePath)
+            if 7 ~= exist(scenePath, 'dir')
                 fileInfo = rtbResolveFilePath(nativeScene, obj.workingFolder);
                 nativeScene = fileInfo.absolutePath;
             end
