@@ -156,8 +156,12 @@ classdef RtbVersion3MitsubaConverter < handle
         function mitsubaFile = finishConversion(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
             imageName = rtbGetNamedValue(names, conditionValues, 'imageName', ...
                 sprintf('scene-%03d', conditionNumber));
-            mitsubaFile = fullfile(obj.outputFolder, [imageName '.xml']);
-            nativeScene.printToFile(mitsubaFile);
+            mitsubaAbsoluteFile = fullfile(obj.outputFolder, [imageName '.xml']);
+            nativeScene.printToFile(mitsubaAbsoluteFile);
+            
+            % return a path relative to the working folder
+            mitsubaFile = rtbGetWorkingRelativePath(mitsubaAbsoluteFile, ...
+                'hints', obj.hints);
         end
     end
 end

@@ -23,9 +23,9 @@ parser.addRequired('recipe', @isstruct);
 parser.addRequired('archiveName', @ischar);
 parser.addParameter('ignoreFolders', {}, @iscellstr);
 parser.parse(recipe, archiveName, varargin{:});
-recipe = parser.Recipe.recipe;
-archiveName = parser.Recipe.archiveName;
-ignoreFolders = parser.Recipe.ignoreFolders;
+recipe = parser.Results.recipe;
+archiveName = parser.Results.archiveName;
+ignoreFolders = parser.Results.ignoreFolders;
 
 [archivePath, archiveBase] = fileparts(archiveName);
 
@@ -62,7 +62,7 @@ for ii = 1:numel(dependencies)
         continue;
     end
     
-    relativePath = rtbGetWorkingRelativePath(localPath, recipe.input.hints);
+    relativePath = rtbGetWorkingRelativePath(localPath, 'hints', recipe.input.hints);
     tempPath = fullfile(tempFolder, relativePath);
     
     % don't try to copy a file to itself

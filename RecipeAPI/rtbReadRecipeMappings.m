@@ -20,6 +20,7 @@ recipe = parser.Results.recipe;
 
 recipe.rendering.mappings = [];
 if rtbIsStructFieldPresent(recipe.input, 'mappingsFile')
+    strategy = rtbChooseStrategy('hints', recipe.input.hints);
     recipe.rendering.mappings = ...
-        ParseMappings(recipe.input.mappingsFile);
+        strategy.loadMappings(recipe.input.mappingsFile);
 end

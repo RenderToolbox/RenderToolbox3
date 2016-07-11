@@ -140,8 +140,13 @@ classdef RtbVersion3PBRTConverter < handle
         function pbrtFile = finishConversion(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
             imageName = rtbGetNamedValue(names, conditionValues, 'imageName', ...
                 sprintf('scene-%03d', conditionNumber));
-            pbrtFile = fullfile(obj.outputFolder, [imageName '.pbrt']);
-            nativeScene.printToFile(pbrtFile);
+            pbrtFullFile = fullfile(obj.outputFolder, [imageName '.pbrt']);
+            nativeScene.printToFile(pbrtFullFile);
+            
+            % return a path relative to the working folder
+            pbrtFile = rtbGetWorkingRelativePath(pbrtFullFile, ...
+                'hints', obj.hints);
+            
         end
     end
 end

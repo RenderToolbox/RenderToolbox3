@@ -60,16 +60,7 @@ if ~isempty(parentScene) && ischar(parentScene) && 2 ~= exist(parentScene, 'file
 end
 
 %% Choose the batch rendering strategy.
-if isobject(hints.batchRenderStrategy)
-    strategy = hints.batchRenderStrategy;
-elseif 2 == exist(hints.batchRenderStrategy, 'file')
-    constructorFunction = str2func(hints.batchRenderStrategy);
-    strategy = feval(constructorFunction, hints);
-else
-    strategy = RtbVersion3Strategy(hints);
-end
-fprintf('Using strategy %s\n\n', class(strategy));
-
+strategy = rtbChooseStrategy('hints', hints);
 
 %% Read conditions file into memory.
 if isempty(conditionsFile)

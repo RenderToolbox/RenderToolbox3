@@ -20,7 +20,8 @@ recipe = parser.Results.recipe;
 
 recipe.rendering.conditions = [];
 if rtbIsStructFieldPresent(recipe.input, 'conditionsFile')
+    strategy = rtbChooseStrategy('hints', recipe.input.hints);
     [recipe.rendering.conditions.names, ...
         recipe.rendering.conditions.values] = ...
-        rtbParseConditions(recipe.input.conditionsFile);
+        strategy.loadConditions(recipe.input.conditionsFile);
 end

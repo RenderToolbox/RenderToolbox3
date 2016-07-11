@@ -49,6 +49,7 @@ recipe = matData.recipe;
 recipe.input.hints.workingFolder = hints.workingFolder;
 
 %% Copy dependencies from the temp folder to the local working folder.
+[~, archiveBase] = fileparts(archiveName);
 unpackedFolder = fullfile(tempFolder, archiveBase);
 dependencies = rtbFindFiles('root', unpackedFolder);
 for ii = 1:numel(dependencies)
@@ -58,7 +59,7 @@ for ii = 1:numel(dependencies)
     end
     
     [~, relativePath] = rtbIsPathPrefix(unpackedFolder, tempPath);
-    localPath = rtbWorkingAbsolutePath(relativePath, recipe.input.hints);
+    localPath = rtbWorkingAbsolutePath(relativePath, 'hints', recipe.input.hints);
     
     localPrefix = fileparts(localPath);
     if ~exist(localPrefix, 'dir')
