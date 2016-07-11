@@ -23,6 +23,7 @@ Generic {
 }
 
 Mitsuba {
+    % use the path tracer with lots of samples
     integrator:integrator:path
-    Camera-camera_sampler:sampleCount.integer = 32
+    Camera-camera_sampler:sampleCount.integer = 512
 }
