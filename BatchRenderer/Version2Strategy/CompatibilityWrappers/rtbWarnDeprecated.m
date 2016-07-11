@@ -15,9 +15,14 @@ function rtbWarnDeprecated(varargin)
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
 callStack = dbstack();
+if numel(callStack) > 1
+    callerName = callStack(2).name;
+else
+    callerName = '';
+end
 
 parser = inputParser();
-parser.addParameter('oldName', callStack(end).name, @ischar);
+parser.addParameter('oldName', callerName, @ischar);
 parser.addParameter('newName', '', @ischar);
 parser.parse(varargin{:});
 oldName = parser.Results.oldName;

@@ -1,4 +1,4 @@
-function hints = GetDefaultHints(hints)
+function outFiles = MakeSensorImages(inFiles, matchingFunctions, matchingS, matchingNames, hints)
 %% Compatibility wrapper for code written using version 2.
 %
 % This function is a wrapper that can be called by "old" RenderToolbox3
@@ -14,19 +14,17 @@ function hints = GetDefaultHints(hints)
 
 rtbWarnDeprecated();
 
-if nargin < 1
-    hints = rtbDefaultHints();
+if nargin < 4 || isempty(matchingNames)
+    matchingNames = cell(size(matchingFunctions));
+end
+
+if nargin < 5
+    hints = GetDefaultHints();
 else
-    hints = rtbDefaultHints(hints);
+    hints = GetDefaultHints(hints);
 end
 
-hints.batchRenderStrategy = 'RtbVersion2Strategy';
-
-if ~isfield(hints, 'filmType')
-    hints.filmType = '';
-end
-
-if ~isfield(hints, 'remodeler')
-    hints.remodeler = '';
-end
-
+outFiles = rtbMakeSensorImages(inFiles, matchingFunctions, ...
+    'matchingS', matchingS, ...
+    'names', matchingNames, ...
+    'hints', hints);

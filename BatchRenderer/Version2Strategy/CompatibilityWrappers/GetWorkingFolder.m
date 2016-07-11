@@ -1,4 +1,4 @@
-function hints = GetDefaultHints(hints)
+function folder = GetWorkingFolder(folderName, isRendererSpecific, hints)
 %% Compatibility wrapper for code written using version 2.
 %
 % This function is a wrapper that can be called by "old" RenderToolbox3
@@ -14,19 +14,18 @@ function hints = GetDefaultHints(hints)
 
 rtbWarnDeprecated();
 
-if nargin < 1
-    hints = rtbDefaultHints();
+if nargin < 2
+    isRendererSpecific = false;
+end
+
+if nargin < 3
+    hints = GetDefaultHints();
 else
-    hints = rtbDefaultHints(hints);
+    hints = GetDefaultHints(hints);
 end
 
-hints.batchRenderStrategy = 'RtbVersion2Strategy';
 
-if ~isfield(hints, 'filmType')
-    hints.filmType = '';
-end
-
-if ~isfield(hints, 'remodeler')
-    hints.remodeler = '';
-end
-
+folder = rtbWorkingFolder( ...
+    'folderName', folderName, ...
+    'rendererSpecific', isRendererSpecific, ...
+    'hints', hints);

@@ -1,4 +1,4 @@
-function hints = GetDefaultHints(hints)
+function conditionsFile = WriteConditionsFile(conditionsFile, names, values)
 %% Compatibility wrapper for code written using version 2.
 %
 % This function is a wrapper that can be called by "old" RenderToolbox3
@@ -14,19 +14,16 @@ function hints = GetDefaultHints(hints)
 
 rtbWarnDeprecated();
 
-if nargin < 1
-    hints = rtbDefaultHints();
-else
-    hints = rtbDefaultHints(hints);
+if nargin < 1 || isempty(conditionsFile)
+    conditionsFile = 'conditionsFile.txt';
 end
 
-hints.batchRenderStrategy = 'RtbVersion2Strategy';
-
-if ~isfield(hints, 'filmType')
-    hints.filmType = '';
+if nargin < 2 || isempty(names)
+    names = {};
 end
 
-if ~isfield(hints, 'remodeler')
-    hints.remodeler = '';
+if nargin < 3 || isempty(values)
+    values = {};
 end
 
+conditionsFile = rtbWriteConditionsFile(conditionsFile, names, values);

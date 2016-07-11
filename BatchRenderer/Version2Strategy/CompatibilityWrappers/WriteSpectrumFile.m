@@ -1,4 +1,4 @@
-function hints = GetDefaultHints(hints)
+function filename = WriteSpectrumFile(wavelengths, magnitudes, filename)
 %% Compatibility wrapper for code written using version 2.
 %
 % This function is a wrapper that can be called by "old" RenderToolbox3
@@ -14,19 +14,8 @@ function hints = GetDefaultHints(hints)
 
 rtbWarnDeprecated();
 
-if nargin < 1
-    hints = rtbDefaultHints();
-else
-    hints = rtbDefaultHints(hints);
+if nargin < 3
+    filename = 'spectrum.spd';
 end
 
-hints.batchRenderStrategy = 'RtbVersion2Strategy';
-
-if ~isfield(hints, 'filmType')
-    hints.filmType = '';
-end
-
-if ~isfield(hints, 'remodeler')
-    hints.remodeler = '';
-end
-
+filename = rtbWriteSpectrumFile(wavelengths, magnitudes, filename);
