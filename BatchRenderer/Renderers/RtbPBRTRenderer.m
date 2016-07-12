@@ -46,9 +46,22 @@ classdef RtbPBRTRenderer < RtbRenderer
             [~, imageName] = fileparts(nativeScene);
             outFile = fullfile(obj.outputFolder, [imageName '.dat']);
             
+            % run in docker or locally with configured lib path
+            %   docker must be installed
+            %   user must have docker-level privileges (root or docker group)
+            [dockerStatus, ~] = system('docker ps');
+            if ~dockerStatus
+                commandPrefix = sprintf('docker run -ti --rm -v "%s":"%s" %s pbrt', ...
+                    obj.workingFolder, ...
+                    obj.workingFolder, ...
+                    obj.pbrt.dockerImage);
+            else
+                commandPrefix = sprintf('%s', obj.pbrt.executable);
+            end
+            
             % build a pbrt command
             renderCommand = sprintf('%s --outfile %s %s', ...
-                obj.pbrt.executable, ...
+                commandPrefix, ...
                 outFile, ...
                 nativeScene);
             fprintf('%s\n', renderCommand);
