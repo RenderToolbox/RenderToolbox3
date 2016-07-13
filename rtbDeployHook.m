@@ -54,7 +54,7 @@ mitsuba.adjustments = fullfile(rtbRoot(), ...
     'RendererPlugins', 'Mitsuba', 'MitsubaDefaultAdjustments.xml');
 
 % use Docker, if present
-mitsuba.dockerImage = 'ninjaben/mitsuba-docker';
+mitsuba.dockerImage = 'ninjaben/mitsuba-spectral';
 
 setpref('Mitsuba', fieldnames(mitsuba), struct2cell(mitsuba));
 
