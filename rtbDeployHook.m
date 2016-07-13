@@ -26,7 +26,7 @@
 rtbInitialize('force', true);
 
 %% User folder where we can write outputs.
-myFolder = fullfile(rtbGetUserFolder(), 'render-toolbox');
+myFolder = fullfile(rtbGetUserFolder(), 'render_toolbox');
 setpref('RenderToolbox3', 'workingFolder', myFolder);
 
 %% Locate Mitsuba.
