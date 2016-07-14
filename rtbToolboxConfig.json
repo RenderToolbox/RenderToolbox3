@@ -24,7 +24,7 @@
 		"subfolder": "",
 		"type": "webget",
 		"update": "",
-		"url": "https:\/\/github.com\/RenderToolbox3\/mexximp\/releases\/download\/v0.1\/build-linux.zip"
+		"url": "https:\/\/github.com\/RenderToolbox3\/mexximp\/releases\/download\/v0.1.1\/build.zip"
 	},
 	{
 		"flavor": "",
@@ -51,7 +51,7 @@
 		"subfolder": "",
 		"type": "webget",
 		"update": "",
-		"url": "https:\/\/github.com\/RenderToolbox3\/RenderToolbox3\/releases\/download\/test-build\/build-linux.zip"
+		"url": "https:\/\/github.com\/RenderToolbox3\/RenderToolbox3\/releases\/download\/test-build-2\/build.zip"
 	},
 	{
 		"flavor": "version3",
