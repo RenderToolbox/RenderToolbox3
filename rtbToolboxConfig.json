@@ -20,11 +20,11 @@
 	{
 		"flavor": "",
 		"hook": "",
-		"name": "mexximp-binary",
+		"name": "mexximp_binary",
 		"subfolder": "",
 		"type": "webget",
 		"update": "",
-		"url": "https://github.com/RenderToolbox3/mexximp/releases/download/v0.1/build-linux.zip"
+		"url": "https://github.com/RenderToolbox3/mexximp/releases/download/v0.1.1/build.zip"
 	},
 	{
 		"flavor": "",
@@ -42,7 +42,7 @@
 		"subfolder": "",
 		"type": "git",
 		"update": "",
-		"url": "https://github.com/DavidBrainard/SphereRendererToolbox.git"
+		"url": "https://github.com/RenderToolbox3/SphereRendererToolbox.git"
 	},
 	{
 		"flavor": "",
@@ -56,11 +56,11 @@
 	{
 		"flavor": "",
 		"hook": "",
-		"name": "RenderToolbox3-binary",
+		"name": "RenderToolbox3_binary",
 		"subfolder": "",
 		"type": "webget",
 		"update": "",
-		"url": "https://github.com/RenderToolbox3/RenderToolbox3/releases/download/test-build/build-linux.zip"
+		"url": "https://github.com/RenderToolbox3/RenderToolbox3/releases/download/test-build-2/build.zip"
 	},
 	{
 		"flavor": "version3",
