@@ -1,0 +1,74 @@
+[
+	{
+		"flavor": "",
+		"hook": "",
+		"name": "mMitsuba",
+		"subfolder": "",
+		"type": "git",
+		"update": "",
+		"url": "https://github.com:RenderToolbox3/mMitsuba.git"
+	},
+	{
+		"flavor": "",
+		"hook": "",
+		"name": "mPbrt",
+		"subfolder": "",
+		"type": "git",
+		"update": "",
+		"url": "https://github.com:RenderToolbox3/mPbrt.git"
+	},
+	{
+		"flavor": "",
+		"hook": "",
+		"name": "mexximp-binary",
+		"subfolder": "",
+		"type": "webget",
+		"update": "",
+		"url": "https://github.com/RenderToolbox3/mexximp/releases/download/v0.1/build-linux.zip"
+	},
+	{
+		"flavor": "",
+		"hook": "",
+		"name": "mexximp",
+		"subfolder": "",
+		"type": "git",
+		"update": "",
+		"url": "https://github.com:RenderToolbox3/mexximp.git"
+	},
+	{
+		"flavor": "",
+		"hook": "",
+		"name": "SphereRendererToolbox",
+		"subfolder": "",
+		"type": "git",
+		"update": "",
+		"url": "https://github.com/DavidBrainard/SphereRendererToolbox.git"
+	},
+	{
+		"flavor": "",
+		"hook": "",
+		"name": "Psychtoolbox",
+		"subfolder": "Psychtoolbox",
+		"type": "git",
+		"update": "",
+		"url": "https://github.com:Psychtoolbox-3/Psychtoolbox-3.git"
+	},
+	{
+		"flavor": "",
+		"hook": "",
+		"name": "RenderToolbox3-binary",
+		"subfolder": "",
+		"type": "webget",
+		"update": "",
+		"url": "https://github.com/RenderToolbox3/RenderToolbox3/releases/download/test-build/build-linux.zip"
+	},
+	{
+		"flavor": "version3",
+		"hook": "rtbDeployHook",
+		"name": "RenderToolbox3",
+		"subfolder": "",
+		"type": "git",
+		"update": "",
+		"url": "https://github.com:RenderToolbox3/RenderToolbox3.git"
+	}
+]
