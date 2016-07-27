@@ -36,5 +36,5 @@ config = [ ...
     ];
 
 pathHere = fileparts(mfilename('fullpath'));
-configFile = fullfile(pathHere, 'rtb-toolbox-config.json');
+configFile = fullfile(pathHere, 'rtbToolboxConfig.json');
 tbWriteConfig(config, 'configPath', configFile);

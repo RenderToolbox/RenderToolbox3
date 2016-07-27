@@ -6,7 +6,7 @@
 		"subfolder": "",
 		"type": "git",
 		"update": "",
-		"url": "https:\/\/github.com\/RenderToolbox3\/mMitsuba.git"
+		"url": "https://github.com:RenderToolbox3/mMitsuba.git"
 	},
 	{
 		"flavor": "",
@@ -15,16 +15,16 @@
 		"subfolder": "",
 		"type": "git",
 		"update": "",
-		"url": "https:\/\/github.com\/RenderToolbox3\/mPbrt.git"
+		"url": "https://github.com:RenderToolbox3/mPbrt.git"
 	},
 	{
 		"flavor": "",
 		"hook": "",
-		"name": "mexximp_binary",
+		"name": "mexximp-binary",
 		"subfolder": "",
 		"type": "webget",
 		"update": "",
-		"url": "https:\/\/github.com\/RenderToolbox3\/mexximp\/releases\/download\/v0.1.1\/build.zip"
+		"url": "https://github.com/RenderToolbox3/mexximp/releases/download/v0.1/build-linux.zip"
 	},
 	{
 		"flavor": "",
@@ -33,7 +33,16 @@
 		"subfolder": "",
 		"type": "git",
 		"update": "",
-		"url": "https:\/\/github.com\/RenderToolbox3\/mexximp.git"
+		"url": "https://github.com:RenderToolbox3/mexximp.git"
+	},
+	{
+		"flavor": "",
+		"hook": "",
+		"name": "SphereRendererToolbox",
+		"subfolder": "",
+		"type": "git",
+		"update": "",
+		"url": "https://github.com/DavidBrainard/SphereRendererToolbox.git"
 	},
 	{
 		"flavor": "",
@@ -42,16 +51,16 @@
 		"subfolder": "Psychtoolbox",
 		"type": "git",
 		"update": "",
-		"url": "https:\/\/github.com\/Psychtoolbox-3\/Psychtoolbox-3.git"
+		"url": "https://github.com:Psychtoolbox-3/Psychtoolbox-3.git"
 	},
 	{
 		"flavor": "",
 		"hook": "",
-		"name": "RenderToolbox3_binary",
+		"name": "RenderToolbox3-binary",
 		"subfolder": "",
 		"type": "webget",
 		"update": "",
-		"url": "https:\/\/github.com\/RenderToolbox3\/RenderToolbox3\/releases\/download\/test-build-2\/build.zip"
+		"url": "https://github.com/RenderToolbox3/RenderToolbox3/releases/download/test-build/build-linux.zip"
 	},
 	{
 		"flavor": "version3",
@@ -60,6 +69,6 @@
 		"subfolder": "",
 		"type": "git",
 		"update": "",
-		"url": "https:\/\/github.com\/RenderToolbox3\/RenderToolbox3.git"
+		"url": "https://github.com:RenderToolbox3/RenderToolbox3.git"
 	}
 ]
