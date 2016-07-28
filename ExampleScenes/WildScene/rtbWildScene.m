@@ -78,7 +78,7 @@ radianceDataFiles = rtbBatchRender(nativeSceneFiles, 'hints', hints);
 % convert to sRGB for viewing
 toneMapFactor = 100;
 isScale = true;
-montageName = sprintf('rtbSceneFromScratch (%s)', hints.renderer);
+montageName = sprintf('rtbWildSceneHeadOn (%s)', hints.renderer);
 montageFile = [montageName '.png'];
 sRgb = rtbMakeMontage(radianceDataFiles, ...
     'outFile', montageFile, ...
@@ -101,7 +101,7 @@ radianceDataFiles = rtbBatchRender(nativeSceneFiles, 'hints', hints);
 % convert to sRGB for viewing
 toneMapFactor = 100;
 isScale = true;
-montageName = sprintf('rtbSceneFromScratch (%s)', hints.renderer);
+montageName = sprintf('rtbWildSceneOblique (%s)', hints.renderer);
 montageFile = [montageName '.png'];
 sRgb = rtbMakeMontage(radianceDataFiles, ...
     'outFile', montageFile, ...
