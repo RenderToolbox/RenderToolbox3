@@ -1,4 +1,4 @@
-function hints = GetDefaultHints(hints)
+function [names, values] = ParseConditions(conditionsFile)
 %% Compatibility wrapper for code written using version 2.
 %
 % This function is a wrapper that can be called by "old" RenderToolbox3
@@ -14,26 +14,4 @@ function hints = GetDefaultHints(hints)
 
 rtbWarnDeprecated();
 
-if nargin < 1
-    hints = rtbDefaultHints();
-else
-    hints = rtbDefaultHints(hints);
-end
-
-hints.batchRenderStrategy = 'RtbVersion2Strategy';
-
-if ~isfield(hints, 'filmType')
-    hints.filmType = '';
-end
-
-if ~isfield(hints, 'remodeler')
-    hints.remodeler = '';
-end
-
-if ~isfield(hints, 'isPlot')
-    hints.isPlot = true;
-end
-
-if ~isfield(hints, 'isDryRun')
-    hints.isDryRun = false;
-end
+[names, values] = rtbParseConditions(conditionsFile);

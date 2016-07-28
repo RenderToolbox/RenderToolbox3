@@ -53,13 +53,13 @@ maxSRGB = .25;
 
 % scale for PBRT
 tinyImage = pbrt(1).maxSpectral * ones(1, 1, pbrt(1).S(3));
-[sRGB, XYZ, rawRGB] = MultispectralToSRGB(tinyImage, pbrt(1).S, false);
+[sRGB, XYZ, rawRGB] = MultispectralToSRGB(tinyImage, pbrt(1).S, [], false);
 scale = maxSRGB / max(rawRGB(:));
 [pbrt.scaleSRGB] = deal(scale);
 
 % scale for Mitsuba
 tinyImage = mitsuba(1).maxSpectral * ones(1, 1, mitsuba(1).S(3));
-[sRGB, XYZ, rawRGB] = MultispectralToSRGB(tinyImage, mitsuba(1).S, false);
+[sRGB, XYZ, rawRGB] = MultispectralToSRGB(tinyImage, mitsuba(1).S, [], false);
 scale = maxSRGB / max(rawRGB(:));
 [mitsuba.scaleSRGB] = deal(scale);
 
@@ -67,11 +67,11 @@ scale = maxSRGB / max(rawRGB(:));
 for ii = 1:nImages
     % PBRT image
     imageSpectral = pbrt(ii).imageSpectral * pbrt(ii).scaleSRGB;
-    pbrt(ii).imageSRGB = MultispectralToSRGB(imageSpectral, pbrt(ii).S, false);
+    pbrt(ii).imageSRGB = MultispectralToSRGB(imageSpectral, pbrt(ii).S, [], false);
     
     % Mitsuba image
     imageSpectral = mitsuba(ii).imageSpectral * mitsuba(ii).scaleSRGB;
-    mitsuba(ii).imageSRGB = MultispectralToSRGB(imageSpectral, mitsuba(ii).S, false);
+    mitsuba(ii).imageSRGB = MultispectralToSRGB(imageSpectral, mitsuba(ii).S, [], false);
 end
 
 

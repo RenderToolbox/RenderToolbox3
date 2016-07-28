@@ -1,4 +1,4 @@
-function hints = GetDefaultHints(hints)
+function rootPath = RenderToolboxRoot()
 %% Compatibility wrapper for code written using version 2.
 %
 % This function is a wrapper that can be called by "old" RenderToolbox3
@@ -12,28 +12,6 @@ function hints = GetDefaultHints(hints)
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
-rtbWarnDeprecated();
+rtbWarnDeprecated('newName', 'rtbRoot');
 
-if nargin < 1
-    hints = rtbDefaultHints();
-else
-    hints = rtbDefaultHints(hints);
-end
-
-hints.batchRenderStrategy = 'RtbVersion2Strategy';
-
-if ~isfield(hints, 'filmType')
-    hints.filmType = '';
-end
-
-if ~isfield(hints, 'remodeler')
-    hints.remodeler = '';
-end
-
-if ~isfield(hints, 'isPlot')
-    hints.isPlot = true;
-end
-
-if ~isfield(hints, 'isDryRun')
-    hints.isDryRun = false;
-end
+rootPath = rtbRoot();

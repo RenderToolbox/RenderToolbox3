@@ -40,8 +40,6 @@ if nargin < 3 || isempty(pbrt)
     pbrt = getpref('PBRT');
 end
 
-rtbInitialize();
-
 %% Where to get/put the input/output
 % copy scene file to working folder
 % so that PBRT can resolve relative paths from there

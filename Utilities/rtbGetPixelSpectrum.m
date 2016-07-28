@@ -27,7 +27,7 @@ parser = inputParser();
 parser.addRequired('image', @isnumeric);
 parser.addRequired('spectrum', @isnumeric);
 parser.addRequired('x', @isnumeric);
-parser.addRequired('y'), @isnumeric);
+parser.addRequired('y', @isnumeric);
 parser.parse(image, spectrum, x, y);
 image = parser.Results.image;
 spectrum = parser.Results.spectrum;
@@ -41,5 +41,7 @@ wavelengths = MakeItWls(spectrum);
 magnitudes = squeeze(image(y, x, :));
 
 % make an sRGB approximation
-sRGB = squeeze(rtbMultispectralToSRGB( ...
-    reshape(magnitudes, 1, 1, []), wavelengths, 0, false));
+sRGB = squeeze( ...
+    rtbMultispectralToSRGB(reshape(magnitudes, 1, 1, []), wavelengths, ...
+    'toneMapFactor', 0, ...
+    'isScale', false));

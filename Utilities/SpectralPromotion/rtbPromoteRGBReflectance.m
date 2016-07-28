@@ -80,8 +80,8 @@ hints.imageWidth = nPixels;
 hints.imageHeight = nPixels;
 
 % render and read an output pixel from the middle
-sceneFiles = rtbMakeSceneFiles(sceneFile, conditionsFile, mappingsFile, hints);
-outFiles = rtbBatchRender(sceneFiles, hints);
+sceneFiles = MakeSceneFiles(sceneFile, conditionsFile, mappingsFile, hints);
+outFiles = BatchRender(sceneFiles, hints);
 dataFile = outFiles{1};
 outData = load(dataFile);
 S = outData.S;
@@ -95,13 +95,13 @@ outPixel = outPixel ./ calibrationData.geometryScale;
 
 % divide out the illuminant
 %   SplineRaw(), not SplineSpd(): renderers already assume power/wavelength
-[illumWls, illumPower] = rtbReadSpectrum(illuminant);
+[illumWls, illumPower] = ReadSpectrum(illuminant);
 illumResampled = SplineRaw(illumWls, illumPower, outData.S);
 promoted = outPixel ./ illumResampled;
 
 % convert to sRGB
 tinyImage = reshape(promoted, 1, 1, []);
-[~, ~, rawRGB] = rtbMultispectralToSRGB(tinyImage, outData.S, 0, false);
+[~, ~, rawRGB] = MultispectralToSRGB(tinyImage, outData.S, 0, false);
 RGB = squeeze(rawRGB);
 
 % scale so unit-valued reflectance comes out with unit-valued RGB

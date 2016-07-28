@@ -91,18 +91,18 @@ if isempty(filesB)
     return;
 end
 
-% get expected path parts for each file:
+% parse out expected path parts for each file
 infoA = scanDataPaths(filesA);
 infoB = scanDataPaths(filesB);
 
 % report unmatched files
-relativeA = {infoA.relativePath};
-relativeB = {infoB.relativePath};
+matchTokensA = {infoA.matchToken};
+matchTokensB = {infoB.matchToken};
 [~, indexA, indexB] = intersect( ...
-    relativeA, relativeB, 'stable');
-[~, unmatchedIndex] = setdiff(relativeA, relativeB);
+    matchTokensA, matchTokensB, 'stable');
+[~, unmatchedIndex] = setdiff(matchTokensA, matchTokensB);
 unmatchedA = filesA(unmatchedIndex);
-[~, unmatchedIndex] = setdiff(relativeB, relativeA);
+[~, unmatchedIndex] = setdiff(matchTokensB, matchTokensA);
 unmatchedB = filesB(unmatchedIndex);
 
 % allocate an info struct for image comparisons
@@ -113,8 +113,10 @@ matchInfo = struct( ...
     'fileB', filesB(indexB), ...
     'workingFolderA', workingFolderA, ...
     'workingFolderB', workingFolderB, ...
-    'relativeA', relativeA(indexA), ...
-    'relativeB', relativeB(indexB), ...
+    'relativePathA', {infoA(indexA).relativePath}, ...
+    'relativePathB', {infoB(indexB).relativePath}, ...
+    'matchTokenA', matchTokensA(indexA), ...
+    'matchTokenB', matchTokensB(indexB), ...
     'samplingA', [], ...
     'samplingB', [], ...
     'denominatorThreshold', 0.2, ...
@@ -161,7 +163,7 @@ fprintf('\n')
 
 % compare matched images!
 for ii = 1:nMatches
-    fprintf('%d of %d: %s\n', ii, nMatches, matchInfo(ii).relativeA);
+    fprintf('%d of %d: %s\n', ii, nMatches, matchInfo(ii).matchTokenA);
     
     % load data
     dataA = load(matchInfo(ii).fileA);
@@ -275,7 +277,7 @@ for ii = 1:nMatches
         
         % save detail figure to disk
         drawnow();
-        [imagePath, imageName] = fileparts(matchInfo(ii).relativeA);
+        [imagePath, imageName] = fileparts(matchInfo(ii).relativePathA);
         imageCompPath = fullfile(figureFolder, imagePath);
         if ~exist(imageCompPath, 'dir')
             mkdir(imageCompPath);
@@ -322,10 +324,17 @@ recipeName = cell(1, n);
 subfolderName = cell(1, n);
 rendererName = cell(1, n);
 fileName = cell(1, n);
+fileNumber = cell(1, n);
+hasNumber = false(1, n);
+matchToken = cell(1, n);
 for ii = 1:n
     % break off the file name
     [parentPath, baseName, extension] = fileparts(paths{ii});
     fileName{ii} = [baseName extension];
+    if numel(baseName) >= 4
+        fileNumber{ii} = sscanf(baseName(end-3:end), '-%d');
+    end
+    hasNumber(ii) = ~isempty(fileNumber{ii});
     
     % break out subfolder names
     scanResult = textscan(parentPath, '%s', 'Delimiter', filesep());
@@ -352,16 +361,28 @@ for ii = 1:n
     % build the rootless relative path
     relativePath{ii} = fullfile(recipeName{ii}, subfolderName{ii}, ...
         rendererName{ii}, fileName{ii});
+    
+    % build a token for matching across file sets
+    matchTokenBase = [recipeName{ii} '-' subfolderName{ii} '-' rendererName{ii} '-'];
+    if hasNumber(ii)
+        matchToken{ii} = [matchTokenBase sprintf('%03d', fileNumber{ii})];
+    else
+        matchToken{ii} = [matchTokenBase baseName];
+    end
 end
 
 info = struct( ...
     'original', paths, ...
     'fileName', fileName, ...
+    'fileNumber', fileNumber, ...
+    'hasNumber', hasNumber, ...
     'rendererName', rendererName, ...
     'recipeName', recipeName, ...
     'subfolderName', subfolderName, ...
     'rootPath', rootPath, ...
-    'relativePath', relativePath);
+    'relativePath', relativePath, ...
+    'matchToken', matchToken);
+
 
 % Show sRGB images and sRGB difference images
 function f = showDifferenceImage(info, A, B)
@@ -376,7 +397,7 @@ imageAB = rtbMultispectralToSRGB(A-B, S, 'toneMapFactor', toneMapFactor, 'isScal
 imageBA = rtbMultispectralToSRGB(B-A, S, 'toneMapFactor', toneMapFactor, 'isScale', isScale);
 
 % show images in a new figure
-name = sprintf('sRGB scaled: %s', info.relativeA);
+name = sprintf('sRGB scaled: %s', info.matchTokenA);
 f = figure('Name', name, 'NumberTitle', 'off');
 
 ax = subplot(2, 2, 2, 'Parent', f);
@@ -403,6 +424,7 @@ truncSampling = [samplingA(1:2) nPlanes];
 truncA = A(:,:,1:nPlanes);
 truncB = B(:,:,1:nPlanes);
 
+
 % Show a summary of all difference images.
 function f = showDifferenceSummary(info)
 figureName = sprintf('A: %s vs B: %s', ...
@@ -427,7 +449,7 @@ corrTickLabels{1} = sprintf('<%.2f', minCorr);
 corr = [goodInfo.corrcoef];
 corr(corr < minCorr) = peggedCorr;
 
-names = {goodInfo.relativeA};
+names = {goodInfo.matchTokenA};
 nLines = numel(names);
 ax(1) = subplot(1, 2, 1, ...
     'Parent', f, ...

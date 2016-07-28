@@ -1,4 +1,4 @@
-function hints = GetDefaultHints(hints)
+function [promoted, S, RGB, dataFile] = PromoteRGBReflectance(reflectance, illuminant, hints)
 %% Compatibility wrapper for code written using version 2.
 %
 % This function is a wrapper that can be called by "old" RenderToolbox3
@@ -14,26 +14,17 @@ function hints = GetDefaultHints(hints)
 
 rtbWarnDeprecated();
 
-if nargin < 1
-    hints = rtbDefaultHints();
+if nargin < 2 || isempty(illuminant)
+    illuminant = '300:1 800:1';
+end
+
+if nargin < 3
+    hints = GetDefaultHints();
 else
-    hints = rtbDefaultHints(hints);
+    hints = GetDefaultHints(hints);
 end
 
-hints.batchRenderStrategy = 'RtbVersion2Strategy';
 
-if ~isfield(hints, 'filmType')
-    hints.filmType = '';
-end
-
-if ~isfield(hints, 'remodeler')
-    hints.remodeler = '';
-end
-
-if ~isfield(hints, 'isPlot')
-    hints.isPlot = true;
-end
-
-if ~isfield(hints, 'isDryRun')
-    hints.isDryRun = false;
-end
+[promoted, S, RGB, dataFile] = rtbPromoteRGBReflectance(reflectance, ...
+    'illuminant', illuminant, ...
+    'hints', hints);

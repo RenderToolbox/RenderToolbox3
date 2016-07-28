@@ -9,7 +9,7 @@ clear;
 %% Choose example files.
 parentSceneFile = 'ColladaTexture.dae';
 
-mfilePath = fullfile(RenderToolboxRoot(), 'ExampleScenes', 'ColladaTexture');
+mfilePath = fullfile(RenderToolboxRoot(), 'OldColladaExamples', 'ColladaTexture');
 stoneWallImage = fullfile(mfilePath, 'stone-wall.exr');
 earthImage = fullfile(mfilePath, 'earthbump1k-stretch-rgb.exr');
 

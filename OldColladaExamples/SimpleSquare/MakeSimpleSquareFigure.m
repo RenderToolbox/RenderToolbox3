@@ -93,7 +93,7 @@ predictedDump = [predicted.poiSpd];
 
 %% Determine scaling to convert multi-spectral data to nice sRGB.
 tinyImage = reshape(predicted(4).poiSpd, 1, 1, []);
-[sRGB, XYZ, rawRGB] = MultispectralToSRGB(tinyImage, predicted(4).S, false);
+[sRGB, XYZ, rawRGB] = MultispectralToSRGB(tinyImage, predicted(4).S, [], false);
 maxSRGB = .95;
 scaleSRGB = maxSRGB / max(rawRGB(:));
 
@@ -101,13 +101,13 @@ scaleSRGB = maxSRGB / max(rawRGB(:));
 % use the predicted white pixel of interest as the LAB "standard white"
 whiteSpd = predicted(4).poiSpd * predicted(ii).scaleSpectral * scaleSRGB;
 [whiteSRGB, whiteXYZ] = MultispectralToSRGB( ...
-    reshape(whiteSpd, 1, 1, []), predicted(4).S, false);
+    reshape(whiteSpd, 1, 1, []), predicted(4).S, [], false);
 whiteXYZ = squeeze(whiteXYZ);
 for ii = 1:nImages
     % predicted pixel of interest
     spd = predicted(ii).poiSpd * predicted(ii).scaleSpectral * scaleSRGB;
     [sRGB, XYZ, rawRGB] = MultispectralToSRGB( ...
-        reshape(spd, 1, 1, []), predicted(ii).S, false);
+        reshape(spd, 1, 1, []), predicted(ii).S, [], false);
     predicted(ii).poiSRGB = squeeze(sRGB);
     predicted(ii).poiXYZ = squeeze(XYZ);
     predicted(ii).poiLAB = XYZToLab(predicted(ii).poiXYZ, whiteXYZ);
@@ -115,10 +115,10 @@ for ii = 1:nImages
     
     % PBRT image and pixel of interest
     imageSpectral = pbrt(ii).imageSpectral * pbrt(ii).scaleSpectral * scaleSRGB;
-    pbrt(ii).imageSRGB = MultispectralToSRGB(imageSpectral, pbrt(ii).S, false);
+    pbrt(ii).imageSRGB = MultispectralToSRGB(imageSpectral, pbrt(ii).S, [], false);
     spd = pbrt(ii).poiSpd * pbrt(ii).scaleSpectral * scaleSRGB;
     [sRGB, XYZ, rawRGB] = MultispectralToSRGB( ...
-        reshape(spd, 1, 1, []), pbrt(ii).S, false);
+        reshape(spd, 1, 1, []), pbrt(ii).S, [],false);
     pbrt(ii).poiSRGB = squeeze(sRGB);
     pbrt(ii).poiXYZ = squeeze(XYZ);
     pbrt(ii).poiLAB = XYZToLab(pbrt(ii).poiXYZ, whiteXYZ);
@@ -126,10 +126,10 @@ for ii = 1:nImages
     
     % Mitsuba image and pixel of interest
     imageSpectral = mitsuba(ii).imageSpectral * mitsuba(ii).scaleSpectral * scaleSRGB;
-    mitsuba(ii).imageSRGB = MultispectralToSRGB(imageSpectral, mitsuba(ii).S, false);
+    mitsuba(ii).imageSRGB = MultispectralToSRGB(imageSpectral, mitsuba(ii).S, [],false);
     spd = mitsuba(ii).poiSpd * mitsuba(ii).scaleSpectral * scaleSRGB;
     [sRGB, XYZ, rawRGB] = MultispectralToSRGB( ...
-        reshape(spd, 1, 1, []), mitsuba(ii).S, false);
+        reshape(spd, 1, 1, []), mitsuba(ii).S, [], false);
     mitsuba(ii).poiSRGB = squeeze(sRGB);
     mitsuba(ii).poiXYZ = squeeze(XYZ);
     mitsuba(ii).poiLAB = XYZToLab(mitsuba(ii).poiXYZ, whiteXYZ);

@@ -2,73 +2,109 @@
 	{
 		"flavor": "",
 		"hook": "",
+		"localHookTemplate": "",
+		"name": "mitsuba-spectral-docker",
+		"pathPlacement": "append",
+		"subfolder": "",
+		"toolboxRoot": "",
+		"type": "docker",
+		"update": "",
+		"url": "ninjaben\/mitsuba-spectral"
+	},
+	{
+		"flavor": "",
+		"hook": "",
+		"localHookTemplate": "",
 		"name": "mMitsuba",
+		"pathPlacement": "append",
 		"subfolder": "",
+		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
-		"url": "https://github.com:RenderToolbox3/mMitsuba.git"
+		"url": "https:\/\/github.com\/RenderToolbox3\/mMitsuba.git"
 	},
 	{
 		"flavor": "",
 		"hook": "",
+		"localHookTemplate": "",
+		"name": "pbrt-v2-spectral-docker",
+		"pathPlacement": "append",
+		"subfolder": "",
+		"toolboxRoot": "",
+		"type": "docker",
+		"update": "",
+		"url": "ninjaben\/pbrt-v2-spectral-docker"
+	},
+	{
+		"flavor": "",
+		"hook": "",
+		"localHookTemplate": "",
 		"name": "mPbrt",
+		"pathPlacement": "append",
 		"subfolder": "",
+		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
-		"url": "https://github.com:RenderToolbox3/mPbrt.git"
+		"url": "https:\/\/github.com\/RenderToolbox3\/mPbrt.git"
 	},
 	{
 		"flavor": "",
 		"hook": "",
-		"name": "mexximp_binary",
-		"subfolder": "",
-		"type": "webget",
-		"update": "",
-		"url": "https://github.com/RenderToolbox3/mexximp/releases/download/v0.1.1/build.zip"
-	},
-	{
-		"flavor": "",
-		"hook": "",
+		"localHookTemplate": "",
 		"name": "mexximp",
+		"pathPlacement": "append",
 		"subfolder": "",
-		"type": "git",
+		"toolboxRoot": "",
+		"type": "include",
 		"update": "",
-		"url": "https://github.com:RenderToolbox3/mexximp.git"
+		"url": "https:\/\/raw.githubusercontent.com\/RenderToolbox3\/mexximp\/master\/mexximpToolboxConfig.json"
 	},
 	{
 		"flavor": "",
 		"hook": "",
+		"localHookTemplate": "",
 		"name": "SphereRendererToolbox",
+		"pathPlacement": "append",
 		"subfolder": "",
+		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
-		"url": "https://github.com/RenderToolbox3/SphereRendererToolbox.git"
+		"url": "https:\/\/github.com\/RenderToolbox3\/SphereRendererToolbox.git"
 	},
 	{
 		"flavor": "",
 		"hook": "",
+		"localHookTemplate": "",
 		"name": "Psychtoolbox",
+		"pathPlacement": "append",
 		"subfolder": "Psychtoolbox",
+		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
-		"url": "https://github.com:Psychtoolbox-3/Psychtoolbox-3.git"
+		"url": "https:\/\/github.com\/Psychtoolbox-3\/Psychtoolbox-3.git"
 	},
 	{
 		"flavor": "",
-		"hook": "",
+		"hook": "clear mex",
+		"localHookTemplate": "",
 		"name": "RenderToolbox3_binary",
+		"pathPlacement": "append",
 		"subfolder": "",
+		"toolboxRoot": "",
 		"type": "webget",
 		"update": "",
-		"url": "https://github.com/RenderToolbox3/RenderToolbox3/releases/download/test-build-2/build.zip"
+		"url": "https:\/\/github.com\/RenderToolbox3\/RenderToolbox3\/releases\/download\/test-build-2\/build.zip"
 	},
 	{
 		"flavor": "version3",
-		"hook": "rtbDeployHook",
+		"hook": "",
+		"localHookTemplate": "rtbLocalConfigTemplate.m",
 		"name": "RenderToolbox3",
+		"pathPlacement": "append",
 		"subfolder": "",
+		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
-		"url": "https://github.com:RenderToolbox3/RenderToolbox3.git"
+		"url": "https:\/\/github.com\/RenderToolbox3\/RenderToolbox3.git"
 	}
 ]

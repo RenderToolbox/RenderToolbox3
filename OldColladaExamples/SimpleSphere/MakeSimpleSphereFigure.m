@@ -26,6 +26,7 @@ refData.multispectralImage = refData.multispectralImage/refMax;
 
 % get output from PBRT
 %   normalize it, scale it
+dataFilePattern = 'scene[0-9\-]*\.mat';
 hints.renderer = 'PBRT';
 dataFolder = GetWorkingFolder('renderings', true, hints);
 matFile = FindFiles(dataFolder, dataFilePattern);
