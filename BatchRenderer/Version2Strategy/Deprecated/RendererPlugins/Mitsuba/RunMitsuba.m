@@ -32,8 +32,6 @@ if nargin < 3 || isempty(mitsuba)
     mitsuba = getpref('Mitsuba');
 end
 
-rtbInitialize();
-
 %% Where to get/put the input/output
 [~, sceneBase] = fileparts(sceneFile);
 renderings = rtbWorkingFolder( ...

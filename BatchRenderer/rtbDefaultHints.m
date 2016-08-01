@@ -28,8 +28,6 @@ if nargin < 1 || ~isstruct(hints)
     hints = struct();
 end
 
-rtbInitialize();
-
 % supplement given hints with default hints
 RenderToolbox3 = getpref('RenderToolbox3');
 hintNames = fieldnames(RenderToolbox3);
