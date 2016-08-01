@@ -19,7 +19,7 @@
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "",
+		"type": "git",
 		"update": "",
 		"url": "https:\/\/github.com:RenderToolbox3\/mMitsuba.git"
 	},
@@ -43,7 +43,7 @@
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "",
+		"type": "git",
 		"update": "",
 		"url": "https:\/\/github.com:RenderToolbox3\/mPbrt.git"
 	},
@@ -67,7 +67,7 @@
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "",
+		"type": "git",
 		"update": "",
 		"url": "https:\/\/github.com:RenderToolbox3\/mexximp.git"
 	},
@@ -79,7 +79,7 @@
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "",
+		"type": "git",
 		"update": "",
 		"url": "https:\/\/github.com\/RenderToolbox3\/SphereRendererToolbox.git"
 	},
@@ -91,7 +91,7 @@
 		"pathPlacement": "append",
 		"subfolder": "Psychtoolbox",
 		"toolboxRoot": "",
-		"type": "",
+		"type": "git",
 		"update": "",
 		"url": "https:\/\/github.com:Psychtoolbox-3\/Psychtoolbox-3.git"
 	},
@@ -115,7 +115,7 @@
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "",
+		"type": "git",
 		"update": "",
 		"url": "https:\/\/github.com:RenderToolbox3\/RenderToolbox3.git"
 	}
