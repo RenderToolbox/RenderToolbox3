@@ -21,7 +21,7 @@
 		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
-		"url": "https:\/\/github.com:RenderToolbox3\/mMitsuba.git"
+		"url": "https:\/\/github.com\/RenderToolbox3\/mMitsuba.git"
 	},
 	{
 		"flavor": "",
@@ -45,7 +45,7 @@
 		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
-		"url": "https:\/\/github.com:RenderToolbox3\/mPbrt.git"
+		"url": "https:\/\/github.com\/RenderToolbox3\/mPbrt.git"
 	},
 	{
 		"flavor": "",
@@ -69,7 +69,7 @@
 		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
-		"url": "https:\/\/github.com:RenderToolbox3\/mexximp.git"
+		"url": "https:\/\/github.com\/RenderToolbox3\/mexximp.git"
 	},
 	{
 		"flavor": "",
@@ -93,7 +93,7 @@
 		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
-		"url": "https:\/\/github.com:Psychtoolbox-3\/Psychtoolbox-3.git"
+		"url": "https:\/\/github.com\/Psychtoolbox-3\/Psychtoolbox-3.git"
 	},
 	{
 		"flavor": "",
@@ -117,6 +117,6 @@
 		"toolboxRoot": "",
 		"type": "git",
 		"update": "",
-		"url": "https:\/\/github.com:RenderToolbox3\/RenderToolbox3.git"
+		"url": "https:\/\/github.com\/RenderToolbox3\/RenderToolbox3.git"
 	}
 ]
