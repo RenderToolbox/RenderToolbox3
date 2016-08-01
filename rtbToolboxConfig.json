@@ -51,25 +51,13 @@
 		"flavor": "",
 		"hook": "",
 		"localHookTemplate": "",
-		"name": "mexximp_binary",
-		"pathPlacement": "append",
-		"subfolder": "",
-		"toolboxRoot": "",
-		"type": "webget",
-		"update": "",
-		"url": "https:\/\/github.com\/RenderToolbox3\/mexximp\/releases\/download\/v0.1.1\/build.zip"
-	},
-	{
-		"flavor": "",
-		"hook": "",
-		"localHookTemplate": "",
 		"name": "mexximp",
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "git",
+		"type": "include",
 		"update": "",
-		"url": "https:\/\/github.com\/RenderToolbox3\/mexximp.git"
+		"url": "https:\/\/raw.githubusercontent.com\/RenderToolbox3\/mexximp\/master\/mexximpToolboxConfig.json"
 	},
 	{
 		"flavor": "",
@@ -97,7 +85,7 @@
 	},
 	{
 		"flavor": "",
-		"hook": "",
+		"hook": "clear mex",
 		"localHookTemplate": "",
 		"name": "RenderToolbox3_binary",
 		"pathPlacement": "append",
