@@ -150,10 +150,6 @@ if ~isempty(mappingsFile)
     mappings = strategy.loadMappings(mappingsFile);
 end
 
-% possibly load image dimensions from the conditions file
-hints.imageHeight = rtbGetNamedValue(names, conditionValues, 'imageHeight', hints.imageHeight);
-hints.imageWidth = rtbGetNamedValue(names, conditionValues, 'imageWidth', hints.imageWidth);
-
 % update the mappings for this condition
 [scene, mappings] = strategy.applyVariablesToMappings(scene, mappings, names, conditionValues, cc);
 [scene, mappings] = strategy.resolveResources(scene, mappings);

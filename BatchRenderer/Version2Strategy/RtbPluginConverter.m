@@ -80,16 +80,23 @@ classdef RtbPluginConverter < handle
         
         function nativeScene = finishConversion(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
             
-            imageName = rtbGetNamedValue(names, conditionValues, 'imageName', ...
-                sprintf('scene-%03d', conditionNumber));
-            
             if isempty(parentScene)
                 nativeScene = [];
                 return;
             end
             
+            % extract some conditions
+            imageName = rtbGetNamedValue( ...
+                names, conditionValues, 'imageName', sprintf('scene-%03d', conditionNumber));
+            
+            localHints = obj.hints;
+            localHints.imageHeight = StringToVector(rtbGetNamedValue( ...
+                names, conditionValues, 'imageHeight', localHints.imageHeight));
+            localHints.imageWidth = StringToVector(rtbGetNamedValue( ...
+                names, conditionValues, 'imageWidth', localHints.imageWidth));
+            
             % convert the scene to native
-            importColladaFunction = GetRendererAPIFunction('ImportCollada', obj.hints);
+            importColladaFunction = GetRendererAPIFunction('ImportCollada', localHints);
             if isempty(importColladaFunction)
                 return;
             end
@@ -97,7 +104,7 @@ classdef RtbPluginConverter < handle
                 parentScene, ...
                 nativeScene.adjustments, ...
                 imageName, ...
-                obj.hints);
+                localHints);
             nativeScene.scene.imageName = imageName;
             
             % add Collada author info for good measure
