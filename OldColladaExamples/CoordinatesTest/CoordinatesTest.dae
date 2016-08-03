@@ -601,7 +601,7 @@
               <color sid="diffuse">0.64 0.02081863 0.09434678 1</color>
             </diffuse>
             <specular>
-              <color sid="specular">0.5 0.5 0.5 1</color>
+              <color sid="specular">0 0 0 1</color>
             </specular>
             <shininess>
               <float sid="shininess">50</float>
@@ -633,7 +633,7 @@
               <color sid="diffuse">0.1752774 0.64 0.1122425 1</color>
             </diffuse>
             <specular>
-              <color sid="specular">0.5 0.5 0.5 1</color>
+              <color sid="specular">0 0 0 1</color>
             </specular>
             <shininess>
               <float sid="shininess">50</float>
@@ -665,7 +665,7 @@
               <color sid="diffuse">0.08940361 0.0636998 0.64 1</color>
             </diffuse>
             <specular>
-              <color sid="specular">0.5 0.5 0.5 1</color>
+              <color sid="specular">0 0 0 1</color>
             </specular>
             <shininess>
               <float sid="shininess">50</float>

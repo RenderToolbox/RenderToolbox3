@@ -5,8 +5,8 @@ Collada {
 
 % materials
 Generic {
-	HangingLampReflector-material:material:matte
-	HangingLampReflector-material:diffuseReflectance.spectrum = 300:1 800:1
+	HangLampReflector-material:material:matte
+	HangLampReflector-material:diffuseReflectance.spectrum = 300:1 800:1
 
 	AreaLight-material:material:matte
 	AreaLight-material:diffuseReflectance.spectrum = 300:1 800:1
