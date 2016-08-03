@@ -89,8 +89,15 @@ classdef RtbVersion2Strategy < RtbBatchRenderStrategy
             mappings = ParseMappings(mappingsFile);
         end
         
-        function [scene, mappings] = applyVariablesToMappings(obj, scene, mappings, names, conditionValues, conditionNumber)
-            mappings = ResolveMappingsValues(mappings, names, conditionValues, scene, [], obj.hints);
+        function [sceneOut, mappings] = applyVariablesToMappings(obj, sceneIn, mappings, names, conditionValues, conditionNumber)
+
+            % isolate this condition with a scene file copy
+            [scenePath, sceneBase, sceneExt] = fileparts(sceneIn);
+            sceneSuffix = sprintf('%03d', conditionNumber);
+            sceneOut = fullfile(scenePath, [sceneBase '-' sceneSuffix sceneExt]);
+            copyfile(sceneIn, sceneOut, 'f');
+            
+            mappings = ResolveMappingsValues(mappings, names, conditionValues, sceneIn, [], obj.hints);
         end
         
         function [scene, mappings] = resolveResources(obj, scene, mappings)
