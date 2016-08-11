@@ -16,15 +16,5 @@
 %   [status, result, multispectralImage, S] = RTB_Render_Mitsuba(scene, hints)
 function [status, result, multispectralImage, S] = RTB_Render_Mitsuba(scene, hints)
 
-% resolve the scene which should be located in the working folder
-sceneFile = rtbWorkingAbsolutePath(scene.mitsubaFile, 'hints', hints);
-
-% invoke Mitsuba!
-[status, result, output] = RunMitsuba(sceneFile, hints);
-if status ~= 0
-    error('Mitsuba rendering failed\n  %s\n  %s\n', sceneFile, result);
-end
-
-% read raw output into memory
-%   including explicit spectral sampling, "S"
-[multispectralImage, wls, S] = rtbReadMultispectralEXR(output);
+renderer = RtbMitsubaRenderer(hints);
+[status, result, multispectralImage, S] = renderer.render(scene.mitsubaFile);

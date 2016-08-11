@@ -32,16 +32,13 @@ classdef RtbMitsubaRenderer < RtbRenderer
         end
         
         function [status, result, image, sampling, imageName] = render(obj, nativeScene)
-            % look carefully for the file
-            scenePath = fileparts(nativeScene);
-            if 7 ~= exist(scenePath, 'dir')
-                workingFolder = rtbWorkingFolder('hints', obj.hints);
-                fileInfo = rtbResolveFilePath(nativeScene, workingFolder);
-                nativeScene = fileInfo.absolutePath;
-            end
+            % look carefully for the input file
+            [~, imageName] = fileparts(nativeScene);
+            workingFolder = rtbWorkingFolder('hints', obj.hints);
+            fileInfo = rtbResolveFilePath(nativeScene, workingFolder);
+            nativeScene = fileInfo.absolutePath;
             
             % choose output file
-            [~, imageName] = fileparts(nativeScene);
             outFile = fullfile(obj.outputFolder, [imageName '.exr']);
             
             % run in docker or locally with configured lib path
@@ -50,8 +47,9 @@ classdef RtbMitsubaRenderer < RtbRenderer
             [dockerStatus, ~] = system('docker ps');
             if ~dockerStatus
                 [~, uid] = system('id -u `whoami`');
-                commandPrefix = sprintf('docker run -ti --rm -u %s:%s -v "%s":"%s" -v "%s":"%s" %s mitsuba', ...
+                commandPrefix = sprintf('docker run -ti --rm -u %s:%s --workdir "%s" -v "%s":"%s" -v "%s":"%s" %s mitsuba', ...
                     strtrim(uid), strtrim(uid), ...
+                    workingFolder, ...
                     workingFolder, workingFolder, ...
                     rtbRoot(), rtbRoot(), ...
                     obj.mitsuba.dockerImage);
