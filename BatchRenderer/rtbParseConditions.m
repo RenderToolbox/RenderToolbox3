@@ -22,7 +22,7 @@ parser.parse(conditionsFile);
 conditionsFile = parser.Results.conditionsFile;
 
 %% Prepare to read conditions file.
-if ~exist(conditionsFile, 'file')
+if 2 ~= exist(conditionsFile, 'file')
     names = {};
     values = {};
     return;

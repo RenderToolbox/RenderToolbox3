@@ -61,7 +61,7 @@ end
 strategy = rtbChooseStrategy('hints', hints);
 
 %% Read conditions file into memory.
-if isempty(conditionsFile)
+if isempty(conditionsFile) || 2 ~= exist(conditionsFile, 'file')
     % no conditions, do a single rendering
     nConditions = 1;
     names = {};
