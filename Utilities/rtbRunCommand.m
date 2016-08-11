@@ -16,7 +16,7 @@ function [status, result, exception] = rtbRunCommand(command, varargin)
 % false.  Also returns any exception that was thrown during command
 % execution, or empty [] if no exception was thrown.
 %
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
@@ -30,6 +30,8 @@ hints = rtbDefaultHints(parser.Results.hints);
 status = [];
 result = '';
 exception = [];
+
+fprintf('%s\n', command);
 
 if hints.isCaptureCommandResults
     try

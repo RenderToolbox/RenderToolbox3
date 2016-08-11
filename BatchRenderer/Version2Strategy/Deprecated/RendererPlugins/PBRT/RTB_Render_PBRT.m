@@ -16,17 +16,13 @@
 %   [status, result, multispectralImage, S] = RTB_Render_PBRT(scene, hints)
 function [status, result, multispectralImage, S] = RTB_Render_PBRT(scene, hints)
 
-% resolve the scene which should be located in the working folder
-sceneFile = rtbWorkingAbsolutePath(scene.pbrtFile, 'hints', hints);
+% copy the scene file to working folder base
+%   so that relative paths in scene file will work
+sceneFile = scene.pbrtFile;
+[~, sceneBase, sceneExt] = fileparts(sceneFile);
+copyDir = rtbWorkingFolder('hints', hints);
+sceneCopy = fullfile(copyDir, [sceneBase, sceneExt]);
+copyfile(sceneFile, sceneCopy, 'f');
 
-% invoke PBRT!
-[status, result, output] = RunPBRT(sceneFile, hints);
-if status ~= 0
-    error('PBRT rendering failed\n  %s\n  %s\n', sceneFile, result);
-end
-
-% interpret output according to PBRT's spectral sampling
-S = getpref('PBRT', 'S');
-
-% read output into memory
-multispectralImage = rtbReadDAT(output, 'maxPlanes', S(3));
+renderer = RtbPBRTRenderer(hints);
+[status, result, multispectralImage, S] = renderer.render(sceneCopy);

@@ -43,8 +43,9 @@ setpref('RenderToolbox3', fieldnames(renderToolbox3), struct2cell(renderToolbox3
 %% Locate Mitsuba.
 mitsuba.radiometricScaleFactor = 0.0795827427;
 
-% use Docker, if present
+% use Docker or Kubernetes, if present
 mitsuba.dockerImage = 'ninjaben/mitsuba-spectral';
+mitsuba.kubernetesPodSelector = 'app=mitsuba-spectral';
 
 % or use local installation
 if ismac()
@@ -73,7 +74,7 @@ pbrt.radiometricScaleFactor = 0.0063831432;
 
 % use Docker, if present
 pbrt.dockerImage = 'ninjaben/pbrt-v2-spectral-docker';
-pbrt.dockerCommand = 'pbrt';
+pbrt.kubernetesPodSelector = 'app=pbrt';
 
 % or use local install
 pbrt.S = [400 10 31];

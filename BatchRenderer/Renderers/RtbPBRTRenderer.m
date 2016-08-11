@@ -36,40 +36,38 @@ classdef RtbPBRTRenderer < RtbRenderer
         
         function [status, result, image, sampling, imageName] = render(obj, nativeScene)
             % look carefully for the file
-            [scenePath, sceneBase, sceneExt] = fileparts(nativeScene);
-            if 7 ~= exist(scenePath, 'dir')
-                fileInfo = rtbResolveFilePath(nativeScene, obj.workingFolder);
-                nativeScene = fileInfo.absolutePath;
-            end
-            
-            % choose output file
             [~, imageName] = fileparts(nativeScene);
-            outFile = fullfile(obj.outputFolder, [imageName '.dat']);
-            
-            % run in docker or locally with configured lib path
-            %   docker must be installed
-            %   user must have docker-level privileges (root or docker group)
-            [dockerStatus, ~] = system('docker ps');
-            if ~dockerStatus
-                [~, uid] = system('id -u `whoami`');
-                commandPrefix = sprintf('docker run -ti --rm -u %s:%s -v "%s":"%s" -v "%s":"%s" %s pbrt', ...
-                    strtrim(uid), strtrim(uid), ...
-                    obj.workingFolder, obj.workingFolder, ...
-                    rtbRoot(), rtbRoot(), ...
-                    obj.pbrt.dockerImage);
-            else
-                commandPrefix = sprintf('%s', obj.pbrt.executable);
-            end
+            fileInfo = rtbResolveFilePath(nativeScene, obj.workingFolder);
+            nativeScene = fileInfo.absolutePath;
             
             % build a pbrt command
-            renderCommand = sprintf('%s --outfile %s %s', ...
-                commandPrefix, ...
+            outFile = fullfile(obj.outputFolder, [imageName '.dat']);
+            renderCommand = sprintf('pbrt --outfile %s %s', ...
                 outFile, ...
                 nativeScene);
-            fprintf('%s\n', renderCommand);
             
-            % invoke pbrt
-            [status, result] = rtbRunCommand(renderCommand, 'hints', obj.hints);
+            % run in a container or locally
+            if rtbDockerExists()
+                [status, result] = rtbRunDocker(renderCommand, ...
+                    obj.pbrt.dockerImage, ...
+                    'workingFolder', obj.workingFolder, ...
+                    'volumes', {obj.workingFolder, rtbRoot()}, ...
+                    'hints', obj.hints);
+            elseif rtbKubernetesExists()
+                [status, result] = rtbRunKubernetes(renderCommand, ...
+                    obj.pbrt.kubernetesPodSelector, ...
+                    'hints', obj.hints);
+            else
+                pbrtPath = fileparts(fullfile(obj.pbrt.app, obj.pbrt.executable));
+                renderCommand = sprintf('%s="%s" "%s%s"%s', ...
+                    obj.pbrt.libraryPathName, ...
+                    obj.pbrt.libraryPath, ...
+                    pbrtPath, ...
+                    filesep(), ...
+                    renderCommand);
+                [status, result] = rtbRunCommand(renderCommand, 'hints', obj.hints);
+            end
+            
             if status ~= 0
                 error('RtbPbrtRenderer:pbrtError', result);
             end
