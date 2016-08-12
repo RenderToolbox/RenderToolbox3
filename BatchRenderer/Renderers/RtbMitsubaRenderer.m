@@ -31,7 +31,7 @@ classdef RtbMitsubaRenderer < RtbRenderer
             end
         end
         
-        function [status, result, image, sampling, imageName] = render(obj, nativeScene)
+        function [status, result, outFile, imageName] = renderToExr(obj, nativeScene)
             % look carefully for the input file
             [~, imageName] = fileparts(nativeScene);
             workingFolder = rtbWorkingFolder('hints', obj.hints);
@@ -64,13 +64,11 @@ classdef RtbMitsubaRenderer < RtbRenderer
                     filesep(), ...
                     renderCommand);
                 [status, result] = rtbRunCommand(renderCommand, 'hints', obj.hints);
-            end
-            
-            if status ~= 0
-                error('RtbMitsubaRenderer:mitsubaError', result);
-            end
-            
-            % read the rendering into memory
+            end            
+        end
+        
+        function [status, result, image, sampling, imageName] = render(obj, nativeScene)
+            [status, result, outFile, imageName] = obj.renderToExr(nativeScene);
             [image, ~, sampling] = rtbReadMultispectralEXR(outFile);
         end
         
