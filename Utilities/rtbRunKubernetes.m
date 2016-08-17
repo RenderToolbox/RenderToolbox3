@@ -5,6 +5,10 @@ function [status, result] = rtbRunKubernetes(command, podSelector, varargin)
 % executes the given command inside a Kubernetes pod, chosen based on the
 % given podSelector.
 %
+% rtbRunDocker( ... 'workingFolder', workingFolder) the working folder to
+% use inside the Kubernetes pod container.  The default is none, don't
+% change folder inside the pod.
+%
 % rtbRunDocker( ... 'hints', hints) struct of RenderToolbox3 options, as
 % from rtbDefaultHints().
 %
@@ -15,10 +19,12 @@ function [status, result] = rtbRunKubernetes(command, podSelector, varargin)
 parser = inputParser();
 parser.addRequired('command', @ischar);
 parser.addRequired('podSelector', @ischar);
+parser.addParameter('workingFolder', '', @ischar);
 parser.addParameter('hints', rtbDefaultHints(), @isstruct);
 parser.parse(command, podSelector, varargin{:});
 command = parser.Results.command;
 podSelector = parser.Results.podSelector;
+workingFolder = parser.Results.workingFolder;
 hints = rtbDefaultHints(parser.Results.hints);
 
 %% Build command to select a pod.
@@ -32,7 +38,16 @@ podName = strtrim(podName);
 
 
 %% Build the command with actual business.
-kubeCommand = sprintf('kubectl exec %s -- %s', podName, command);
+
+execCommand = command;
+
+% kubectl exec doesn't explicitly support a --workdir like Docker run.
+% instead, prepend the command with the cd.
+if ~isempty(workingFolder)
+    execCommand = sprintf('cd %s && %s', workingFolder, execCommand);
+end
+
+kubeCommand = sprintf('kubectl exec -ti %s -- /bin/bash -c "%s"', podName, execCommand);
 
 
 %% Invoke the Kubernetes command with or without capturing results.
