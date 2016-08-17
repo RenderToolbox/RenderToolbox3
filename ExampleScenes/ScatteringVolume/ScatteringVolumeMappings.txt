@@ -1,0 +1,12 @@
+PBRT {
+    sampler:pixelsamples.integer = 32
+
+    integrator:VolumeIntegrator:single
+    integrator.stepsize.float = 0.5
+
+    MyVolume:Volume:homogeneous
+    MyVolume.sigma_a.spectrum = 300:0.05 800:0.05
+    MyVolume.sigma_s.spectrum = 300:0.1 800:0.1
+    MyVolume.p0.point = -25 -25 -25
+    MyVolume.p1.point = 25 25 25
+}

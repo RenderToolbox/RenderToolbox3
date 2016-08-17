@@ -51,11 +51,17 @@ else
     writeFilm(pbrtFID, idMap, filmNodeID{1}, hints);
 end
 
-integreatorNodeID = getNodesByIdentifier(idMap, 'SurfaceIntegrator');
-if isempty(integreatorNodeID)
-    warning('Scene does not specify a surface integrator!');
-else
-    writeIntegrator(pbrtFID, idMap, integreatorNodeID{1}, hints);
+% expect either surface or volume integrator
+surfaceIntegratorNodeID = getNodesByIdentifier(idMap, 'SurfaceIntegrator');
+if ~isempty(surfaceIntegratorNodeID)
+    writeIntegrator(pbrtFID, idMap, surfaceIntegratorNodeID{1}, hints);
+end
+volumeIntegratorNodeID = getNodesByIdentifier(idMap, 'VolumeIntegrator');
+if ~isempty(volumeIntegratorNodeID)
+    writeIntegrator(pbrtFID, idMap, volumeIntegratorNodeID{1}, hints);
+end
+if isempty(surfaceIntegratorNodeID) && isempty(volumeIntegratorNodeID)
+    warning('Scene does not specify a surface or volume integrator!');
 end
 
 samplerNodeID = getNodesByIdentifier(idMap, 'Sampler');
@@ -112,6 +118,14 @@ attribNodeIDs = getNodesByIdentifier(idMap, 'Attribute');
 for ii = 1:numel(attribNodeIDs)
     writeAttribute(pbrtFID, idMap, attribNodeIDs{ii}, hints);
 end
+
+% declare Volumes
+% TODO: do volumes belong inside attributes/transform blocks like shapes?
+volumeNodeIDs = getNodesByIdentifier(idMap, 'Volume');
+for ii = 1:numel(volumeNodeIDs)
+    writeVolume(pbrtFID, idMap, volumeNodeIDs{ii}, hints);
+end
+
 
 % finish the "world" declaration
 fprintf(pbrtFID, 'WorldEnd\n');
@@ -256,9 +270,9 @@ PrintPBRTStatement(fid, identifier, type, params);
 fprintf(fid, '\n');
 
 
-function writeIntegrator(fid, idMap, integreatorNodeID, hints)
+function writeIntegrator(fid, idMap, integratorNodeID, hints)
 % scan the integrator document node
-node = idMap(integreatorNodeID);
+node = idMap(integratorNodeID);
 [identifier, type] = getIdentifierAndType(node);
 params = getParameters(node);
 
@@ -403,6 +417,14 @@ fprintf(fid, '# light source %s\n', lightNodeID);
 lightNode = idMap(lightNodeID);
 [identifier, type] = getIdentifierAndType(lightNode);
 params = getParameters(lightNode);
+PrintPBRTStatement(fid, identifier, type, params);
+
+function writeVolume(fid, idMap, volumeID, hints)
+fprintf(fid, '# volume %s\n', volumeID);
+
+volumeNode = idMap(volumeID);
+[identifier, type] = getIdentifierAndType(volumeNode);
+params = getParameters(volumeNode);
 PrintPBRTStatement(fid, identifier, type, params);
 
 
