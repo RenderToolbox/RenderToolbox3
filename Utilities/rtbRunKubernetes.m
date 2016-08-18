@@ -27,14 +27,16 @@ podSelector = parser.Results.podSelector;
 workingFolder = parser.Results.workingFolder;
 hints = rtbDefaultHints(parser.Results.hints);
 
-%% Build command to select a pod.
-podCommand = sprintf('kubectl get pods --selector="%s" -o jsonpath=''{.items[0].metadata.name}''', ...
+%% Build command to select a running pod.
+podCommand = sprintf('kubectl get pods --selector="%s" --output jsonpath=''{.items[?(@.status.phase=="Running")].metadata.name}''', ...
     podSelector);
-[status, podName] = system(podCommand);
+[status, result] = system(podCommand);
 if 0 ~=status
     return;
 end
-podName = strtrim(podName);
+
+% take fist pod name and trim
+podName = sscanf(result, '%s', 1);
 
 
 %% Build the command with actual business.
