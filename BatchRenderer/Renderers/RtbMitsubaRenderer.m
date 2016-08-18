@@ -68,6 +68,11 @@ classdef RtbMitsubaRenderer < RtbRenderer
                     importCommand);
                 [status, result] = rtbRunCommand(renderCommand, 'hints', obj.hints);
             end
+            
+            if status ~= 0
+                error('RtbMitsubaRenderer:mtsimportError', result);
+            end
+
         end
         
         function [status, result, outFile, imageName] = renderToExr(obj, nativeScene)
@@ -104,6 +109,10 @@ classdef RtbMitsubaRenderer < RtbRenderer
                     filesep(), ...
                     renderCommand);
                 [status, result] = rtbRunCommand(renderCommand, 'hints', obj.hints);
+            end
+            
+            if status ~= 0
+                error('RtbMitsubaRenderer:mitsubaError', result);
             end
         end
         
