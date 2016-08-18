@@ -64,7 +64,7 @@ else
     
     %% Copy Mitsuba's serialized geometry from temp to scene folder.
     if exist(geometryFile, 'file')
-        movefile(geometryFile, scenesFolder);
+        movefile(geometryFile, scenesFolder, 'f');
     end
     
     %% Apply adjustments using the RenderToolbox3 custom mechanism.
