@@ -76,30 +76,26 @@ useMatlabPath = parser.Results.useMatlabPath;
 
 isLocated = false;
 
+
 %% Collect files in the resourceFolder.
 resourceDir = dir(resourceFolder);
 isDir = [resourceDir.isdir];
 resources = {resourceDir(~isDir).name};
 
 
-%% Try to find a the local file.
+%% Try to find a the file in the given resources folder or Matlab path.
 resourceMatch = matchResource(inName, resources);
+if isempty(resourceMatch) && useMatlabPath && 2 == exist(inName, 'file')
+    % copy into resources folder and proceed like it was always there
+    fullPathName = which(inName);
+    resourceCopy = fullfile(resourceFolder, inName);
+    copyfile(fullPathName, resourceCopy, 'f');
+    resourceMatch = inName;
+end
+
+
+%% Did we find it?
 if isempty(resourceMatch)
-    % fall back on Matlab path?
-    if useMatlabPath && 2 == exist(inName, 'file')
-        % report full path to file on Matlab path
-        fullPathName = which(inName);
-        info.verbatimName = inName;
-        info.writtenName = fullPathName;
-        info.isMatched = false;
-        info.matchName = inName;
-        info.matchFullPath = fullPathName;
-        
-        outName = fullPathName;
-        isLocated = true;
-        return;
-    end
-    
     % report an unmatched file
     info.verbatimName = inName;
     info.writtenName = inName;
@@ -120,6 +116,7 @@ if copyOnReplace && ~isempty(newName)
     resourceMatch = newName;
 end
 
+
 %% Choose a new file name.
 isLocated = true;
 resourceFullPath = fullfile(resourceFolder, resourceMatch);
@@ -129,6 +126,7 @@ if writeFullPaths
 else
     outName = resourceRelativePath;
 end
+
 
 %% Report a successful update.
 info.verbatimName = inName;
