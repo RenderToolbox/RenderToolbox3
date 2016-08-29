@@ -23,13 +23,14 @@ parser.parse(archiveName, varargin{:});
 archiveName = parser.Results.archiveName;
 hints = rtbDefaultHints(parser.Results.hints);
 
+[~, archiveBase] = fileparts(archiveName);
+
 %% Set up a clean, temporary folder.
-hints.recipeName = mfilename();
-tempFolder = rtbWorkingFolder('hints', hints);
+tempFolder = fullfile(tempdir(), 'RenderToolbox3', 'UnpackRecipe', archiveBase);
 if exist(tempFolder, 'dir')
     rmdir(tempFolder, 's');
 end
-rtbChangeToFolder(tempFolder);
+mkdir(tempFolder);
 
 %% Unpack the archive to the temporary folder.
 unzip(archiveName, tempFolder);
@@ -49,16 +50,14 @@ recipe = matData.recipe;
 recipe.input.hints.workingFolder = hints.workingFolder;
 
 %% Copy dependencies from the temp folder to the local working folder.
-[~, archiveBase] = fileparts(archiveName);
-unpackedFolder = fullfile(tempFolder, archiveBase);
-dependencies = rtbFindFiles('root', unpackedFolder);
+dependencies = rtbFindFiles('root', tempFolder);
 for ii = 1:numel(dependencies)
     tempPath = dependencies{ii};
     if strfind(tempPath, 'recipe.mat')
         continue;
     end
     
-    [~, relativePath] = rtbIsPathPrefix(unpackedFolder, tempPath);
+    [~, relativePath] = rtbIsPathPrefix(tempFolder, tempPath);
     localPath = rtbWorkingAbsolutePath(relativePath, 'hints', recipe.input.hints);
     
     localPrefix = fileparts(localPath);

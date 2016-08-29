@@ -30,9 +30,7 @@ ignoreFolders = parser.Results.ignoreFolders;
 [archivePath, archiveBase] = fileparts(archiveName);
 
 %% Set up a clean, temporary folder.
-hints.workingFolder = recipe.input.hints.workingFolder;
-workingFolder = rtbWorkingFolder('hints', hints);
-tempFolder = fullfile(workingFolder, mfilename(), archiveBase);
+tempFolder = fullfile(tempdir(), 'RenderToolbox3', 'PackUpRecipe', archiveBase);
 if exist(tempFolder, 'dir')
     rmdir(tempFolder, 's');
 end

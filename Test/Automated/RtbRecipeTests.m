@@ -32,5 +32,41 @@ classdef RtbRecipeTests < matlab.unittest.TestCase
                 rethrow(allErrorData(1));
             end
         end
+        
+        function testReadWrite(testCase)
+            % build a recipe
+            recipe = rtbNewRecipe();
+            testCase.assertInstanceOf(recipe, 'struct');
+            testCase.assertNumElements(recipe, 1);
+            
+            % write to disk and read it back
+            archiveName = fullfile(tempdir(), 'RtbRecipeTests', 'recipe.mat');
+            rtbPackUpRecipe(recipe, archiveName);
+            sameRecipe = rtbUnpackRecipe(archiveName);
+            testCase.assertInstanceOf(recipe, 'struct');
+            testCase.assertNumElements(recipe, 1);
+            
+            testCase.assertEqual(sameRecipe, recipe);
+        end
+        
+        function testConcurrentReadWrite(testCase)
+            % build a recipe
+            recipe = rtbNewRecipe();
+            testCase.assertInstanceOf(recipe, 'struct');
+            testCase.assertNumElements(recipe, 1);
+            
+            % write to disk and read it back, a lot
+            nLots = 10;
+            parfor ll = 1:nLots
+                archiveName = fullfile(tempdir(), 'RtbRecipeTests', sprintf('recipe-%d.mat', ll));
+                
+                rtbPackUpRecipe(recipe, archiveName);
+                sameRecipe = rtbUnpackRecipe(archiveName);
+                testCase.assertInstanceOf(recipe, 'struct');
+                testCase.assertNumElements(recipe, 1);
+                
+                testCase.assertEqual(sameRecipe, recipe);
+            end
+        end
     end
 end
