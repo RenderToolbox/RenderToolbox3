@@ -51,13 +51,14 @@ recipe.input.hints.workingFolder = hints.workingFolder;
 
 %% Copy dependencies from the temp folder to the local working folder.
 dependencies = rtbFindFiles('root', tempFolder);
+dependencyBasePath = fullfile(tempFolder, archiveBase);
 for ii = 1:numel(dependencies)
     tempPath = dependencies{ii};
     if strfind(tempPath, 'recipe.mat')
         continue;
     end
     
-    [~, relativePath] = rtbIsPathPrefix(tempFolder, tempPath);
+    [~, relativePath] = rtbIsPathPrefix(dependencyBasePath, tempPath);
     localPath = rtbWorkingAbsolutePath(relativePath, 'hints', recipe.input.hints);
     
     localPrefix = fileparts(localPath);
