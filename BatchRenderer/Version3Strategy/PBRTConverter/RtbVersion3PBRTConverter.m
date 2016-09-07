@@ -134,6 +134,18 @@ classdef RtbVersion3PBRTConverter < handle
             end
             nativeScene = rtbApplyMPbrtMappings(nativeScene, groupMappings);
             nativeScene = rtbApplyMPbrtGenericMappings(nativeScene, groupMappings);
+
+            % update image size, if given in conditions file
+            imageWidth = rtbGetNamedValue(names, conditionValues, 'imageWidth', '');
+            if ~isempty(imageWidth)
+                film = nativeScene.find('Film');
+                film.setParameter('xresolution', 'integer', imageWidth);
+            end
+            imageHeight = rtbGetNamedValue(names, conditionValues, 'imageHeight', '');
+            if ~isempty(imageHeight)
+                film = nativeScene.find('Film');
+                film.setParameter('yresolution', 'integer', imageHeight);
+            end
         end
         
         % transition in-memory nativeScene to on-disk pbrtFile

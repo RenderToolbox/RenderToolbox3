@@ -140,16 +140,28 @@ classdef RtbVersion3MitsubaConverter < handle
         end
         
         function nativeScene = applyMappings(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
-            groupName = rtbGetNamedValue(names, conditionValues, 'groupName', '');
-            if isempty(groupName)
+            imageWidth = rtbGetNamedValue(names, conditionValues, 'groupName', '');
+            if isempty(imageWidth)
                 groupMappings = mappings;
             else
                 isAnyGroup = strcmp('', {mappings.group});
-                isInGroup = strcmp(groupName, {mappings.group});
+                isInGroup = strcmp(imageWidth, {mappings.group});
                 groupMappings = mappings(isAnyGroup | isInGroup);
             end
             nativeScene = rtbApplyMMitsubaMappings(nativeScene, groupMappings);
             nativeScene = rtbApplyMMitsubaGenericMappings(nativeScene, groupMappings);
+            
+            % update image size, if given in conditions file
+            imageWidth = rtbGetNamedValue(names, conditionValues, 'imageWidth', '');
+            if ~isempty(imageWidth)
+                film = nativeScene.find('film');
+                film.setProperty('width', 'integer', imageWidth);
+            end
+            imageHeight = rtbGetNamedValue(names, conditionValues, 'imageHeight', '');
+            if ~isempty(imageHeight)
+                film = nativeScene.find('film');
+                film.setProperty('height', 'integer', imageHeight);
+            end
         end
         
         % transition in-memory nativeScene to on-disk mitsubaFile
