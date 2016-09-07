@@ -47,7 +47,7 @@ if isempty(hints.workingFolder)
 end
 
 % just the base folder if no named folder given
-if nargin < 1 || isempty(folderName)
+if isempty(folderName)
     folder = fullfile(hints.workingFolder, hints.recipeName, renderer);
     if ~exist(folder, 'dir')
         mkdir(folder);
