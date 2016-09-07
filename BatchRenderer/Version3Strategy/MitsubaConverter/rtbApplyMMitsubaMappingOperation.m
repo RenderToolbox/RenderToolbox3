@@ -27,11 +27,18 @@ if isempty(type)
 end
 
 %% Locate the element.
-mitsubaId = mexximpCleanName(mapping.name, mapping.index);
+
+% search for exact name by itself, or formatted index_name pattern
+[mitsubaId, idMatcher] = mexximpCleanName(mapping.name, mapping.index);
+if isempty(mitsubaId)
+    searchPattern = '';
+else
+    searchPattern = sprintf('^%s$|%s', mitsubaId, idMatcher);
+end
 switch mapping.operation
     case 'delete'
         % remove the node, if it can be found
-        mitsubaScene.find(mitsubaId, ...
+        mitsubaScene.find(searchPattern, ...
             'type', type, ...
             'remove', true);
         element = [];
@@ -45,12 +52,13 @@ switch mapping.operation
         
     otherwise
         % 'update' and special operations like 'blessAsAreaLight'
-        element = mitsubaScene.find(mitsubaId, ...
+        element = mitsubaScene.find(searchPattern, ...
             'type', type);
         if isempty(element)
             warning('applyMMitsubaMappingOperation:nodeNotFound', ...
                 'No node found with type <%s> and id <%s>', ...
-                type, mitsubaId);
+                type, searchPattern);
         end
+        
         return;
 end

@@ -27,12 +27,17 @@ if isempty(identifier)
 end
 
 %% Locate the element.
-pbrtName = mexximpCleanName(mapping.name, mapping.index);
+[pbrtName, nameMatcher] = mexximpCleanName(mapping.name, mapping.index);
+if isempty(pbrtName)
+    searchPattern = '';
+else
+    searchPattern = sprintf('^%s$|%s', pbrtName, nameMatcher);
+end
 switch mapping.operation
     case 'delete'
         % remove the node, if it can be found
         pbrtScene.find(identifier, ...
-            'name', pbrtName, ...
+            'name', searchPattern, ...
             'remove', true);
         element = [];
         return;
@@ -47,11 +52,11 @@ switch mapping.operation
         
     otherwise
         % 'update' and special operations like 'blessAsAreaLight'
-        element = pbrtScene.find(identifier, 'name', pbrtName);
+        element = pbrtScene.find(identifier, 'name', searchPattern);
         if isempty(element)
             warning('applyMPbrtMappingOperation:nodeNotFound', ...
                 'No node found with identifier <%s> and name <%s>', ...
-                identifier, pbrtName);
+                identifier, searchPattern);
         end
         return;
 end
