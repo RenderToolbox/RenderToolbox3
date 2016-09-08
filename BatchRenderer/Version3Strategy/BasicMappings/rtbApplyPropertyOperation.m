@@ -35,14 +35,14 @@ if isempty(oldValue)
     return;
 end
 
-if isempty(property.value)
-    newValue = oldValue;
-    return;
-end
-
 %% Compute the new value.
-if isempty(property.operation) || strcmp('=', property.operation)
-    newValue = property.value;
+isSimpleAssignment = isempty(property.operation) || strcmp('=', property.operation);
+if isSimpleAssignment
+    if isempty(property.value)
+        newValue = oldValue;
+    else
+        newValue = property.value;
+    end
     return;
 end
 
