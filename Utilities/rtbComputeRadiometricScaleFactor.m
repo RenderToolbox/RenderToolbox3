@@ -11,24 +11,30 @@ function radiometricScaleFactor = rtbComputeRadiometricScaleFactor(renderer)
 % See the RenderToolbox3 wiki for details about radiometric units:
 %	https://github.com/DavidBrainard/RenderToolbox3/wiki/RadianceTest
 %
-% Stores the calculated scale factors for each renderer, using the built-in
-% setpref() function.  To see the results for a renderer such as
-% "SampleRenderer", try
-%   getpref('SampleRenderer', 'radiometricScale')
-%
-%%% RenderToolbox3 Copyright (c) 2012-2013 The RenderToolbox3 Team.
+%%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
 %%% RenderToolbox3 is released under the MIT License.  See LICENSE.txt.
 
 parser = inputParser();
-parser.addRequired('renderer');
-parser.parser(renderer);
+parser.addRequired('renderer', @ischar);
+parser.parse(renderer);
 renderer = parser.Results.renderer;
 
 %% Produce renderingings with known radiometric properties.
 % render the RadianceTest scene
 %   assume outputs go to the deafult outputDataFolder
-rtbMakeRadianceTest(renderer);
+evalIsolated('rtbMakeRadianceTest');
+
+hints.renderer = renderer;
+hints.recipeName = 'rtbMakeRadianceTest';
+dataFolder = rtbWorkingFolder( ...
+    'folderName', 'renderings', ...
+    'rendererSpecific', true, ...
+    'hints', hints);
+
+resources = rtbWorkingFolder( ...
+    'folderName', 'resources', ...
+    'hints', hints);
 
 %% Read known parameters from the RadianceTest "reference" condition.
 % distance from point light to reflector
@@ -36,13 +42,13 @@ rtbMakeRadianceTest(renderer);
 isName = strcmp('imageName', names);
 isReference = strcmp('reference', values(:, isName));
 isDistance = strcmp('lightDistance', names);
-distanceToPointSource = StringToVector(values{isReference, isDistance});
+distanceToPointSource = sscanf(values{isReference, isDistance}, '%f');
 
 % power of point source per unit wavelength
 %   arbitrarily, choose a spectrum sample near 500nm
 isSpectrum = strcmp('lightSpectrum', names);
 spectrumFile = values{isReference, isSpectrum};
-[wavelengths, magnitudes] = rtbReadSpectrum(spectrumFile);
+[wavelengths, magnitudes] = rtbReadSpectrum(fullfile(resources, spectrumFile));
 spectrumIndex = find(wavelengths >= 500, 1, 'first');
 pointSource_PowerPerUnitWavelength = magnitudes(spectrumIndex);
 
@@ -57,17 +63,12 @@ irradiance_PowerPerUnitAreaUnitWl = ...
 %   the total light over the hemisphere is equal to pi times
 %   the luminance.  See Wyszecki and Stiles, 2cd edition, pp.
 %   273-274, equaiton 29(4.3.6).
-radiance_PowerPerAreaSrUnitWl = irradiance_PowerPerUnitAreaUnitWl/(pi);
+radiance_PowerPerAreaSrUnitWl = irradiance_PowerPerUnitAreaUnitWl / pi();
 
 %% Compute a radiometric unit scale factor the given render.
-hints.recipeName = 'rtbMakeRadianceTest';
-dataFolder = rtbWorkingFolder( ...
-    'folderName', 'renderings', ...
-    'rendererSpecific', true, ...
-    'hints', hints);
 
 % locate RadianceTest "reference" data file
-dataFile = rtbFindFiles(dataFolder, [renderer '.+reference']);
+dataFile = rtbFindFiles('root', dataFolder, 'filter', 'reference\.mat$');
 data = load(dataFile{1});
 
 % get a pixel spectrum from the center of the multispectral rendering
@@ -79,11 +80,11 @@ renderedIrradiance_PixelValue = ...
     data.multispectralImage(center(1), center(2), spectrumIndex);
 
 % scale renderer output to match expected radiance
-rendererRadiometricUnitFactor = ...
+radiometricScaleFactor = ...
     radiance_PowerPerAreaSrUnitWl/renderedIrradiance_PixelValue;
 
 % store the scale factor
-setpref(renderer, 'radiometricScaleFactor', rendererRadiometricUnitFactor);
+setpref(renderer, 'radiometricScaleFactor', radiometricScaleFactor);
 
 % explain the scale factor
 fprintf('%s irradiance: %0.4g (arbitrary units)\n', ...
@@ -91,7 +92,10 @@ fprintf('%s irradiance: %0.4g (arbitrary units)\n', ...
 fprintf('Corresponding radiance: %0.4g (power/[area-sr-wl])\n', ...
     radiance_PowerPerAreaSrUnitWl);
 fprintf('%s scale factor: %0.4g to bring rendered image into physical radiance units\n\n', ...
-    renderer, rendererRadiometricUnitFactor);
+    renderer, radiometricScaleFactor);
 
-% report the new scale factor
-radiometricScaleFactor = getpref(renderer, 'radiometricScaleFactor');
+
+%% Run a command in an isolated workspace.
+function evalIsolated(command)
+eval(command);
+
