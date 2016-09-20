@@ -1,4 +1,4 @@
-classdef RtbVersion3MitsubaConverter < handle
+classdef RtbVersion3MitsubaConverter < RtbConverter
     %% Implementation for rendering converting mexximp to Mitsuba.
     %
     

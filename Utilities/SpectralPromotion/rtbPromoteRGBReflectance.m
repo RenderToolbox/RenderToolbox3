@@ -80,6 +80,12 @@ nPixels = 50;
 hints.imageWidth = nPixels;
 hints.imageHeight = nPixels;
 
+% set up a remodeler to tweak the Mitsuba scene
+if strcmp('Mitsuba', hints.renderer)
+    hints.batchRenderStrategy = RtbVersion3Strategy(hints);
+    hints.batchRenderStrategy.converter.remodelAfterMappingsFunction = @setRGBIntent;
+end
+
 % render and read an output pixel from the middle
 sceneFiles = rtbMakeSceneFiles(sceneFile, ...
     'conditionsFile', conditionsFile, ...
@@ -110,3 +116,13 @@ RGB = squeeze(rawRGB);
 
 % scale so unit-valued reflectance comes out with unit-valued RGB
 RGB = RGB ./ calibrationData.rgbScale;
+
+
+%% Remodeler function to meddle with Mitsuba scene syntax.
+function nativeScene = setRGBIntent(parentScene, nativeScene, varargin)
+% dig into the MMitusba scene representation 
+% to change the "intent" of the RGB reflectance value
+% this is a Mitsuba detail that we don't have a general mechanism for
+reflectance = nativeScene.find('Reflector', 'type', 'bsdf');
+rgb = reflectance.find('reflectance');
+rgb.setData('intent', 'reflectance');

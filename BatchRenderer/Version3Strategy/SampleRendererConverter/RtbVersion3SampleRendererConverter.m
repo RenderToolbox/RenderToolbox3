@@ -1,4 +1,4 @@
-classdef RtbVersion3SampleRendererConverter < handle
+classdef RtbVersion3SampleRendererConverter < RtbConverter
     %% Implementation for how to make scene files with the RendererPluginAPI.
     %
     % This class is a bridge between the "old" way of finding renderers
@@ -15,15 +15,15 @@ classdef RtbVersion3SampleRendererConverter < handle
             defaultMappings = {};
         end
         
-        function nativeScene = startImport(obj, parentScene, mappings, names, conditionValues, conditionNumber)
+        function nativeScene = startConversion(obj, parentScene, mappings, names, conditionValues, conditionNumber);
             nativeScene = [];
         end
         
-        function nativeScene = applyMappings(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
+        function nativeScene = applyMappings(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber);
             nativeScene = [];
         end
         
-        function nativeScene = finishImport(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber)
+        function nativeScene = finishConversion(obj, parentScene, nativeScene, mappings, names, conditionValues, conditionNumber);
             nativeScene = [];
         end
     end

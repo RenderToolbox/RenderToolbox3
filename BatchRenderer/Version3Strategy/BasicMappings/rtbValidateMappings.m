@@ -1,3 +1,4 @@
+
 function mappings = rtbValidateMappings(rawMappings)
 %% Sanity check mappings and fill in default fields.
 %

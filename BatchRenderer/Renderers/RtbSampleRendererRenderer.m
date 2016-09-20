@@ -11,7 +11,7 @@ classdef RtbSampleRendererRenderer < RtbRenderer
     end
     
     methods
-        function obj = RtbPluginRenderer(hints)
+        function obj = RtbSampleRendererRenderer(hints)
             obj.hints = hints;
         end
         

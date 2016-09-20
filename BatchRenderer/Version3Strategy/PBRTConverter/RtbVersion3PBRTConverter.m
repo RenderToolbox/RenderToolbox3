@@ -1,4 +1,4 @@
-classdef RtbVersion3PBRTConverter < handle
+classdef RtbVersion3PBRTConverter < RtbConverter
     %% Implementation for rendering converting mexximp to Pbrt.
     %
     

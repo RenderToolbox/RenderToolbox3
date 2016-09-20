@@ -161,5 +161,7 @@ end
 
 % apply renderer-specific mappings to the scene.
 nativeScene = strategy.converter.startConversion(scene, mappings, names, conditionValues, cc);
+nativeScene = strategy.converter.remodelBeforeMappings(scene, nativeScene, mappings, names, conditionValues, cc);
 nativeScene = strategy.converter.applyMappings(scene, nativeScene, mappings, names, conditionValues, cc);
+nativeScene = strategy.converter.remodelAfterMappings(scene, nativeScene, mappings, names, conditionValues, cc);
 nativeScene = strategy.converter.finishConversion(scene, nativeScene, mappings, names, conditionValues, cc);
