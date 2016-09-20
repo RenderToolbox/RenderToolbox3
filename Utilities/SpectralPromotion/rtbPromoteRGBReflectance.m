@@ -61,10 +61,11 @@ reflectance = parser.Results.reflectance;
 illuminant = parser.Results.illuminant;
 hints = rtbDefaultHints(parser.Results.hints);
 
+
 %% Choose internal resources.
 scenePath = fullfile(rtbRoot(), 'Utilities', 'SpectralPromotion');
 sceneFile = fullfile(scenePath, 'SpectralPromotion.dae');
-mappingsFile = fullfile(scenePath, 'SpectralPromotionMappings.txt');
+mappingsFile = fullfile(scenePath, 'SpectralPromotionMappings.json');
 calibrationFile = fullfile(scenePath, 'SpectralPromotionCalibration.mat');
 conditionsFile = 'SpectralPromotionConditions.txt';
 
@@ -80,8 +81,11 @@ hints.imageWidth = nPixels;
 hints.imageHeight = nPixels;
 
 % render and read an output pixel from the middle
-sceneFiles = MakeSceneFiles(sceneFile, conditionsFile, mappingsFile, hints);
-outFiles = BatchRender(sceneFiles, hints);
+sceneFiles = rtbMakeSceneFiles(sceneFile, ...
+    'conditionsFile', conditionsFile, ...
+    'mappingsFile', mappingsFile, ...
+    'hints', hints);
+outFiles = rtbBatchRender(sceneFiles, 'hints', hints);
 dataFile = outFiles{1};
 outData = load(dataFile);
 S = outData.S;
@@ -95,13 +99,13 @@ outPixel = outPixel ./ calibrationData.geometryScale;
 
 % divide out the illuminant
 %   SplineRaw(), not SplineSpd(): renderers already assume power/wavelength
-[illumWls, illumPower] = ReadSpectrum(illuminant);
+[illumWls, illumPower] = rtbReadSpectrum(illuminant);
 illumResampled = SplineRaw(illumWls, illumPower, outData.S);
 promoted = outPixel ./ illumResampled;
 
 % convert to sRGB
 tinyImage = reshape(promoted, 1, 1, []);
-[~, ~, rawRGB] = MultispectralToSRGB(tinyImage, outData.S, 0, false);
+[~, ~, rawRGB] = rtbMultispectralToSRGB(tinyImage, outData.S);
 RGB = squeeze(rawRGB);
 
 % scale so unit-valued reflectance comes out with unit-valued RGB
