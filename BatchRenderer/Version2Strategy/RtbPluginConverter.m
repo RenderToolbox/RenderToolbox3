@@ -1,4 +1,4 @@
-classdef RtbPluginConverter < handle
+classdef RtbPluginConverter < RtbConverter
     %% Implementation for how to make scene files with the RendererPluginAPI.
     %
     % This class is a bridge between the "old" way of finding renderers
