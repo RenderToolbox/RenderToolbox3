@@ -167,7 +167,7 @@ for mm = 1:nGenericMappings
             pbrtScene.world.prepend(originalTexture);
             
             % add the scale texture to the blessed material
-            element.setParameter('bumpmap', 'texture', scaledTextureName);            
+            element.setParameter('bumpmap', 'texture', scaledTextureName);
     end
     
     %% Apply Generic mappings properties as PBRT element parameters.
@@ -176,15 +176,15 @@ for mm = 1:nGenericMappings
             switch mapping.specificType
                 case 'matte'
                     element.type = 'matte';
-                    element.setParameter('Kd', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
+                    setSpectrumOrTexture(element, mapping, ...
+                        'diffuseReflectance', 'Kd', 'spectrum', '300:0 800:0');
                     
                 case 'anisoward'
                     element.type = 'anisoward';
-                    element.setParameter('Kd', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
-                    element.setParameter('Ks', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'specularReflectance', '300:0.5 800:0.5'));
+                    setSpectrumOrTexture(element, mapping, ...
+                        'diffuseReflectance', 'Kd', 'spectrum', '300:0 800:0');
+                    setSpectrumOrTexture(element, mapping, ...
+                        'specularReflectance', 'Ks', 'spectrum', '300:0.5 800:0.5');
                     element.setParameter('alphaU', 'float', ...
                         rtbGetMappingProperty(mapping, 'alphaU', 0.15));
                     element.setParameter('alphaV', 'float', ...
@@ -192,10 +192,10 @@ for mm = 1:nGenericMappings
                     
                 case 'metal'
                     element.type = 'metal';
-                    element.setParameter('eta', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'eta', '300:0 800:0'));
-                    element.setParameter('k', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'k', '300:0 800:0'));
+                    setSpectrumOrTexture(element, mapping, ...
+                        'eta', 'eta', 'spectrum', '300:0 800:0');
+                    setSpectrumOrTexture(element, mapping, ...
+                        'k', 'k', 'spectrum', '300:0 800:0');
                     element.setParameter('roughness', 'float', ...
                         rtbGetMappingProperty(mapping, 'roughness', .05) / 5);
             end
@@ -204,18 +204,22 @@ for mm = 1:nGenericMappings
             switch mapping.specificType
                 case {'point', 'spot'}
                     element.type = mapping.specificType;
-                    element.setParameter('I', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'intensity', '300:0 800:0'));
+                    setSpectrumOrTexture(element, mapping, ...
+                        'intensity', 'I', 'spectrum', '300:0 800:0');
                     
                 case 'directional'
                     element.type = 'distant';
-                    element.setParameter('L', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'intensity', '300:0 800:0'));
+                    setSpectrumOrTexture(element, mapping, ...
+                        'intensity', 'L', 'spectrum', '300:0 800:0');
             end
             
         case {'floatTextures', 'spectrumTextures'}
+            
+            % move texture to the top of the scene file
+            pbrtScene.world.prepend(element);
+            
             % texture name and pixel type declared in the element value
-            if strcmp('spectrumTexture', mapping.broadType)
+            if strcmp('spectrumTextures', mapping.broadType)
                 pixelType = 'spectrum';
             else
                 pixelType = 'float';
@@ -269,4 +273,15 @@ for mm = 1:nGenericMappings
                     element.setParameter('dimension', 'integer', 2);
             end
     end
+end
+
+%% Set a spectrum or texture value to a property.
+function setSpectrumOrTexture(element, mapping, getName, setName, setType, defaultValue)
+[value, property] = rtbGetMappingProperty(mapping, getName, defaultValue);
+
+% texture references require special syntax
+if ~isempty(property) && strcmp('texture', property.valueType)
+    element.setParameter(setName, 'texture', value);
+else
+    element.setParameter(setName, setType, value);
 end

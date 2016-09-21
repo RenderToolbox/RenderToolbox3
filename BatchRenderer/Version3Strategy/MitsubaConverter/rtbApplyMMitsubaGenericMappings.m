@@ -174,16 +174,16 @@ for mm = 1:nGenericMappings
             switch mapping.specificType
                 case 'matte'
                     element.pluginType = 'diffuse';
-                    element.setProperty('reflectance', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
+                    setSpectrumOrTexture(element, mapping, ...
+                        'diffuseReflectance', 'reflectance', 'spectrum', '300:0 800:0');
                     
                 case 'anisoward'
                     element.pluginType = 'ward';
                     element.setProperty('variant', 'string', 'ward');
-                    element.setProperty('diffuseReflectance', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'diffuseReflectance', '300:0 800:0'));
-                    element.setProperty('specularReflectance', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'specularReflectance', '300:0.5 800:0.5'));
+                    setSpectrumOrTexture(element, mapping, ...
+                        'diffuseReflectance', 'diffuseReflectance', 'spectrum', '300:0 800:0');
+                    setSpectrumOrTexture(element, mapping, ...
+                        'specularReflectance', 'specularReflectance', 'spectrum', '300:0.5 800:0.5');
                     element.setProperty('alphaU', 'float', ...
                         rtbGetMappingProperty(mapping, 'alphaU', 0.15));
                     element.setProperty('alphaV', 'float', ...
@@ -191,28 +191,31 @@ for mm = 1:nGenericMappings
                     
                 case 'metal'
                     element.pluginType = 'roughconductor';
-                    element.setProperty('eta', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'eta', '300:0 800:0'));
-                    element.setProperty('k', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'k', '300:0 800:0'));
-                    element.setProperty('alpha', 'float', ...
-                        rtbGetMappingProperty(mapping, 'roughness', .05));
+                    setSpectrumOrTexture(element, mapping, ...
+                        'eta', 'eta', 'spectrum', '300:0 800:0');
+                    setSpectrumOrTexture(element, mapping, ...
+                        'k', 'k', 'spectrum', '300:0 800:0');
+                    element.setProperty('roughness', 'float', ...
+                        rtbGetMappingProperty(mapping, 'alpha', .05));
             end
             
         case 'lights'
             switch mapping.specificType
                 case {'point', 'spot'}
                     element.pluginType = mapping.specificType;
-                    element.setProperty('intensity', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'intensity', '300:0 800:0'));
+                    setSpectrumOrTexture(element, mapping, ...
+                        'intensity', 'intensity', 'spectrum', '300:0 800:0');
                     
                 case 'directional'
                     element.pluginType = 'directional';
-                    element.setProperty('irradiance', 'spectrum', ...
-                        rtbGetMappingProperty(mapping, 'intensity', '300:0 800:0'));
+                    setSpectrumOrTexture(element, mapping, ...
+                        'intensity', 'irradiance', 'spectrum', '300:0 800:0');
             end
             
         case {'floatTextures', 'spectrumTextures'}
+            
+            % move texture to the top of the scene file
+            mitsubaScene.prepend(element);
             
             switch mapping.specificType
                 case 'bitmap'
@@ -231,7 +234,7 @@ for mm = 1:nGenericMappings
                         rtbGetMappingProperty(mapping, 'scaleU', 1));
                     element.setProperty('vscale', 'float', ...
                         rtbGetMappingProperty(mapping, 'scaleV', 1));
-                    element.setProperty('wrap', 'string', ...
+                    element.setProperty('wrapMode', 'string', ...
                         rtbGetMappingProperty(mapping, 'wrapMode', 'repeat'));
                     element.setProperty('filterType', 'string', ...
                         rtbGetMappingProperty(mapping, 'filterMode', 'ewa'));
@@ -253,4 +256,17 @@ for mm = 1:nGenericMappings
                         rtbGetMappingProperty(mapping, 'evenColor', '300:0 800:0'));
             end
     end
+end
+
+%% Set a spectrum or texture value to a property.
+function setSpectrumOrTexture(element, mapping, getName, setName, setType, defaultValue)
+[value, property] = rtbGetMappingProperty(mapping, getName, defaultValue);
+
+% texture references require special Mistuab syntax
+if ~isempty(property) && strcmp('texture', property.valueType)
+    element.append(MMitsubaProperty.withData('', 'ref', ...
+        'id', property.value, ...
+        'name', setName));
+else
+    element.setProperty(setName, setType, value);
 end

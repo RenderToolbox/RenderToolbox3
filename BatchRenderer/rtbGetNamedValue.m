@@ -1,4 +1,4 @@
-function value = rtbGetNamedValue(names, values, name, defaultValue)
+function [value, isMatched] = rtbGetNamedValue(names, values, name, defaultValue)
 %% Find a value by name, or use a default.
 %
 % value = rtbGetNamedValue(names, values, name, defaultValue)
@@ -9,7 +9,7 @@ function value = rtbGetNamedValue(names, values, name, defaultValue)
 % This is a convenience function to make it a one-liner to access names and
 % values from parallel cell arrays.
 %
-% value = rtbGetNamedValue(names, values, name, defaultValue)
+% [value, isMatched] = rtbGetNamedValue(names, values, name, defaultValue)
 %
 %%% RenderToolbox3 Copyright (c) 2012-2016 The RenderToolbox3 Team.
 %%% About Us://github.com/DavidBrainard/RenderToolbox3/wiki/About-Us
@@ -27,7 +27,8 @@ name = parser.Results.name;
 defaultValue = parser.Results.defaultValue;
 
 isMatch = strcmp(name, names);
-if any(isMatch)
+isMatched = any(isMatch);
+if isMatched
     value = values{find(isMatch, 1, 'first')};
 else
     value = defaultValue;

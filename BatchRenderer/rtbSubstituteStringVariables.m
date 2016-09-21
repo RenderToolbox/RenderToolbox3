@@ -42,13 +42,16 @@ defaultValue = parser.Results.defaultValue;
 %% Search for occurrences of variable syntax.
 [starts, ends] = regexp(string, variableExpression, 'start', 'end');
 nMatches = numel(starts);
-isChanged = nMatches > 0;
 
 %% Replace each
+isChanged = false;
 for vv = nMatches:-1:1
     ss = starts(vv);
     ee = ends(vv);
     name = string(ss+1:ee-1);
-    value = rtbGetNamedValue(names, values, name, defaultValue);
-    string = [string(1:ss-1) value string(ee+1:end)];
+    [value, isMatched] = rtbGetNamedValue(names, values, name, defaultValue);
+    if isMatched
+        string = [string(1:ss-1) value string(ee+1:end)];
+        isChanged = true;
+    end
 end
